@@ -19,32 +19,20 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    # Authentification Service
-    - name: Restore Authentification Service dependencies
-      run: dotnet restore ./authentification-service/authentification-service.csproj
+    - name: Restore dependencies for all projects
+      run: |
+        for csproj in $(find . -name '*.csproj'); do
+          dotnet restore "$csproj"
+        done
 
-    - name: Build Authentification Service
-      run: dotnet build ./authentification-service/authentification-service.csproj --no-restore
+    - name: Build all projects
+      run: |
+        for csproj in $(find . -name '*.csproj'); do
+          dotnet build "$csproj" --no-restore
+        done
 
-    - name: Test Authentification Service
-      run: dotnet test ./authentification-service/authentification-service.csproj --no-build --verbosity normal
-
-    # Grade Service
-    - name: Restore Grade Service dependencies
-      run: dotnet restore ./grade-service/grade-service.csproj
-
-    - name: Build Grade Service
-      run: dotnet build ./grade-service/grade-service.csproj --no-restore
-
-    - name: Test Grade Service
-      run: dotnet test ./grade-service/grade-service.csproj --no-build --verbosity normal
-
-    # Calculation Service
-    - name: Restore Calculation Service dependencies
-      run: dotnet restore ./calculation-service/calculation-service.csproj
-
-    - name: Build Calculation Service
-      run: dotnet build ./calculation-service/calculation-service.csproj --no-restore
-
-    - name: Test Calculation Service
-      run: dotnet test ./calculation-service/calculation-service.csproj --no-build --verbosity normal
+    - name: Test all projects
+      run: |
+        for csproj in $(find . -name '*.csproj'); do
+          dotnet test "$csproj" --no-build --verbosity normal
+        done
