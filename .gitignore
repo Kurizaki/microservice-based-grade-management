@@ -737,3 +737,5 @@ calculation-service/calculation-service/obj/Debug/net8.0/calculation-service.Gen
 calculation-service/calculation-service/obj/project.assets.json
 calculation-service/calculation-service/obj/project.nuget.cache
 calculation-service/calculation-service/obj/Container/ContainerId.cache
+calculation-service/calculation-service/obj/Debug/net8.0/calculation-service.AssemblyInfoInputs.cache
+calculation-service/calculation-service/obj/Debug/net8.0/calculation-service.AssemblyInfo.cs
