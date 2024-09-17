@@ -17,8 +17,15 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
+    - name: Install dotnet-outdated tool
+      run: dotnet tool install --global dotnet-outdated-tool
+
     - name: Update NuGet Packages
-      run: dotnet outdated --upgrade
+      run: |
+        for csproj in $(find . -name '*.csproj' -type f | grep -v 'Backup'); do
+          echo "Updating dependencies for $csproj"
+          dotnet outdated --upgrade "$csproj"
+        done
 
     - name: Commit and Push Changes
       run: |
