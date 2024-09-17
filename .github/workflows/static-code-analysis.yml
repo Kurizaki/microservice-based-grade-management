@@ -26,5 +26,5 @@ jobs:
       run: |
         for csproj in $(find . -name '*.csproj' -type f | grep -v 'Backup'); do
           echo "Running code analysis on $csproj"
-          dotnet format --check "$csproj"
+          dotnet format style --verify-no-changes --no-restore "$csproj"
         done
