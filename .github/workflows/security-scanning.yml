@@ -14,10 +14,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Run CodeQL Analysis
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
       with:
         languages: 'csharp'
+
+    - name: Build the code
+      run: |
+        for csproj in $(find . -name '*.csproj' -type f | grep -v 'Backup'); do
+          echo "Building $csproj"
+          dotnet build "$csproj" --configuration Release
+        done
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
