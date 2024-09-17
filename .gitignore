@@ -744,3 +744,5 @@ calculation-service/calculation-service/obj/Debug/net8.0/calculation-service.Ass
 calculation-service/calculation-service/calculation-service.csproj
 calculation-service/calculation-service.sln
 calculation-service/calculation-service-test/calculation-service-test.csproj
+calculation-service/calculation-service/obj/Debug/net8.0/calculation-service.AssemblyInfo.cs
+calculation-service/calculation-service/obj/Debug/net8.0/calculation-service.AssemblyInfoInputs.cache
