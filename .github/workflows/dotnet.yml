@@ -26,27 +26,21 @@ jobs:
 
     - name: Restore dependencies for all projects
       run: |
-        for csproj in $(find . -name '*.csproj' -type f); do
-          if [[ "$csproj" == *.csproj ]]; then
-            echo "Restoring $csproj"
-            dotnet restore "$csproj"
-          fi
+        for csproj in $(find . -name '*.csproj' -type f | grep -v 'Backup'); do
+          echo "Restoring $csproj"
+          dotnet restore "$csproj"
         done
 
     - name: Build all projects
       run: |
-        for csproj in $(find . -name '*.csproj' -type f); do
-          if [[ "$csproj" == *.csproj ]]; then
-            echo "Building $csproj"
-            dotnet build "$csproj" --no-restore
-          fi
+        for csproj in $(find . -name '*.csproj' -type f | grep -v 'Backup'); do
+          echo "Building $csproj"
+          dotnet build "$csproj" --no-restore
         done
 
     - name: Run tests for all projects
       run: |
-        for csproj in $(find . -name '*.csproj' -type f); do
-          if [[ "$csproj" == *.csproj ]]; then
-            echo "Testing $csproj"
-            dotnet test "$csproj" --no-build --verbosity normal
-          fi
+        for csproj in $(find . -name '*.csproj' -type f | grep -v 'Backup'); do
+          echo "Testing $csproj"
+          dotnet test "$csproj" --no-build --verbosity normal
         done
