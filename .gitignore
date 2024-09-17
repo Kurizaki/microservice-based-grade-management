@@ -1,1 +1,45 @@
+# Visual Studio spezifische Dateien
 .vs/
+*.user
+*.suo
+*.cache
+*.pdb
+*.opendb
+*.VC.db
+*.VC.VC.opendb
+
+# Build-Ausgabe
+bin/
+obj/
+out/
+
+# Paketverwaltungsdateien
+*.nupkg
+*.snupkg
+packages/
+
+# Resharper-Dateien
+*.ReSharper
+*_ReSharper.*
+
+# Rider-Dateien
+.idea/
+
+# Log-Dateien
+*.log
+
+# Arbeitsstations-spezifische Dateien
+.vscode/
+.env
+.env.*
+
+# Docker spezifische Dateien
+**/Dockerfile.*
+docker-compose.override.yml
+.env
+
+# Temporäre Dateien
+*.tmp
+*.temp
+*.bak
+*~ 
