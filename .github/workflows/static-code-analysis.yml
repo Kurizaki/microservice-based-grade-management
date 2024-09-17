@@ -23,4 +23,8 @@ jobs:
       run: dotnet tool install --global dotnet-format
 
     - name: Run Code Analysis
-      run: dotnet format --check
+      run: |
+        for csproj in $(find . -name '*.csproj' -type f | grep -v 'Backup'); do
+          echo "Running code analysis on $csproj"
+          dotnet format --check "$csproj"
+        done
