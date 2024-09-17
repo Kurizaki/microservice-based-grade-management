@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.login-container, .grade-container, .calculation-container {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.login-container h2, .grade-container h2, .calculation-container h2 {
+    text-align: center;
+}
+
+.login-container input, .grade-container input, .calculation-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-container label, .grade-container label, .calculation-container label {
+    margin-top: 10px;
+    display: block;
+    font-weight: bold;
+}
+
+.login-container button, .grade-container button, .calculation-container button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    width: auto; 
+    max-width: 150px;
+}
+
+.grade-input-group, .calculation-input-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.grade-input-group > div, .calculation-input-group > div {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.grade-input-group > div:last-child, .calculation-input-group > div:last-child {
+    margin-right: 0;
+}
