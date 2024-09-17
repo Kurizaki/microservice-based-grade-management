@@ -20,20 +20,27 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
+    - name: Debug - List all .csproj files
+      run: |
+        find . -name '*.csproj' -type f
+
     - name: Restore dependencies for all projects
       run: |
         for csproj in $(find . -name '*.csproj' -type f); do
+          echo "Restoring $csproj"
           dotnet restore "$csproj"
         done
 
     - name: Build all projects
       run: |
         for csproj in $(find . -name '*.csproj' -type f); do
+          echo "Building $csproj"
           dotnet build "$csproj" --no-restore
         done
 
     - name: Run tests for all projects
       run: |
         for csproj in $(find . -name '*.csproj' -type f); do
+          echo "Testing $csproj"
           dotnet test "$csproj" --no-build --verbosity normal
         done
