@@ -24,6 +24,13 @@ jobs:
       with:
         languages: 'csharp'
 
+    - name: Restore dependencies
+      run: |
+        for csproj in $(find . -name '*.csproj' -type f | grep -v 'Backup'); do
+          echo "Restoring dependencies for $csproj"
+          dotnet restore "$csproj"
+        done
+
     - name: Build the code
       run: |
         for csproj in $(find . -name '*.csproj' -type f | grep -v 'Backup'); do
