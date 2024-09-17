@@ -1,0 +1,26 @@
+name: Static Code Analysis
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Install Code Analysis Tools
+      run: dotnet tool install --global dotnet-format
+
+    - name: Run Code Analysis
+      run: dotnet format --check
