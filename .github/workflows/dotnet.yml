@@ -22,18 +22,18 @@ jobs:
 
     - name: Restore dependencies for all projects
       run: |
-        for csproj in $(find . -name '*.csproj'); do
+        for csproj in $(find . -name '*.csproj' -type f); do
           dotnet restore "$csproj"
         done
 
     - name: Build all projects
       run: |
-        for csproj in $(find . -name '*.csproj'); do
+        for csproj in $(find . -name '*.csproj' -type f); do
           dotnet build "$csproj" --no-restore
         done
 
     - name: Run tests for all projects
       run: |
-        for csproj in $(find . -name '*.csproj'); do
+        for csproj in $(find . -name '*.csproj' -type f); do
           dotnet test "$csproj" --no-build --verbosity normal
         done
