@@ -2,7 +2,9 @@
 {
     public class Grade
     {
-        public string Name { get; set; }
+        // Other stuff taken from database???
+
+        public string Category { get; set; }
         public double Score { get; set; }
         public double? Weight { get; set; }
     }

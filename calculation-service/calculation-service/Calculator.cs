@@ -1,34 +1,45 @@
 ﻿using calculation_service.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace calculation_service
 {
     public class Calculator
     {
-        public double CalculateGrade(List<Grade> grades)
+        public Dictionary<string, double> CalculateCategoryGrades(List<Grade> grades)
         {
-            if (grades == null || grades.Count == 0)
-                return 0;
+            var categoryGrades = new Dictionary<string, double>();
 
-            double weightedSum = 0;
-            double totalWeight = 0;
+            var groupedGrades = grades
+                .Where(g => g.Score >= 1 && g.Score <= 7 && g.Weight > 0)
+                .GroupBy(g => g.Category);
 
-            foreach (var grade in grades)
+            foreach (var group in groupedGrades)
             {
-                if (grade.Score < 1 || grade.Score > 7)
+                double weightedSum = 0;
+                double totalWeight = 0;
+
+                foreach (var grade in group)
                 {
-                    continue;
+                    double weight = grade.Weight ?? 1;
+                    weightedSum += grade.Score * weight;
+                    totalWeight += weight;
                 }
 
-                double weight = grade.Weight ?? 1;
-                if (weight <= 0) weight = 1;
-
-                weightedSum += grade.Score * weight;
-                totalWeight += weight;
+                double categoryAverage = totalWeight == 0 ? 0 : Math.Round(weightedSum / totalWeight, 2);
+                categoryGrades[group.Key] = categoryAverage;
             }
 
-            return totalWeight == 0 ? 0 : weightedSum / totalWeight;
+            return categoryGrades;
         }
 
+        public double CalculateFinalGrade(Dictionary<string, double> categoryGrades)
+        {
+            if (categoryGrades == null || categoryGrades.Count == 0)
+                return 0;
+
+            double sumOfGrades = categoryGrades.Values.Sum();
+            return Math.Round(sumOfGrades / categoryGrades.Count, 2);
+        }
     }
 }
