@@ -1,4 +1,4 @@
-name: .NET
+name: .NET Build and Test
 
 on:
   push:
@@ -12,14 +12,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
-    - name: Restore all dependencies
+    - name: Restore dependencies for all projects
       run: |
         for csproj in $(find . -name '*.csproj'); do
           dotnet restore "$csproj"
@@ -31,7 +32,7 @@ jobs:
           dotnet build "$csproj" --no-restore
         done
 
-    - name: Test all projects
+    - name: Run tests for all projects
       run: |
         for csproj in $(find . -name '*.csproj'); do
           dotnet test "$csproj" --no-build --verbosity normal
