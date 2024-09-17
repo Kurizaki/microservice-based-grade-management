@@ -736,3 +736,4 @@ calculation-service/calculation-service/obj/Debug/net8.0/calculation-service.csp
 calculation-service/calculation-service/obj/Debug/net8.0/calculation-service.GeneratedMSBuildEditorConfig.editorconfig
 calculation-service/calculation-service/obj/project.assets.json
 calculation-service/calculation-service/obj/project.nuget.cache
+calculation-service/calculation-service/obj/Container/ContainerId.cache
