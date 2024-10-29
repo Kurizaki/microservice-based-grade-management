@@ -31,7 +31,7 @@ To ensure efficient development and deployment, the project employs **DevOps pra
    - Implementation of **CI/CD pipelines** for automatic deployment of the microservices and containerization with **Docker**.
 
 5. **Monitoring**:
-   - System monitoring using tools like **Prometheus** and **ELK Stack** to ensure high availability and performance.
+   - System monitoring using tools like **Prometheus** and **ELK Stack** to ensure high availability and performance. 
 
 ---
 
