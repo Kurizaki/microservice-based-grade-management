@@ -50,7 +50,7 @@ To ensure efficient development and deployment, the project employs **DevOps pra
 - **Database**: Stores grades and category data associated with user IDs from the Login Service.
 - **Key API Endpoints**:
   - `POST /noten`: Create a new grade.
-  - `GET /noten/benutzer/{id}`: Retrieve grades for a specific user.
+  - `GET /noten/GettGradesFromUser/`: Retrieve grades for a specific user.
   - `PUT /noten/{id}`: Update a grade.
   - `DELETE /noten/{id}`: Delete a grade.
 
@@ -122,9 +122,4 @@ To ensure efficient development and deployment, the project employs **DevOps pra
 - **Project Start Date**: September 10, 2024  
 - **Project End Date**: January 7, 2025  
 
----
-
-## Contact
-
-For further information, contact **Sascha Fiechter** or the project team via GitHub Issues.
 
