@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -54,7 +53,7 @@ jobs:
       run: |
         for testproj in $(find . -name '*test.csproj' -type f | grep -v 'Backup'); do
           echo "Testing $testproj"
-          dotnet test "$testproj" --no-build --verbosity normal --collect:"XPlat Code Coverage"
+          dotnet test "$testproj" --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory $(pwd)/TestResults
         done
 
     - name: Upload test results
