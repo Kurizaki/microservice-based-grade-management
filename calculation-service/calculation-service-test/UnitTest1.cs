@@ -110,25 +110,5 @@ namespace calculation_service_test
             Assert.AreEqual(4.3, categoryGrades["Science"], 0.05);
             Assert.AreEqual(4.9, finalGrade, 0.05);
         }
-        [TestMethod]
-        public void CalculateGrade_SameWeights_MadeToFail()
-        {
-            // Arrange
-            var calculator = new Calculator();
-            var grades = new List<Grade>
-            {
-                new Grade { Category = "Math", Score = 6, Weight = 1 },
-                new Grade { Category = "Science", Score = 4.8, Weight = 1 }
-            };
-
-            // Act
-            var categoryGrades = calculator.CalculateCategoryGrades(grades);
-            double finalGrade = calculator.CalculateFinalGrade(categoryGrades);
-
-            // Assert
-            Assert.AreEqual(9, categoryGrades["Test"]);
-            Assert.AreEqual(6.1, categoryGrades["Pasta"]);
-            Assert.AreEqual(2.7, finalGrade);
-        }
     }
 }
