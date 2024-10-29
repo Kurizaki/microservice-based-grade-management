@@ -1,4 +1,4 @@
-name: CI
+name: continuous-integration
 
 on:
   push:
@@ -52,9 +52,9 @@ jobs:
 
     - name: Run tests for all projects
       run: |
-        for csproj in $(find . -name '*.csproj' -type f | grep -v 'Backup'); do
-          echo "Testing $csproj"
-          dotnet test "$csproj" --no-build --verbosity normal --collect:"XPlat Code Coverage"
+        for testproj in $(find . -name '*test.csproj' -type f | grep -v 'Backup'); do
+          echo "Testing $testproj"
+          dotnet test "$testproj" --no-build --verbosity normal --collect:"XPlat Code Coverage"
         done
 
     - name: Upload test results
