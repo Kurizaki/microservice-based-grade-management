@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  authentification-service:
+    build:
+      context: ./authentification-service/authentification-service
+    container_name: authentification-service
+    ports:
+      - "8081:80"
+    networks:
+      - mynetwork
+
+  calculation-service:
+    build:
+      context: ./calculation-service/calculation-service
+    container_name: calculation-service
+    ports:
+      - "8082:80"
+    networks:
+      - mynetwork
+
+  grade-service:
+    build:
+      context: ./grade-service/grade-service
+    container_name: grade-service
+    ports:
+      - "8083:80"
+    networks:
+      - mynetwork
+
+  api-gateway:
+    image: nginx:alpine
+    container_name: ApiGateway
+    restart: always
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+      - ./ApiGateway/conf/apigateway.conf:/etc/nginx/conf.d/99-apigateway.conf:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - authentification-service
+      - calculation-service
+      - grade-service
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
