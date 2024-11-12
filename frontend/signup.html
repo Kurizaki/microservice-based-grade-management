@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Sign Up</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/4c39a50c7e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <nav class="nav-bar">
@@ -15,31 +15,29 @@
             <div class="nav-links">
                 <a href="grade.html" class="locked"><i class="fas fa-lock"></i> Grades</a>
                 <a href="calc.html" class="locked"><i class="fas fa-lock"></i> Calculator</a>
-                <a href="auth.html" class="auth-link"><i class="fas fa-user"></i> Login</a>
+                <a href="auth.html" class="auth-link"><i class="fas fa-sign-in-alt"></i> Login</a>
             </div>
         </div>
     </nav>
     <div class="container">
-        <div class="login-container">
-            <h2>Welcome</h2>
+        <div class="signup-container">
+            <h2>Create Account</h2>
             <form onsubmit="return false;">
                 <div class="input-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="Enter your username" required>
+                    <input type="text" id="username" placeholder="Choose a username" required>
                 </div>
                 <div class="input-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <input type="password" id="password" placeholder="Choose a password" required>
                 </div>
-                <button type="submit">Sign In</button>
-                <p class="form-footer">Don't have an account? <a href="signup.html">Sign up here</a></p>
+                <div class="input-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit">Create Account</button>
+                <p class="form-footer">Already have an account? <a href="auth.html">Login here</a></p>
             </form>
-            <!-- TEST MODE BUTTON - DELETE THIS AND RELATED JS CODE WHEN DEPLOYING -->
-            <div style="margin-top: 2rem; text-align: center;">
-                <button id="toggleTestMode" style="max-width: 200px; background-color: #ef4444;">
-                    Toggle Test Mode
-                </button>
-            </div>
         </div>
     </div>
     <script src="script.js"></script>

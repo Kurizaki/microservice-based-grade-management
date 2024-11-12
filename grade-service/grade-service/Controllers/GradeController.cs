@@ -42,21 +42,18 @@ namespace grade_service.Controllers
             return Ok(grade);
         }
 
-        [Authorize]
-        [HttpGet("GetGradesFromUser")]
-        public async Task<ActionResult<IEnumerable<Grade>>> GetGradesFromUser()
+        [HttpPost("GetGradesFromUser")]
+        public async Task<ActionResult<IEnumerable<Grade>>> GetGradesFromUser([FromBody] UserRequest request)
         {
-            // Get the username from JWT claims
-            var username = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
-
-            if (username == null)
+            // Check if the username is provided in the request body
+            if (string.IsNullOrEmpty(request.Username))
             {
-                return Unauthorized("User not authenticated.");
+                return BadRequest("Username is required.");
             }
 
-            // Query the grades for the authenticated user
+            // Query the grades for the specified user
             var grades = await _context.Grades
-                .Where(g => g.Username == username)
+                .Where(g => g.Username == request.Username)
                 .ToListAsync();
 
             if (grades == null || !grades.Any())
@@ -66,6 +63,13 @@ namespace grade_service.Controllers
 
             return Ok(grades);
         }
+
+        // Request model to accept the username
+        public class UserRequest
+        {
+            public string Username { get; set; }
+        }
+
 
         [HttpDelete("DeleteGrade/{id}")]
         public async Task<ActionResult> DeleteGrade(int id)

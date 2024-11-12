@@ -3,24 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculation</title>
+    <title>Calculator</title>
     <link rel="stylesheet" href="style.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="calculation-container">
-        <h2>Calculations</h2>
-        <div class="calculation-input-group">
-            <div>
-                <label for="select-grade">Select Grade:</label>
-                <input type="text" id="select-grade" placeholder="Select Grade" name="select-grade">
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <a href="#" class="logo">Grade<span style="color: var(--text-color)">System</span></a>
+            <div class="nav-links">
+                <a href="grade.html" class="locked"><i class="fas fa-book"></i> Grades</a>
+                <a href="calc.html" class="locked"><i class="fas fa-calculator"></i> Calculator</a>
+                <a href="auth.html" class="auth-link"><i class="fas fa-user"></i> Login</a>
             </div>
-            <div>
-                <label for="average-grade">Average Grade:</label>
-                <input type="text" id="average-grade" placeholder="Average Grade" name="average-grade">
-            </div>
-            <button>Calculate</button>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="calculation-container">
+            <h2>Grade Calculator</h2>
+            <form onsubmit="return false;">
+                <div id="category-boxes" class="category-boxes">
+                    <!-- Category boxes will be dynamically added here -->
+                </div>
+                <div class="final-grade-container">
+                    <h3>Final Grade</h3>
+                    <input type="text" id="final-grade" readonly>
+                </div>
+            </form>
         </div>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>

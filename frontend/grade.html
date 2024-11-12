@@ -3,32 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grade</title>
+    <title>Add Grade</title>
     <link rel="stylesheet" href="style.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="grade-container">
-        <h2>Add Grade</h2>
-        <div class="grade-input-group">
-            <div>
-                <label for="name">Name:</label>
-                <input type="text" id="name" placeholder="Enter Name" name="name">
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <a href="#" class="logo">Grade<span style="color: var(--text-color)">System</span></a>
+            <div class="nav-links">
+                <a href="grade.html" class="locked"><i class="fas fa-book"></i> Grades</a>
+                <a href="calc.html" class="locked"><i class="fas fa-calculator"></i> Calculator</a>
+                <a href="auth.html" class="auth-link"><i class="fas fa-user"></i> Login</a>
             </div>
-            <div>
-                <label for="category">Category:</label>
-                <input type="text" id="category" placeholder="Enter Category" name="category">
-            </div>
-            <div>
-                <label for="weight">Weight:</label>
-                <input type="number" id="weight" placeholder="Enter Weight (e.g., 1.5)" name="weight" step="0.1" min="0">
-            </div>
-            <div>
-                <label for="grade">Grade:</label>
-                <input type="text" id="grade" placeholder="Enter Grade" name="grade">
-            </div>
-            <button>Save</button>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="grade-container">
+            <h2>Add New Grade</h2>
+            <form onsubmit="return false;">
+                <div class="grade-input-group">
+                    <div class="input-group">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" placeholder="Enter grade title" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="category">Category</label>
+                        <input type="text" id="category" placeholder="Enter category" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="mark">Mark</label>
+                        <input type="number" id="mark" placeholder="Enter mark (1-7)" min="1" max="7" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="weight">Weight</label>
+                        <input type="number" id="weight" placeholder="Enter weight" step="0.1" min="0" value="1">
+                    </div>
+                </div>
+                <button type="submit">Save Grade</button>
+            </form>
         </div>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>

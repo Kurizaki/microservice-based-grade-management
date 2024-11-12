@@ -4331,24 +4331,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\sprudello\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\timog\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sprudello\\Documents\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
+      "projectUniqueName": "C:\\Users\\timog\\OneDrive\\Desktop\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
       "projectName": "grade-service",
-      "projectPath": "C:\\Users\\sprudello\\Documents\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
-      "packagesPath": "C:\\Users\\sprudello\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sprudello\\Documents\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\obj\\",
+      "projectPath": "C:\\Users\\timog\\OneDrive\\Desktop\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
+      "packagesPath": "C:\\Users\\timog\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\timog\\OneDrive\\Desktop\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\sprudello\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\timog\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4356,7 +4351,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4426,7 +4420,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
