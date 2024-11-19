@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const updatedGrade = {
-        id: currentEditId,
+        id: parseInt(currentEditId),
         username: localStorage.getItem("username"),
         title: title,
         category: category,
@@ -313,7 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       showSpinner();
-      const response = await fetch("http://localhost:5035/api/Grade/UpdateGrade", {
+      const response = await fetch(`http://localhost:5035/api/Grade/UpdateGrade/${currentEditId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
@@ -370,15 +370,27 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast(`Edit cancelled for ${category}`, "error");
   };
 
-  // Delete grade function
-  window.deleteGrade = async (id) => {
-    if (!confirm("Are you sure you want to delete this grade?")) {
-      return;
-    }
+  let gradeToDelete = null;
+
+  // Show delete confirmation popup
+  window.deleteGrade = (id) => {
+    gradeToDelete = id;
+    document.querySelector('.delete-popup-overlay').classList.add('active');
+  };
+
+  // Close delete popup
+  window.closeDeletePopup = () => {
+    document.querySelector('.delete-popup-overlay').classList.remove('active');
+    gradeToDelete = null;
+  };
+
+  // Confirm and execute delete
+  window.confirmDelete = async () => {
+    if (!gradeToDelete) return;
 
     try {
       showSpinner();
-      const response = await fetch(`http://localhost:5035/api/Grade/DeleteGrade/${id}`, {
+      const response = await fetch(`http://localhost:5035/api/Grade/DeleteGrade/${gradeToDelete}`, {
         method: "DELETE"
       });
 
@@ -393,6 +405,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showToast("An error occurred while deleting", "error");
     } finally {
       hideSpinner();
+      closeDeletePopup();
     }
   };
 

@@ -538,6 +538,27 @@ button:hover::after {
     min-width: 120px;
 }
 
-.edit-popup-overlay.active {
+.edit-popup-overlay.active,
+.delete-popup-overlay.active {
     display: flex;
+}
+
+.delete-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+}
+
+.delete-popup-overlay p {
+    text-align: center;
+    margin: 1rem 0 2rem 0;
+    color: var(--text-muted);
 }
