@@ -4331,23 +4331,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\sprudello\\.nuget\\packages\\": {},
+    "C:\\Users\\sprudel\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sprudello\\Documents\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
+      "projectUniqueName": "C:\\Users\\sprudel\\Documents\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
       "projectName": "grade-service",
-      "projectPath": "C:\\Users\\sprudello\\Documents\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
-      "packagesPath": "C:\\Users\\sprudello\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sprudello\\Documents\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\obj\\",
+      "projectPath": "C:\\Users\\sprudel\\Documents\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
+      "packagesPath": "C:\\Users\\sprudel\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\sprudel\\Documents\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\sprudello\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\sprudel\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

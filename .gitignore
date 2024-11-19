@@ -747,3 +747,9 @@ calculation-service/calculation-service/obj/Debug/net8.0/calculation-service.Ass
 calculation-service/calculation-service/obj/Debug/net8.0/calculation-service.AssemblyInfoInputs.cache
 grade-service/grade-service/obj/project.nuget.cache
 *.cache
+grade-service/grade-service/obj/Debug/net8.0/grade-service.GeneratedMSBuildEditorConfig.editorconfig
+grade-service/grade-service/obj/Debug/net8.0/grade-service.GeneratedMSBuildEditorConfig.editorconfig
+grade-service/grade-service/obj/grade-service.csproj.nuget.dgspec.json
+grade-service/grade-service/obj/grade-service.csproj.nuget.g.props
+grade-service/grade-service/obj/project.assets.json
+grade-service/grade-service/obj/project.nuget.cache
