@@ -243,31 +243,31 @@ button:hover::after {
     align-items: start;
 }
 
-.notification {
+.toast {
     position: fixed;
-    top: 1rem;
-    right: 1rem;
+    top: 5rem;
+    left: 1rem;
     padding: 1rem 2rem;
     border-radius: var(--border-radius);
     color: var(--text-color);
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateX(-10px);
     transition: all var(--transition-speed);
     backdrop-filter: blur(8px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
 }
 
-.notification.success {
+.toast.success {
     background-color: var(--success-color);
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
 }
 
-.notification.error {
+.toast.error {
     background-color: var(--error-color);
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
 }
 .grades-list {
     margin: 2rem 0;

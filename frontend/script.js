@@ -1,16 +1,15 @@
-// TEST MODE - DELETE THIS SECTION WHEN DEPLOYING
+// debug (Line 70)
 let testMode = localStorage.getItem("testMode") === "true";
 
-// Check authentication status
+// verify user login state
 function checkAuth() {
-  // TEST MODE - DELETE THIS LINE WHEN DEPLOYING
   if (testMode) return;
 
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
   const navLinks = document.querySelector(".nav-links");
 
   if (isAuthenticated) {
-    // Update navigation for authenticated users
+    // show authenticated nav
     const gradeLink = navLinks.querySelector('a[href="grade.html"]');
     const calcLink = navLinks.querySelector('a[href="calc.html"]');
     const authLink = navLinks.querySelector('a[href="auth.html"]');
@@ -41,28 +40,34 @@ function checkAuth() {
 
 function logout() {
   localStorage.removeItem("isAuthenticated");
-  showNotification("Logged out successfully", "success");
+  showToast("Logged out successfully", "success");
   window.location.href = "auth.html";
 }
 
-// Utility function for showing notifications
-function showNotification(message, type) {
-  const notification = document.createElement("div");
-  notification.className = `notification ${type}`;
-  notification.textContent = message;
-  document.body.appendChild(notification);
+// Error/Success toast notification
+function showToast(message, type) {
+  // cleanup old toasts
+  const existingToasts = document.querySelectorAll('.toast');
+  existingToasts.forEach(toast => toast.remove());
 
-  setTimeout(() => {
-    notification.remove();
-  }, 3000);
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  if (type === 'success') {
+    setTimeout(() => {
+      toast.remove();
+    }, 5000);
+  }
+  // Error toasts stay until new toast appears
 }
 
-// Login functionality
+// setup page handlers
 document.addEventListener("DOMContentLoaded", () => {
-  // Check authentication status on every page load
   checkAuth();
 
-  // TEST MODE - DELETE THIS SECTION WHEN DEPLOYING
+  // debug mode toggle
   const testModeBtn = document.getElementById("toggleTestMode");
   if (testModeBtn) {
     testModeBtn.textContent = testMode
@@ -74,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
       testModeBtn.textContent = testMode
         ? "Disable Test Mode"
         : "Enable Test Mode";
-      showNotification(
+      showToast(
         `Test mode ${testMode ? "enabled" : "disabled"}`,
         "success"
       );
@@ -82,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Signup functionality
+  // handle signup form
   const signupForm = document.querySelector(".signup-container");
   if (signupForm) {
     signupForm.querySelector("button").addEventListener("click", async (e) => {
@@ -91,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const confirmPassword = document.getElementById("confirm-password").value;
 
       if (password !== confirmPassword) {
-        showNotification("Passwords do not match", "error");
+        showToast("Passwords do not match", "error");
         return;
       }
 
@@ -118,19 +123,19 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Signup response data:", responseData);
 
         if (response.ok) {
-          showNotification("Account created successfully!", "success");
+          showToast("Account created successfully!", "success");
           setTimeout(() => {
             window.location.href = "auth.html";
           }, 1500);
         } else {
-          showNotification(
+          showToast(
             responseData.message || "Signup failed. Please try again.",
             "error"
           );
         }
       } catch (error) {
         console.error("Signup error:", error);
-        showNotification("An error occurred. Please try again.", "error");
+        showToast("An error occurred. Please try again.", "error");
       }
     });
   }
@@ -155,19 +160,19 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok) {
           localStorage.setItem("isAuthenticated", "true");
           localStorage.setItem("username", username);
-          showNotification("Login successful!", "success");
+          showToast("Login successful!", "success");
           window.location.href = "grade.html";
         } else {
-          showNotification("Login failed. Please try again.", "error");
+          showToast("Login failed. Please try again.", "error");
         }
       } catch (error) {
         console.error("Login error:", error);
-        showNotification("An error occurred. Please try again.", "error");
+        showToast("An error occurred. Please try again.", "error");
       }
     });
   }
 
-  // Grade form functionality
+  // handle grade submission
   const gradeForm = document.querySelector(".grade-container");
   if (gradeForm) {
     gradeForm.querySelector("button").addEventListener("click", async (e) => {
@@ -195,23 +200,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         console.log("Add Grade response status:", response.status);
         if (response.ok) {
-          showNotification("Grade added successfully!", "success");
+          showToast("Grade added successfully!", "success");
           // Clear form
           document.getElementById("title").value = "";
           document.getElementById("category").value = "";
           document.getElementById("mark").value = "";
           document.getElementById("weight").value = "";
         } else {
-          showNotification("Failed to add grade. Please try again.", "error");
+          showToast("Failed to add grade. Please try again.", "error");
         }
       } catch (error) {
         console.error("Grade submission error:", error);
-        showNotification("An error occurred. Please try again.", "error");
+        showToast("An error occurred. Please try again.", "error");
       }
     });
   }
 
-  // Calculation functionality
+  // grade calculations
   const calcForm = document.querySelector(".calculation-container");
   if (calcForm) {
     (async () => {
@@ -220,11 +225,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const username = localStorage.getItem("username");
 
         if (!username) {
-          showNotification("User not logged in", "error");
+          showToast("User not logged in", "error");
           return;
         }
 
-        // Fetch grades by sending the username in the request body
+        // Fetch grades by username
         const gradesResponse = await fetch(
           "http://localhost:5035/api/Grade/GetGradesFromUser",
           {
@@ -267,7 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const result = await calcResponse.json();
           console.log("Calculation result:", result);
 
-          // Group grades by category
+          // sort group by category
           const gradesByCategory = grades.reduce((acc, grade) => {
             if (!acc[grade.category]) {
               acc[grade.category] = [];
@@ -276,7 +281,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return acc;
           }, {});
 
-          // Populate category grades in category-boxes
+          // render category boxes
           const categoryBoxes = document.getElementById("category-boxes");
           categoryBoxes.innerHTML = Object.entries(result.categoryGrades)
             .map(([category, averageGrade]) => {
@@ -303,17 +308,17 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .join("");
 
-          // Display final grade
+          // show final grade
           document.getElementById("final-grade").value =
             result.finalGrade.toFixed(2);
 
-          showNotification("Calculation completed!", "success");
+          showToast("Calculation completed!", "success");
         } else {
-          showNotification("Calculation failed. Please try again.", "error");
+          showToast("Calculation failed. Please try again.", "error");
         }
       } catch (error) {
         console.error("Calculation error:", error);
-        showNotification("An error occurred. Please try again.", "error");
+        showToast("An error occurred. Please try again.", "error");
       }
     })();
   }
