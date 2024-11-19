@@ -48,15 +48,15 @@ function logout() {
 // Error/Success toast notification
 function showToast(message, type) {
   // cleanup old toasts
-  const existingToasts = document.querySelectorAll('.toast');
-  existingToasts.forEach(toast => toast.remove());
+  const existingToasts = document.querySelectorAll(".toast");
+  existingToasts.forEach((toast) => toast.remove());
 
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
   toast.textContent = message;
   document.body.appendChild(toast);
 
-  if (type === 'success') {
+  if (type === "success") {
     setTimeout(() => {
       toast.remove();
     }, 5000);
@@ -66,23 +66,23 @@ function showToast(message, type) {
 
 // Setup page handlers
 // Create spinner element
-const spinnerOverlay = document.createElement('div');
-spinnerOverlay.className = 'spinner-overlay';
+const spinnerOverlay = document.createElement("div");
+spinnerOverlay.className = "spinner-overlay";
 spinnerOverlay.innerHTML = '<div class="spinner"></div>';
-const calcContainer = document.querySelector('.calculation-container');
+const calcContainer = document.querySelector(".calculation-container");
 if (calcContainer) {
-    calcContainer.appendChild(spinnerOverlay);
+  calcContainer.appendChild(spinnerOverlay);
 } else {
-    document.body.appendChild(spinnerOverlay);
+  document.body.appendChild(spinnerOverlay);
 }
 
 // Spinner control functions
 function showSpinner() {
-    spinnerOverlay.classList.add('active');
+  spinnerOverlay.classList.add("active");
 }
 
 function hideSpinner() {
-    spinnerOverlay.classList.remove('active');
+  spinnerOverlay.classList.remove("active");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -100,10 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
       testModeBtn.textContent = testMode
         ? "Disable Test Mode"
         : "Enable Test Mode";
-      showToast(
-        `Test mode ${testMode ? "enabled" : "disabled"}`,
-        "success"
-      );
+      showToast(`Test mode ${testMode ? "enabled" : "disabled"}`, "success");
       location.reload();
     });
   }
@@ -196,6 +193,37 @@ document.addEventListener("DOMContentLoaded", () => {
   // handle grade submission
   const gradeForm = document.querySelector(".grade-container");
   if (gradeForm) {
+    // Random data fill functionality
+    const fillRandomBtn = document.getElementById("fillRandom");
+    if (fillRandomBtn) {
+      fillRandomBtn.addEventListener("click", () => {
+        const subjects = [
+          "Mathematics",
+          "Physics",
+          "Chemistry",
+          "Biology",
+          "History",
+          "English",
+        ];
+        const categories = [
+          "Homework",
+          "Quiz",
+          "Exam",
+          "Project",
+          "Presentation",
+        ];
+
+        document.getElementById("title").value = `${
+          categories[Math.floor(Math.random() * categories.length)]
+        } - ${subjects[Math.floor(Math.random() * subjects.length)]}`;
+        document.getElementById("category").value =
+          categories[Math.floor(Math.random() * categories.length)];
+        document.getElementById("mark").value =
+          Math.floor(Math.random() * 7) + 1;
+        document.getElementById("weight").value =
+          (Math.floor(Math.random() * 20) + 1) / 10;
+      });
+    }
     gradeForm.querySelector("button").addEventListener("click", async (e) => {
       e.preventDefault();
       const gradeData = {
@@ -239,6 +267,134 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  let currentEditId = null;
+
+  // Edit grade function
+  window.editGrade = (id, title, category, mark, weight) => {
+    currentEditId = id;
+    
+    // Populate the form with existing data
+    document.getElementById('edit-title').value = title;
+    document.getElementById('edit-category').value = category;
+    document.getElementById('edit-mark').value = mark;
+    document.getElementById('edit-weight').value = weight;
+    
+    // Show the popup
+    document.querySelector('.edit-popup-overlay').classList.add('active');
+  };
+
+  // Close edit popup
+  window.closeEditPopup = () => {
+    document.querySelector('.edit-popup-overlay').classList.remove('active');
+    currentEditId = null;
+  };
+
+  // Submit edit grade
+  window.submitEditGrade = async () => {
+    try {
+      const title = document.getElementById('edit-title').value;
+      const category = document.getElementById('edit-category').value;
+      const mark = document.getElementById('edit-mark').value;
+      const weight = document.getElementById('edit-weight').value;
+
+      if (!title || !category || !mark || !weight) {
+        showToast("Please fill all fields", "error");
+        return;
+      }
+
+      const updatedGrade = {
+        id: currentEditId,
+        username: localStorage.getItem("username"),
+        title: title,
+        category: category,
+        mark: parseFloat(mark),
+        weight: parseFloat(weight)
+      };
+
+      showSpinner();
+      const response = await fetch("http://localhost:5035/api/Grade/UpdateGrade", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedGrade)
+      });
+
+      if (response.ok) {
+        showToast("Grade updated successfully!", "success");
+        location.reload();
+      } else {
+        showToast("Failed to update grade", "error");
+      }
+    } catch (error) {
+      console.error("Edit grade error:", error);
+      showToast("An error occurred while editing", "error");
+    } finally {
+      hideSpinner();
+    }
+  };
+
+  // Toggle edit mode for a category
+  window.toggleEditMode = (category) => {
+    const categoryBox = document.getElementById(`category-${category.replace(/\s+/g, '-')}`);
+    const isEditMode = categoryBox.classList.toggle('edit-mode');
+    
+    if (isEditMode) {
+      showToast(`Edit mode enabled for ${category}`, "warning");
+      
+      // Add done and cancel buttons if they don't exist
+      if (!categoryBox.querySelector('.edit-mode-controls')) {
+        const controls = document.createElement('div');
+        controls.className = 'edit-mode-controls';
+        controls.innerHTML = `
+          <button class="done-btn" onclick="saveCategory('${category}')">Done</button>
+          <button class="cancel-btn" onclick="cancelEdit('${category}')">Cancel</button>
+        `;
+        categoryBox.appendChild(controls);
+      }
+    }
+  };
+
+  // Save category changes
+  window.saveCategory = (category) => {
+    const categoryBox = document.getElementById(`category-${category.replace(/\s+/g, '-')}`);
+    categoryBox.classList.remove('edit-mode');
+    showToast(`Changes saved for ${category}`, "success");
+  };
+
+  // Cancel category edit
+  window.cancelEdit = (category) => {
+    const categoryBox = document.getElementById(`category-${category.replace(/\s+/g, '-')}`);
+    categoryBox.classList.remove('edit-mode');
+    showToast(`Edit cancelled for ${category}`, "error");
+  };
+
+  // Delete grade function
+  window.deleteGrade = async (id) => {
+    if (!confirm("Are you sure you want to delete this grade?")) {
+      return;
+    }
+
+    try {
+      showSpinner();
+      const response = await fetch(`http://localhost:5035/api/Grade/DeleteGrade/${id}`, {
+        method: "DELETE"
+      });
+
+      if (response.ok) {
+        showToast("Grade deleted successfully!", "success");
+        location.reload();
+      } else {
+        showToast("Failed to delete grade", "error");
+      }
+    } catch (error) {
+      console.error("Delete grade error:", error);
+      showToast("An error occurred while deleting", "error");
+    } finally {
+      hideSpinner();
+    }
+  };
 
   // grade calculations
   const calcForm = document.querySelector(".calculation-container");
@@ -315,16 +471,31 @@ document.addEventListener("DOMContentLoaded", () => {
               const individualGrades = gradesByCategory[category]
                 .map(
                   (grade) =>
-                    `<div class="grade-item">
-                                        <span>Title: ${grade.title}</span> - 
-                                        <span>Score: ${grade.mark}</span>
-                                    </div>`
+                    `<div class="grade-item" data-grade-id="${grade.id}">
+                        <div class="grade-info">
+                            <span>${grade.title}</span> - 
+                            <span>Score: ${grade.mark}</span>
+                        </div>
+                        <div class="grade-actions">
+                            <button class="edit-btn" onclick="editGrade(${grade.id}, '${grade.title}', '${grade.category}', ${grade.mark}, ${grade.weight})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="delete-btn" onclick="deleteGrade(${grade.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>`
                 )
                 .join("");
 
               return `
-                            <div class="category-box">
-                                <h3>${category}</h3>
+                            <div class="category-box" id="category-${category.replace(/\s+/g, '-')}">
+                                <h3>
+                                    ${category}
+                                    <span class="edit-mode-toggle" onclick="toggleEditMode('${category}')">
+                                        <i class="fas fa-pen-to-square"></i>
+                                    </span>
+                                </h3>
                                 ${individualGrades}
                                 <p class="category-average">Average: ${averageGrade.toFixed(
                                   2

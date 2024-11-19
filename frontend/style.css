@@ -128,6 +128,17 @@ body {
     backdrop-filter: blur(12px);
 }
 
+.login-container, .signup-container {
+    max-width: 400px;
+    margin: 2rem auto;
+}
+
+.login-container form, .signup-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .login-container:hover, .grade-container:hover, .calculation-container:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2),
@@ -146,7 +157,8 @@ h2 {
 }
 
 input {
-    width: 90%;
+    width: 80%;
+    max-width: 300px;
     padding: 0.8rem;
     margin: 0.5rem 0 1rem;
     background-color: var(--input-background);
@@ -175,7 +187,8 @@ label {
 }
 
 button {
-    width: 100%;
+    width: 80%;
+    max-width: 300px;
     padding: 0.8rem 1.5rem;
     background-color: var(--primary-color);
     color: var(--text-color);
@@ -269,6 +282,12 @@ button:hover::after {
     opacity: 1;
     transform: translateX(0);
 }
+
+.toast.warning {
+    background-color: #eab308;
+    opacity: 1;
+    transform: translateX(0);
+}
 .grades-list {
     margin: 2rem 0;
     display: grid;
@@ -295,6 +314,48 @@ button:hover::after {
     font-size: 1.2rem;
     border-bottom: 2px solid var(--primary-color);
     padding-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.category-box h3 .edit-mode-toggle {
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-muted);
+    transition: color 0.2s;
+}
+
+.category-box h3 .edit-mode-toggle:hover {
+    color: var(--primary-color);
+}
+
+.grade-item .grade-actions {
+    display: none;
+}
+
+.edit-mode .grade-item .grade-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-mode-controls {
+    display: none;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    justify-content: center;
+}
+
+.edit-mode .edit-mode-controls {
+    display: flex;
+}
+
+.done-btn {
+    background-color: var(--success-color);
+}
+
+.cancel-btn {
+    background-color: var(--error-color);
 }
 
 .grade-item {
@@ -303,6 +364,33 @@ button:hover::after {
     margin-bottom: 0.5rem;
     border-radius: var(--border-radius);
     font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.grade-item .grade-actions {
+    display: none;
+    gap: 0.5rem;
+}
+
+.edit-mode .grade-item .grade-actions {
+    display: flex;
+}
+
+.grade-item button {
+    width: auto;
+    padding: 0.3rem 0.6rem;
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.grade-item button.edit-btn {
+    background-color: #4f46e5;
+}
+
+.grade-item button.delete-btn {
+    background-color: #dc2626;
 }
 
 .grade-item span {
@@ -377,4 +465,79 @@ button:hover::after {
 
 .calculation-container {
     position: relative;
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-darker);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 5px;
+    transition: all var(--transition-speed);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-hover);
+}
+
+/* Firefox scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--background-darker);
+}
+
+.edit-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+}
+
+.edit-popup {
+    background: var(--card-background);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.edit-popup h3 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.edit-popup .input-group {
+    margin-bottom: 1rem;
+}
+
+.edit-popup .buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.edit-popup .buttons button {
+    width: auto;
+    min-width: 120px;
+}
+
+.edit-popup-overlay.active {
+    display: flex;
 }

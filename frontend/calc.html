@@ -33,6 +33,36 @@
             </form>
         </div>
     </div>
+    
+    <!-- Edit Popup -->
+    <div class="edit-popup-overlay">
+        <div class="edit-popup">
+            <h3>Edit Grade</h3>
+            <form id="edit-grade-form" onsubmit="return false;">
+                <div class="input-group">
+                    <label for="edit-title">Title</label>
+                    <input type="text" id="edit-title" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-category">Category</label>
+                    <input type="text" id="edit-category" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-mark">Mark</label>
+                    <input type="number" id="edit-mark" min="1" max="7" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-weight">Weight</label>
+                    <input type="number" id="edit-weight" step="0.1" min="0" required>
+                </div>
+                <div class="buttons">
+                    <button type="button" onclick="closeEditPopup()" class="cancel-btn">Cancel</button>
+                    <button type="submit" onclick="submitEditGrade()" class="done-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
