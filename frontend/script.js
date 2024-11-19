@@ -1,4 +1,5 @@
-// debug (Line 70)
+// Configuration
+const MIN_LOADING_TIME = 700; // Minimum loading time
 let testMode = localStorage.getItem("testMode") === "true";
 
 // verify user login state
@@ -63,7 +64,27 @@ function showToast(message, type) {
   // Error toasts stay until new toast appears
 }
 
-// setup page handlers
+// Setup page handlers
+// Create spinner element
+const spinnerOverlay = document.createElement('div');
+spinnerOverlay.className = 'spinner-overlay';
+spinnerOverlay.innerHTML = '<div class="spinner"></div>';
+const calcContainer = document.querySelector('.calculation-container');
+if (calcContainer) {
+    calcContainer.appendChild(spinnerOverlay);
+} else {
+    document.body.appendChild(spinnerOverlay);
+}
+
+// Spinner control functions
+function showSpinner() {
+    spinnerOverlay.classList.add('active');
+}
+
+function hideSpinner() {
+    spinnerOverlay.classList.remove('active');
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   checkAuth();
 
@@ -186,6 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       try {
+        showSpinner();
         console.log("Submitting grade data:", gradeData);
         const response = await fetch(
           "http://localhost:5035/api/Grade/AddGrade",
@@ -212,6 +234,8 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (error) {
         console.error("Grade submission error:", error);
         showToast("An error occurred. Please try again.", "error");
+      } finally {
+        hideSpinner();
       }
     });
   }
@@ -220,7 +244,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const calcForm = document.querySelector(".calculation-container");
   if (calcForm) {
     (async () => {
+      const startTime = Date.now();
       try {
+        showSpinner();
         console.log("Fetching grades for calculation");
         const username = localStorage.getItem("username");
 
@@ -319,6 +345,15 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (error) {
         console.error("Calculation error:", error);
         showToast("An error occurred. Please try again.", "error");
+      } finally {
+        const elapsedTime = Date.now() - startTime;
+        if (elapsedTime < MIN_LOADING_TIME) {
+          setTimeout(() => {
+            hideSpinner();
+          }, MIN_LOADING_TIME - elapsedTime);
+        } else {
+          hideSpinner();
+        }
       }
     })();
   }
