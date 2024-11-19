@@ -753,3 +753,5 @@ grade-service/grade-service/obj/grade-service.csproj.nuget.dgspec.json
 grade-service/grade-service/obj/grade-service.csproj.nuget.g.props
 grade-service/grade-service/obj/project.assets.json
 grade-service/grade-service/obj/project.nuget.cache
+grade-service/grade-service/obj/Debug/net8.0/grade-service.AssemblyInfo.cs
+grade-service/grade-service/obj/Debug/net8.0/grade-service.AssemblyInfoInputs.cache

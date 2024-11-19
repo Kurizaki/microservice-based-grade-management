@@ -3,6 +3,7 @@ using grade_service.Models;
 using grade_service.ModelsDTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -65,6 +66,24 @@ namespace grade_service.Controllers
             }
 
             return Ok(grades);
+        }
+
+        [HttpGet("GetCategoriesFromUser")]
+        public async Task<IActionResult> GetAllExistingCategories()
+        {
+            var username = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            var categories = await _context.Grades
+                .Where(g => g.Username == username)
+                .Select(g => g.Category)
+                .Distinct()
+                .ToListAsync();
+
+            if (categories == null || !categories.Any())
+            {
+                return NotFound("No categories found for the specified user.");
+            }
+
+            return Ok(categories);
         }
 
         [HttpDelete("DeleteGrade/{id}")]
