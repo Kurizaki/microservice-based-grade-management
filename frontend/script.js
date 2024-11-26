@@ -2,7 +2,13 @@
 const MIN_LOADING_TIME = 700; // Minimum loading time
 let testMode = localStorage.getItem("testMode") === "true";
 
-// verify user login state
+// API Base URLs aligned with Nginx routing
+const AUTH_API_BASE = "/auth/api";
+const GRADE_API_BASE = "/grade/api";
+const CALC_API_BASE = "/calc/api";
+
+
+// Verify user login state
 function checkAuth() {
   if (testMode) return;
 
@@ -10,7 +16,6 @@ function checkAuth() {
   const navLinks = document.querySelector(".nav-links");
 
   if (isAuthenticated) {
-    // show authenticated nav
     const gradeLink = navLinks.querySelector('a[href="grade.html"]');
     const calcLink = navLinks.querySelector('a[href="calc.html"]');
     const authLink = navLinks.querySelector('a[href="auth.html"]');
@@ -21,35 +26,30 @@ function checkAuth() {
     calcLink.innerHTML = '<i class="fas fa-calculator"></i> Calculator';
     authLink.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
 
-    // Update href for logout
     authLink.href = "#";
     authLink.addEventListener("click", (e) => {
       e.preventDefault();
       logout();
     });
   } else {
-    // Redirect if trying to access protected pages
     const currentPage = window.location.pathname;
-    if (
-      currentPage.includes("grade.html") ||
-      currentPage.includes("calc.html")
-    ) {
-      window.location.href = "auth.html";
+    if (currentPage.includes("grade.html") || currentPage.includes("calc.html")) {
+      window.location.href = "/auth";
     }
   }
 }
 
+// Logout function
 function logout() {
   localStorage.removeItem("isAuthenticated");
   showToast("Logged out successfully", "success");
-  window.location.href = "auth.html";
+  window.location.href = "/auth";
 }
 
-// Error/Success toast notification
+// Toast notifications
 function showToast(message, type) {
-  // cleanup old toasts
-  const existingToasts = document.querySelectorAll(".toast");
-  existingToasts.forEach((toast) => toast.remove());
+  // Cleanup old toast
+  document.querySelectorAll(".toast").forEach((toast) => toast.remove());
 
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
@@ -57,11 +57,8 @@ function showToast(message, type) {
   document.body.appendChild(toast);
 
   if (type === "success") {
-    setTimeout(() => {
-      toast.remove();
-    }, 5000);
+    setTimeout(() => toast.remove(), 5000);
   }
-  // Error toasts stay until new toast appears
 }
 
 // Setup page handlers
@@ -126,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         console.log("Attempting signup with data:", signupData);
         const response = await fetch(
-          "http://localhost:5201/api/Auth/register",
+          `${AUTH_API_BASE}/register`,
           {
             method: "POST",
             headers: {
@@ -166,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         console.log("Attempting login with username:", username);
-        const response = await fetch("http://localhost:5201/api/Auth/login", {
+        const response = await fetch(`${AUTH_API_BASE}/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -238,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showSpinner();
         console.log("Submitting grade data:", gradeData);
         const response = await fetch(
-          "http://localhost:5035/api/Grade/AddGrade",
+          `${GRADE_API_BASE}/AddGrade`,
           {
             method: "POST",
             headers: {
@@ -313,7 +310,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       showSpinner();
-      const response = await fetch(`http://localhost:5035/api/Grade/UpdateGrade/${currentEditId}`, {
+      const response = await fetch(`${GRADE_API_BASE}/UpdateGrade/${currentEditId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
@@ -390,7 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       showSpinner();
-      const response = await fetch(`http://localhost:5035/api/Grade/DeleteGrade/${gradeToDelete}`, {
+      const response = await fetch(`${GRADE_API_BASE}/DeleteGrade/${gradeToDelete}`, {
         method: "DELETE"
       });
 
@@ -426,7 +423,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Fetch grades by username
         const gradesResponse = await fetch(
-          "http://localhost:5035/api/Grade/GetGradesFromUser",
+          `${GRADE_API_BASE}/GetGradesFromUser`,
           {
             method: "POST",
             headers: {
@@ -446,7 +443,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         console.log("Sending grades for calculation");
         const calcResponse = await fetch(
-          "http://localhost:5210/api/Grade/calculate",
+          `${CALC_API_BASE}/calculate`,
           {
             method: "POST",
             headers: {
