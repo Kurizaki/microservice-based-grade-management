@@ -16,7 +16,7 @@ namespace calculation_service.Controllers
         }
 
         // POST: api/grade/calculate
-        [HttpPost("calculate")]
+        [HttpPost("calculate/")]
         public IActionResult CalculateGrade([FromBody] List<Grade> grades)
         {
             if (grades == null || grades.Count == 0)
