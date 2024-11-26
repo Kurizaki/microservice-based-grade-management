@@ -13,25 +13,31 @@ namespace authentification_service.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        public static User user = new();
         private readonly AUTHDB _context;
         private readonly IConfiguration _configuration;
 
         public AuthController(AUTHDB context, IConfiguration configuration)
         {
-            _context = context;
-            _configuration = configuration;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
-
 
         [HttpPost("register/")]
         public IActionResult Register([FromBody] UserDTO request)
         {
+            // Input-Validierung
+            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+            {
+                return BadRequest(new { message = "Username and password cannot be empty." });
+            }
 
+            // Überprüfung auf existierenden Benutzer
             if (_context.Users.Any(u => u.Username == request.Username))
             {
-                return BadRequest(new { message = "Username already exists. " });
+                return BadRequest(new { message = "Username already exists." });
             }
+
+            // Passwort-Hashing
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             var newUser = new User
@@ -39,64 +45,56 @@ namespace authentification_service.Controllers
                 Username = request.Username,
                 PasswordHash = passwordHash
             };
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
 
-            return Ok(newUser);
+            try
+            {
+                _context.Users.Add(newUser);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error saving user to the database.", error = ex.Message });
+            }
 
-        }
-
-        [HttpDelete("{id}")]
-
-        public async Task<IActionResult> DeleteUser(int id) 
-        {
-            
-                var user = await _context.Users.FindAsync(id);
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
-            
-
-            return NoContent();
+            return Ok(new { message = "Registration successful.", username = newUser.Username });
         }
 
         [HttpPost("login/")]
         public IActionResult Login([FromBody] UserDTO request)
         {
+            // Input-Validierung
+            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+            {
+                return BadRequest(new { message = "Username and password cannot be empty." });
+            }
+
             var user = _context.Users.FirstOrDefault(u => u.Username == request.Username);
 
             if (user != null && BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
                 string token = CreateToken(user);
-                return Ok(token);
+                return Ok(new { message = "Login successful.", token });
             }
-            return Unauthorized(new { message = "Falsches Passwort und oder flascher Benutzername." });
+
+            return Unauthorized(new { message = "Incorrect username or password." });
         }
 
         private string CreateToken(User user)
         {
-            List<Claim> claims = new List<Claim>()
+            List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
-
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AppSettings:Token"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var token = new JwtSecurityToken(
-                    claims: claims,
-                    expires: DateTime.Now.AddDays(1),
-                    signingCredentials: creds
-                );
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            return jwt;
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
-    
-

@@ -1,43 +1,45 @@
-version: "3"
+version: '3.9'
 
 services:
-  authentification-service:
+  auth-service:
     build:
       context: ./authentification-service/authentification-service
-    container_name: authentification-service
-    networks:
-      - mynetwork
+      dockerfile: Dockerfile.auth
+    container_name: auth-service
+    ports:
+      - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
 
-  calculation-service:
+  calc-service:
     build:
       context: ./calculation-service/calculation-service
-    container_name: calculation-service
-    networks:
-      - mynetwork
+      dockerfile: Dockerfile.calc
+    container_name: calc-service
+    ports:
+      - "5002:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
 
   grade-service:
     build:
       context: ./grade-service/grade-service
+      dockerfile: Dockerfile.grade
     container_name: grade-service
-    networks:
-      - mynetwork
+    ports:
+      - "5003:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
 
-  api-gateway:
-    image: nginx:alpine
-    container_name: ApiGateway
-    restart: always
-    volumes:
-      - ./frontend:/usr/share/nginx/html:ro
-      - ./ApiGateway/conf/apigateway.conf:/etc/nginx/conf.d/99-apigateway.conf:ro
+  nginx:
+    image: nginx:latest
+    container_name: nginx
     ports:
       - "8080:80"
+    volumes:
+      - ./ApiGateway/conf/apigateway.conf:/etc/nginx/nginx.conf
+      - ./frontend:/usr/share/nginx/html
     depends_on:
-      - authentification-service
-      - calculation-service
+      - auth-service
+      - calc-service
       - grade-service
-    networks:
-      - mynetwork
-
-networks:
-  mynetwork:
-    driver: bridge
