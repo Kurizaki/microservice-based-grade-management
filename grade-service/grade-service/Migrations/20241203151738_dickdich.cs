@@ -5,7 +5,7 @@
 namespace grade_service.Migrations
 {
     /// <inheritdoc />
-    public partial class plswork : Migration
+    public partial class dickdich : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

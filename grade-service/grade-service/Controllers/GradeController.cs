@@ -19,28 +19,40 @@ namespace grade_service.Controllers
         }
 
         [HttpPost("AddGrade/")]
-        public async Task<ActionResult<Grade>> CreateChallenge([FromBody] GradeDTO request)
+public async Task<ActionResult<Grade>> CreateChallenge([FromBody] GradeDTO request)
+{
+    try
+    {
+        if (request.Weight == null)
         {
-            if (request.Weight == null)
-            {
-                request.Weight = 1;
-            }
-            if (request.Mark > 7)
-            {
-                return BadRequest("Invalid Mark, you can only input numbers from 1 to 7");
-            }
-            var grade = new Grade
-            {
-                Username = request.Username,
-                Category = request.Category,
-                Title = request.Title,
-                Mark = request.Mark,
-                Weight = request.Weight,
-            };
-            _context.Grades.Add(grade);
-            await _context.SaveChangesAsync();
-            return Ok(grade);
+            request.Weight = 1;
         }
+
+        if (request.Mark > 7 || request.Mark < 1)
+        {
+            return BadRequest("Invalid Mark, you can only input numbers from 1 to 7");
+        }
+
+        var grade = new Grade
+        {
+            Username = request.Username,
+            Category = request.Category,
+            Title = request.Title,
+            Mark = request.Mark,
+            Weight = request.Weight,
+        };
+
+        _context.Grades.Add(grade);
+        await _context.SaveChangesAsync();
+        return Ok(grade);
+    }
+    catch (Exception ex)
+    {
+        // Log the error
+        Console.Error.WriteLine($"Error: {ex.Message}");
+        return StatusCode(500, "Internal server error");
+    }
+}
 
         [Authorize]
         [HttpGet("GetGradesFromUser")]

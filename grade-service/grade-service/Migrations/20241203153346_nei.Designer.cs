@@ -10,8 +10,8 @@ using grade_service.Data;
 namespace grade_service.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241203144053_fuckyounowwork")]
-    partial class fuckyounowwork
+    [Migration("20241203153346_nei")]
+    partial class nei
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

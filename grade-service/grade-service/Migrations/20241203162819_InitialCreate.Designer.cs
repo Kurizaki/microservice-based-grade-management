@@ -10,8 +10,8 @@ using grade_service.Data;
 namespace grade_service.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241203134734_plswork")]
-    partial class plswork
+    [Migration("20241203162819_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
