@@ -66,12 +66,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 console.log("Login response status:", response.status);
                 if (response.ok) {
+                    const responseData = await response.json();
                     localStorage.setItem("isAuthenticated", "true");
                     localStorage.setItem("username", username);
+                    localStorage.setItem("token", responseData.token);
                     showToast("Login successful!", "success");
                     window.location.href = "grade.html";
                 } else {
-                    showToast("Login failed. Please try again.", "error");
+                    const responseData = await response.json();
+                    showToast(responseData.message || "Login failed. Please try again.", "error");
                 }
             } catch (error) {
                 console.error("Login error:", error);

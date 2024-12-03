@@ -5,7 +5,7 @@ let testMode = localStorage.getItem("testMode") === "true";
 // API Base URLs aligned with Nginx routing
 const AUTH_API_BASE = "http://localhost:8080/auth-api/";
 const GRADE_API_BASE = "http://localhost:8080/grade-api";
-const CALC_API_BASE = "http://localhost:8080/calc-api/";
+const CALC_API_BASE = "http://localhost:8080/calc-api";
 
 // Toast notifications
 function showToast(message, type) {
@@ -91,5 +91,5 @@ function checkAuth() {
 function logout() {
     localStorage.removeItem("isAuthenticated");
     showToast("Logged out successfully", "success");
-    window.location.href = "/auth";
+    window.location.href = "/auth.html";
 }

@@ -4,19 +4,18 @@ using System.Collections.Generic;
 
 namespace calculation_service.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class GradeController : ControllerBase
+    [ApiController]
+    public class CalcController : ControllerBase
     {
         private readonly Calculator _calculator;
 
-        public GradeController()
+        public CalcController()
         {
             _calculator = new Calculator();
         }
 
-        // POST: api/grade/calculate
-        [HttpPost("calculate/")]
+        [HttpPost("calculate")]
         public IActionResult CalculateGrade([FromBody] List<Grade> grades)
         {
             if (grades == null || grades.Count == 0)
