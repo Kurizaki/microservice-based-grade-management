@@ -64,6 +64,11 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 
@@ -74,11 +79,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
+app.UseCors("AllowAnyOrigin");
+app.UseRouting();
 app.UseAuthorization();
-
+app.UseAuthentication();
 app.MapControllers();
 
 app.Run();

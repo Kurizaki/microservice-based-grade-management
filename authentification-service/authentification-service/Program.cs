@@ -8,6 +8,11 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AUTHDB>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
 // Build the app
 var app = builder.Build();
 
@@ -26,7 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors("AllowAnyOrigin");
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();

@@ -3,24 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculation</title>
+    <title>Calculator</title>
     <link rel="stylesheet" href="style.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="calculation-container">
-        <h2>Calculations</h2>
-        <div class="calculation-input-group">
-            <div>
-                <label for="select-grade">Select Grade:</label>
-                <input type="text" id="select-grade" placeholder="Select Grade" name="select-grade">
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <a href="#" class="logo">Grade<span style="color: var(--text-color)">System</span></a>
+            <div class="nav-links">
+                <a href="grade.html" class="locked"><i class="fas fa-book"></i> Grades</a>
+                <a href="calc.html" class="locked"><i class="fas fa-calculator"></i> Calculator</a>
+                <a href="auth.html" class="auth-link"><i class="fas fa-user"></i> Login</a>
             </div>
-            <div>
-                <label for="average-grade">Average Grade:</label>
-                <input type="text" id="average-grade" placeholder="Average Grade" name="average-grade">
-            </div>
-            <button>Calculate</button>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="calculation-container">
+            <h2>Grade Calculator</h2>
+            <form onsubmit="return false;">
+                <div id="category-boxes" class="category-boxes">
+                    <!-- Category boxes will be dynamically added here -->
+                </div>
+                <div class="final-grade-container">
+                    <h3>Final Grade</h3>
+                    <input type="text" id="final-grade" readonly>
+                </div>
+            </form>
         </div>
     </div>
+    
+    <!-- Edit Popup -->
+    <div class="edit-popup-overlay">
+        <div class="edit-popup">
+            <h3>Edit Grade</h3>
+            <form id="edit-grade-form" onsubmit="return false;">
+                <div class="input-group">
+                    <label for="edit-title">Title</label>
+                    <input type="text" id="edit-title" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-category">Category</label>
+                    <input type="text" id="edit-category" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-mark">Mark</label>
+                    <input type="number" id="edit-mark" min="1" max="7" step="0.01" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-weight">Weight</label>
+                    <input type="number" id="edit-weight" step="0.1" min="0.1" max="2.0" required>
+                </div>
+                <div class="buttons">
+                    <button type="button" onclick="closeEditPopup()" class="cancel-btn">Cancel</button>
+                    <button type="submit" onclick="submitEditGrade()" class="done-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Popup -->
+    <div class="delete-popup-overlay">
+        <div class="edit-popup">
+            <h3>Delete Grade</h3>
+            <p>Are you sure you want to delete this grade?</p>
+            <div class="buttons">
+                <button type="button" onclick="closeDeletePopup()" style="background-color: var(--primary-color)">Cancel</button>
+                <button type="button" onclick="confirmDelete()" style="background-color: var(--error-color)">Delete</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/common.js"></script>
+    <script src="js/calc.js"></script>
 </body>
 </html>
