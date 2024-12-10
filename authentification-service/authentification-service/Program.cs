@@ -11,7 +11,7 @@ builder.Services.AddDbContext<AUTHDB>(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", builder => 
-        builder.WithOrigins("http://195.202.218.245:8080")
+        builder.AllowAnyOrigin()
                .AllowAnyMethod()
                .AllowAnyHeader());
 });
