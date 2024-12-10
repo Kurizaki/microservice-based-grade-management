@@ -3,7 +3,7 @@ const MIN_LOADING_TIME = 700;
 let testMode = localStorage.getItem("testMode") === "true";
 
 // API Endpoints
-const AUTH_API_BASE = "http://localhost:8081/auth-api/";
+const AUTH_API_BASE = "http://localhost:8081/auth-api";
 const GRADE_API_BASE = "http://localhost:8081/grade-api";
 const CALC_API_BASE = "http://localhost:8081/calc-api";
 function showToast(message, type) {
