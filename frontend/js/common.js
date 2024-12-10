@@ -6,6 +6,14 @@ let testMode = localStorage.getItem("testMode") === "true";
 const AUTH_API_BASE = "http://195.202.218.245:8080/auth-api";
 const GRADE_API_BASE = "http://195.202.218.245:8080/grade-api";
 const CALC_API_BASE = "http://195.202.218.245:8080/calc-api";
+
+// Helper function to join URL paths without double slashes
+function joinPaths(...parts) {
+    return parts
+        .map(part => part.replace(/^\/+|\/+$/g, ''))
+        .filter(part => part.length > 0)
+        .join('/');
+}
 function showToast(message, type) {
     // Cleanup old toast
     document.querySelectorAll(".toast").forEach((toast) => toast.remove());
