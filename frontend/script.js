@@ -85,23 +85,6 @@ function hideSpinner() {
 document.addEventListener("DOMContentLoaded", () => {
   checkAuth();
 
-  // debug mode toggle
-  const testModeBtn = document.getElementById("toggleTestMode");
-  if (testModeBtn) {
-    testModeBtn.textContent = testMode
-      ? "Disable Test Mode"
-      : "Enable Test Mode";
-    testModeBtn.addEventListener("click", () => {
-      testMode = !testMode;
-      localStorage.setItem("testMode", testMode);
-      testModeBtn.textContent = testMode
-        ? "Disable Test Mode"
-        : "Enable Test Mode";
-      showToast(`Test mode ${testMode ? "enabled" : "disabled"}`, "success");
-      location.reload();
-    });
-  }
-
   // handle signup form
   const signupForm = document.querySelector(".signup-container");
   if (signupForm) {
