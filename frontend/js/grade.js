@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
                 showSpinner();
                 const requestBody = JSON.stringify(gradeData);
-                const response = await fetch(`${GRADE_API_BASE}/AddGrade`, {
+                const response = await fetch(`${GRADE_API_BASE}AddGrade`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
