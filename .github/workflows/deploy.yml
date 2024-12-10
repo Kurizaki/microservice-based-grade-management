@@ -1,0 +1,27 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: SSH into the server and deploy the project
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.SERVER_HOST }}            # The IP address or hostname of your server
+          username: ${{ secrets.SERVER_USER }}        # The username to log into the server
+          password: ${{ secrets.SERVER_PASSWORD }}    # The password for the user
+          script: |
+            cd microservice-based-grade-management
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
