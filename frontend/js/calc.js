@@ -1,6 +1,6 @@
 let currentEditId = null;
 
-// Edit grade function
+// grade editing
 window.editGrade = (id, title, category, mark, weight) => {
   currentEditId = id;
 
@@ -14,13 +14,11 @@ window.editGrade = (id, title, category, mark, weight) => {
   document.querySelector(".edit-popup-overlay").classList.add("active");
 };
 
-// Close edit popup
+// popup controls
 window.closeEditPopup = () => {
   document.querySelector(".edit-popup-overlay").classList.remove("active");
   currentEditId = null;
 };
-
-// Submit edit grade
 window.submitEditGrade = async () => {
   try {
     const title = document.getElementById("edit-title").value;
@@ -68,7 +66,7 @@ window.submitEditGrade = async () => {
   }
 };
 
-// Toggle edit mode for a category
+// category edit mode
 window.toggleEditMode = (category) => {
   const categoryBox = document.getElementById(
     `category-${category.replace(/\s+/g, "-")}`
@@ -158,15 +156,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const startTime = Date.now();
       try {
         showSpinner();
-        console.log("Fetching grades for calculation");
         const username = localStorage.getItem("username");
-
         if (!username) {
           showToast("User not logged in", "error");
           return;
         }
 
-        // Fetch grades by username
+        // fetch user grades
         const token = localStorage.getItem("token");
         const gradesResponse = await fetch(
           `${GRADE_API_BASE}/GetGradesFromUser`,
@@ -179,15 +175,11 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         );
 
-        console.log("Fetch grades response status:", gradesResponse.status);
         if (!gradesResponse.ok) {
           throw new Error("Failed to fetch grades");
         }
 
         const grades = await gradesResponse.json();
-        console.log("Fetched grades:", grades);
-
-        console.log("Sending grades for calculation");
         const calcResponse = await fetch(`${CALC_API_BASE}/calculate`, {
           method: "POST",
           headers: {
@@ -202,12 +194,10 @@ document.addEventListener("DOMContentLoaded", () => {
           ),
         });
 
-        console.log("Calculation response status:", calcResponse.status);
         if (calcResponse.ok) {
           const result = await calcResponse.json();
-          console.log("Calculation result:", result);
 
-          // sort group by category
+          // group grades by category
           const gradesByCategory = grades.reduce((acc, grade) => {
             if (!acc[grade.category]) {
               acc[grade.category] = [];
@@ -216,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return acc;
           }, {});
 
-          // render category boxes
+          // render grade categories
           const categoryBoxes = document.getElementById("category-boxes");
           categoryBoxes.innerHTML = Object.entries(result.categoryGrades)
             .map(([category, averageGrade]) => {
@@ -226,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     `<div class="grade-item" data-grade-id="${grade.id}">
                                         <div class="grade-info">
                                             <span>${grade.title}</span> - 
-                                            <span>Score: ${grade.mark}</span>
+                                            <span>${grade.mark}</span>
                                         </div>
                                         <div class="grade-actions">
                                             <button class="edit-btn" onclick="editGrade(${grade.id}, '${grade.title}', '${grade.category}', ${grade.mark}, ${grade.weight})">
@@ -269,8 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
           showToast("Calculation failed. Please try again.", "error");
         }
       } catch (error) {
-        console.error("Calculation error:", error);
-        showToast("An error occurred. Please try again.", "error");
+        showToast("Calculation failed. Please try again.", "error");
       } finally {
         const elapsedTime = Date.now() - startTime;
         if (elapsedTime < MIN_LOADING_TIME) {

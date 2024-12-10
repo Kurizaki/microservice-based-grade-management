@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // handle signup form
+    // signup handler
     const signupForm = document.querySelector(".signup-container");
     if (signupForm) {
         signupForm.querySelector("button").addEventListener("click", async (e) => {
@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             try {
-                console.log("Attempting signup with data:", signupData);
                 const response = await fetch(`${AUTH_API_BASE}/register`, {
                     method: "POST",
                     headers: {
@@ -27,9 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     body: JSON.stringify(signupData),
                 });
 
-                console.log("Signup response status:", response.status);
                 const responseData = await response.json();
-                console.log("Signup response data:", responseData);
 
                 if (response.ok) {
                     showToast("Account created successfully!", "success");
@@ -40,13 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     showToast(responseData.message || "Signup failed. Please try again.", "error");
                 }
             } catch (error) {
-                console.error("Signup error:", error);
-                showToast("An error occurred. Please try again.", "error");
+                showToast("Signup failed. Please try again.", "error");
             }
         });
     }
 
-    // handle login form
+    // login handler
     const loginForm = document.querySelector(".login-container");
     if (loginForm) {
         loginForm.querySelector("button").addEventListener("click", async (e) => {
@@ -55,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const password = document.getElementById("password").value;
 
             try {
-                console.log("Attempting login with username:", username);
                 const response = await fetch(`${AUTH_API_BASE}login`, {
                     method: "POST",
                     headers: {
@@ -63,8 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     },
                     body: JSON.stringify({ username, password }),
                 });
-
-                console.log("Login response status:", response.status);
                 if (response.ok) {
                     const responseData = await response.json();
                     localStorage.setItem("isAuthenticated", "true");
@@ -77,8 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     showToast(responseData.message || "Login failed. Please try again.", "error");
                 }
             } catch (error) {
-                console.error("Login error:", error);
-                showToast("An error occurred. Please try again.", "error");
+                showToast("Login failed. Please try again.", "error");
             }
         });
     }

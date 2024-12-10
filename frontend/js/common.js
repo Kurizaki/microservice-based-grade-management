@@ -1,13 +1,11 @@
-// Configuration
+// core config
 const MIN_LOADING_TIME = 700;
 let testMode = localStorage.getItem("testMode") === "true";
 
-// API Base URLs aligned with Nginx routing
+// api endpoints
 const AUTH_API_BASE = "http://localhost:8080/auth-api/";
 const GRADE_API_BASE = "http://localhost:8080/grade-api";
 const CALC_API_BASE = "http://localhost:8080/calc-api";
-
-// Toast notifications
 function showToast(message, type) {
     // Cleanup old toast
     document.querySelectorAll(".toast").forEach((toast) => toast.remove());
@@ -22,30 +20,18 @@ function showToast(message, type) {
     }
 }
 
-// Spinner control
+// loading overlay setup
 const spinnerOverlay = document.createElement("div");
 spinnerOverlay.className = "spinner-overlay";
 spinnerOverlay.innerHTML = '<div class="spinner"></div>';
 
+// init on page load
 document.addEventListener("DOMContentLoaded", () => {
     const calcContainer = document.querySelector(".calculation-container");
     if (calcContainer) {
         calcContainer.appendChild(spinnerOverlay);
     } else {
         document.body.appendChild(spinnerOverlay);
-    }
-
-    // debug mode toggle
-    const testModeBtn = document.getElementById("toggleTestMode");
-    if (testModeBtn) {
-        testModeBtn.textContent = testMode ? "Disable Test Mode" : "Enable Test Mode";
-        testModeBtn.addEventListener("click", () => {
-            testMode = !testMode;
-            localStorage.setItem("testMode", testMode);
-            testModeBtn.textContent = testMode ? "Disable Test Mode" : "Enable Test Mode";
-            showToast(`Test mode ${testMode ? "enabled" : "disabled"}`, "success");
-            location.reload();
-        });
     }
 });
 

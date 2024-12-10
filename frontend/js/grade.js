@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
-    checkAuth(); // Add auth check
+    checkAuth();
     
     const gradeForm = document.querySelector(".grade-container form");
     if (gradeForm) {
-        // Random data fill functionality
+        // demo data generator
         const fillRandomBtn = document.getElementById("fillRandom");
         if (fillRandomBtn) {
             fillRandomBtn.addEventListener("click", () => {
@@ -43,10 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
                 showSpinner();
                 const requestBody = JSON.stringify(gradeData);
-                console.log("Submitting grade data:", gradeData);
-                console.log("Raw request body:", requestBody);
-                console.log("Content-Type:", "application/json");
-                
                 const response = await fetch(`${GRADE_API_BASE}/AddGrade`, {
                     method: "POST",
                     headers: {
@@ -55,17 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     body: JSON.stringify(gradeData),
                 });
 
-                console.log("Add Grade response status:", response.status);
                 let responseData;
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.includes("application/json")) {
                     responseData = await response.json();
-                    console.log("Response JSON:", responseData);
                 } else {
                     responseData = await response.text();
-                    console.log("Response Text:", responseData);
                 }
-                
                 if (response.ok) {
                     showToast("Grade added successfully!", "success");
                     // Clear form
