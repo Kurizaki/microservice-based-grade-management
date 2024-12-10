@@ -31,6 +31,14 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: frontend
+    ports:
+      - "80:80"
+
   nginx:
     image: nginx:latest
     container_name: nginx
@@ -38,8 +46,8 @@ services:
       - "8080:80"
     volumes:
       - ./ApiGateway/conf/apigateway.conf:/etc/nginx/nginx.conf
-      - ./frontend:/usr/share/nginx/html
     depends_on:
       - auth-service
       - calc-service
       - grade-service
+      - frontend
