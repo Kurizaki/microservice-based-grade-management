@@ -10,10 +10,11 @@ builder.Services.AddDbContext<AUTHDB>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CorsPolicy", builder => 
+    options.AddDefaultPolicy(builder => 
         builder.AllowAnyOrigin()
                .AllowAnyMethod()
-               .AllowAnyHeader());
+               .AllowAnyHeader()
+               .WithExposedHeaders("*"));
 });
 
 // Build the app
