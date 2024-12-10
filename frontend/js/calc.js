@@ -42,7 +42,7 @@ window.submitEditGrade = async () => {
 
     showSpinner();
     const response = await fetch(
-      joinPaths(GRADE_API_BASE, 'UpdateGrade', currentEditId.toString()),
+      `${GRADE_API_BASE}UpdateGrade/${currentEditId}`,
       {
         method: "PUT",
         headers: {
@@ -128,7 +128,7 @@ window.confirmDelete = async () => {
   try {
     showSpinner();
     const response = await fetch(
-      joinPaths(GRADE_API_BASE, 'DeleteGrade', gradeToDelete.toString()),
+      `${GRADE_API_BASE}DeleteGrade/${gradeToDelete}`,
       {
         method: "DELETE",
       }
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Fetch user grades
         const token = localStorage.getItem("token");
         const gradesResponse = await fetch(
-          joinPaths(GRADE_API_BASE, 'GetGradesFromUser'),
+          `${GRADE_API_BASE}GetGradesFromUser`,
           {
             method: "GET",
             headers: {
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const grades = await gradesResponse.json();
-        const calcResponse = await fetch(joinPaths(CALC_API_BASE, 'calculate'), {
+        const calcResponse = await fetch(`${CALC_API_BASE}calculate`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
