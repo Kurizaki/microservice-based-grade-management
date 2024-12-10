@@ -21,7 +21,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
-            cd /path/to/project
+            cd microservice-based-grade-management 
             docker-compose pull
             docker-compose down
             docker-compose up -d
