@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const gradeForm = document.querySelector(".grade-container form");
     if (gradeForm) {
-        // demo data generator
+        // Demo data generator
         const fillRandomBtn = document.getElementById("fillRandom");
         if (fillRandomBtn) {
             fillRandomBtn.addEventListener("click", () => {

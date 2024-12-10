@@ -34,9 +34,9 @@
         </div>
     </div>
     
-    <!-- Edit Popup -->
-    <div class="edit-popup-overlay">
-        <div class="edit-popup">
+    <!-- Edit Toast -->
+    <div class="edit-toast-overlay">
+        <div class="edit-toast">
             <h3>Edit Grade</h3>
             <form id="edit-grade-form" onsubmit="return false;">
                 <div class="input-group">
@@ -56,20 +56,20 @@
                     <input type="number" id="edit-weight" step="0.1" min="0.1" max="2.0" required>
                 </div>
                 <div class="buttons">
-                    <button type="button" onclick="closeEditPopup()" class="cancel-btn">Cancel</button>
+                    <button type="button" onclick="closeEditToast()" class="cancel-btn">Cancel</button>
                     <button type="submit" onclick="submitEditGrade()" class="done-btn">Save Changes</button>
                 </div>
             </form>
         </div>
     </div>
     
-    <!-- Delete Confirmation Popup -->
-    <div class="delete-popup-overlay">
-        <div class="edit-popup">
+    <!-- Delete Confirmation Toast -->
+    <div class="delete-toast-overlay">
+        <div class="edit-toast">
             <h3>Delete Grade</h3>
             <p>Are you sure you want to delete this grade?</p>
             <div class="buttons">
-                <button type="button" onclick="closeDeletePopup()" style="background-color: var(--primary-color)">Cancel</button>
+                <button type="button" onclick="closeDeleteToast()" style="background-color: var(--primary-color)">Cancel</button>
                 <button type="button" onclick="confirmDelete()" style="background-color: var(--error-color)">Delete</button>
             </div>
         </div>

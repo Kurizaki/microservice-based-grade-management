@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // signup handler
+    // Signup handler
     const signupForm = document.querySelector(".signup-container");
     if (signupForm) {
         signupForm.querySelector("button").addEventListener("click", async (e) => {
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // login handler
+    // Login handler
     const loginForm = document.querySelector(".login-container");
     if (loginForm) {
         loginForm.querySelector("button").addEventListener("click", async (e) => {

@@ -1,8 +1,8 @@
-// core config
+// Core config
 const MIN_LOADING_TIME = 700;
 let testMode = localStorage.getItem("testMode") === "true";
 
-// api endpoints
+// API Endpoints
 const AUTH_API_BASE = "http://localhost:8080/auth-api/";
 const GRADE_API_BASE = "http://localhost:8080/grade-api";
 const CALC_API_BASE = "http://localhost:8080/calc-api";
@@ -20,12 +20,12 @@ function showToast(message, type) {
     }
 }
 
-// loading overlay setup
+// Loading overlay setup
 const spinnerOverlay = document.createElement("div");
 spinnerOverlay.className = "spinner-overlay";
 spinnerOverlay.innerHTML = '<div class="spinner"></div>';
 
-// init on page load
+// Init on page load
 document.addEventListener("DOMContentLoaded", () => {
     const calcContainer = document.querySelector(".calculation-container");
     if (calcContainer) {
@@ -67,9 +67,9 @@ function checkAuth() {
             logout();
         });
     } else {
-        const currentPage = window.location.pathname;
+        const currentPage = window.location.pathname.toLowerCase();
         if (currentPage.includes("grade.html") || currentPage.includes("calc.html")) {
-            window.location.href = "/auth";
+            window.location.replace("auth.html");
         }
     }
 }
@@ -77,5 +77,5 @@ function checkAuth() {
 function logout() {
     localStorage.removeItem("isAuthenticated");
     showToast("Logged out successfully", "success");
-    window.location.href = "/auth.html";
+    window.location.href = "/frontend/auth.html";
 }

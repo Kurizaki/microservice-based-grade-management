@@ -1,3 +1,4 @@
+/* Variables */
 :root {
     --primary-color: #6366f1;
     --primary-hover: #4f46e5;
@@ -14,6 +15,7 @@
     --border-radius: 12px;
 }
 
+/* Base Styles */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     margin: 0;
@@ -27,6 +29,7 @@ body {
         radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 50%);
 }
 
+/* Navigation Styles */
 .nav-bar {
     background-color: var(--background-dark);
     padding: 1rem 0;
@@ -110,6 +113,7 @@ body {
     width: 100%;
 }
 
+/* Layout Container */
 .container {
     width: 90%;
     max-width: 1200px;
@@ -117,6 +121,7 @@ body {
     padding: 0 1rem;
 }
 
+/* Card Containers */
 .login-container, .signup-container, .grade-container, .calculation-container {
     background-color: var(--card-background);
     border-radius: var(--border-radius);
@@ -145,6 +150,7 @@ body {
                 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 
+/* Typography */
 h2 {
     color: var(--text-color);
     text-align: center;
@@ -156,6 +162,7 @@ h2 {
     -webkit-text-fill-color: transparent;
 }
 
+/* Form Elements */
 input {
     width: 80%;
     max-width: 300px;
@@ -186,6 +193,7 @@ label {
     font-weight: 500;
 }
 
+/* Buttons */
 button {
     width: 80%;
     max-width: 300px;
@@ -233,6 +241,7 @@ button:hover::after {
     left: 100%;
 }
 
+/* Form Footer */
 .form-footer {
     text-align: center;
     margin-top: 1.5rem;
@@ -249,6 +258,7 @@ button:hover::after {
     text-decoration: underline;
 }
 
+/* Grid Layouts */
 .grade-input-group, .calculation-input-group, .grades-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -256,6 +266,7 @@ button:hover::after {
     align-items: start;
 }
 
+/* Toast Notifications */
 .toast {
     position: fixed;
     top: 5rem;
@@ -288,12 +299,15 @@ button:hover::after {
     opacity: 1;
     transform: translateX(0);
 }
+
+/* Grade List Styles */
 .grades-list {
     margin: 2rem 0;
     display: grid;
     gap: 1rem;
 }
 
+/* Category Styles */
 .category-boxes {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -330,34 +344,7 @@ button:hover::after {
     color: var(--primary-color);
 }
 
-.grade-item .grade-actions {
-    display: none;
-}
-
-.edit-mode .grade-item .grade-actions {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.edit-mode-controls {
-    display: none;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    justify-content: center;
-}
-
-.edit-mode .edit-mode-controls {
-    display: flex;
-}
-
-.done-btn {
-    background-color: var(--success-color);
-}
-
-.cancel-btn {
-    background-color: var(--error-color);
-}
-
+/* Grade Item Styles */
 .grade-item {
     background: var(--background-dark);
     padding: 0.75rem;
@@ -397,6 +384,27 @@ button:hover::after {
     color: var(--text-muted);
 }
 
+/* Edit Mode Controls */
+.edit-mode-controls {
+    display: none;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    justify-content: center;
+}
+
+.edit-mode .edit-mode-controls {
+    display: flex;
+}
+
+.done-btn {
+    background-color: var(--success-color);
+}
+
+.cancel-btn {
+    background-color: var(--error-color);
+}
+
+/* Category Average */
 .category-average {
     margin-top: 1rem;
     padding-top: 1rem;
@@ -405,6 +413,7 @@ button:hover::after {
     color: var(--primary-color);
 }
 
+/* Final Grade Container */
 .final-grade-container {
     background: var(--input-background);
     padding: 1.5rem;
@@ -425,6 +434,7 @@ button:hover::after {
     font-weight: 600;
 }
 
+/* Loading Spinner */
 .spinner-overlay {
     position: absolute;
     top: 0;
@@ -467,7 +477,7 @@ button:hover::after {
     position: relative;
 }
 
-/* Custom Scrollbar Styling */
+/* Scrollbar Styles */
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -493,7 +503,8 @@ button:hover::after {
     scrollbar-color: var(--primary-color) var(--background-darker);
 }
 
-.edit-popup-overlay {
+/* Toast Styles */
+.edit-toast-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -507,7 +518,7 @@ button:hover::after {
     z-index: 1100;
 }
 
-.edit-popup {
+.edit-toast {
     background: var(--card-background);
     padding: 2rem;
     border-radius: var(--border-radius);
@@ -539,11 +550,11 @@ button:hover::after {
 }
 
 .edit-popup-overlay.active,
-.delete-popup-overlay.active {
+.delete-toast-overlay.active {
     display: flex;
 }
 
-.delete-popup-overlay {
+.delete-toast-overlay {
     position: fixed;
     top: 0;
     left: 0;

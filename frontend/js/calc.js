@@ -1,6 +1,6 @@
 let currentEditId = null;
 
-// grade editing
+// Grade editing
 window.editGrade = (id, title, category, mark, weight) => {
   currentEditId = id;
 
@@ -10,13 +10,13 @@ window.editGrade = (id, title, category, mark, weight) => {
   document.getElementById("edit-mark").value = mark;
   document.getElementById("edit-weight").value = weight;
 
-  // Show the popup
-  document.querySelector(".edit-popup-overlay").classList.add("active");
+  // Show the Toast
+  document.querySelector(".edit-toast-overlay").classList.add("active");
 };
 
-// popup controls
-window.closeEditPopup = () => {
-  document.querySelector(".edit-popup-overlay").classList.remove("active");
+// Toast controls
+window.closeEditToast = () => {
+  document.querySelector(".edit-toast-overlay").classList.remove("active");
   currentEditId = null;
 };
 window.submitEditGrade = async () => {
@@ -66,7 +66,7 @@ window.submitEditGrade = async () => {
   }
 };
 
-// category edit mode
+// Category edit mode
 window.toggleEditMode = (category) => {
   const categoryBox = document.getElementById(
     `category-${category.replace(/\s+/g, "-")}`
@@ -109,15 +109,15 @@ window.cancelEdit = (category) => {
 
 let gradeToDelete = null;
 
-// Show delete confirmation popup
+// Show delete confirmation toast
 window.deleteGrade = (id) => {
   gradeToDelete = id;
-  document.querySelector(".delete-popup-overlay").classList.add("active");
+  document.querySelector(".delete-toast-overlay").classList.add("active");
 };
 
-// Close delete popup
-window.closeDeletePopup = () => {
-  document.querySelector(".delete-popup-overlay").classList.remove("active");
+// Close delete toast
+window.closeDeleteToast = () => {
+  document.querySelector(".delete-toast-overlay").classList.remove("active");
   gradeToDelete = null;
 };
 
@@ -145,11 +145,13 @@ window.confirmDelete = async () => {
     showToast("An error occurred while deleting", "error");
   } finally {
     hideSpinner();
-    closeDeletePopup();
+    closeDeleteToast();
   }
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+  checkAuth();
+  
   const calcForm = document.querySelector(".calculation-container");
   if (calcForm) {
     (async () => {
@@ -162,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        // fetch user grades
+        // Fetch user grades
         const token = localStorage.getItem("token");
         const gradesResponse = await fetch(
           `${GRADE_API_BASE}/GetGradesFromUser`,
@@ -197,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (calcResponse.ok) {
           const result = await calcResponse.json();
 
-          // group grades by category
+          // Group grades by category
           const gradesByCategory = grades.reduce((acc, grade) => {
             if (!acc[grade.category]) {
               acc[grade.category] = [];
@@ -206,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return acc;
           }, {});
 
-          // render grade categories
+          // Render grade categories
           const categoryBoxes = document.getElementById("category-boxes");
           categoryBoxes.innerHTML = Object.entries(result.categoryGrades)
             .map(([category, averageGrade]) => {
@@ -250,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .join("");
 
-          // show final grade
+          // Show final grade
           document.getElementById("final-grade").value =
             result.finalGrade.toFixed(2);
 
