@@ -9,19 +9,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout code
+      # Step 1: Checkout the code from the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # SSH into the server
+      # Step 2: SSH into the server and deploy the project
       - name: Deploy to Server
         uses: appleboy/ssh-action@v0.1.8
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.DEPLOY_KEY }}
+          host: ${{ secrets.SERVER_HOST }}            # The IP address or hostname of your server
+          username: ${{ secrets.SERVER_USER }}        # The username to log into the server
+          password: ${{ secrets.SERVER_PASSWORD }}    # The password for the user
           script: |
-            cd /path/to/project
+            cd microservice-based-grade-management
+            git pull origin main
             docker-compose pull
             docker-compose down
             docker-compose up -d
