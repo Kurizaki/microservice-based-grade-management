@@ -43,7 +43,7 @@ frontend:
     image: nginx:latest
     container_name: nginx
     ports:
-      - "8080:80"
+      - "8080:8081"
     volumes:
       - ./ApiGateway/conf/apigateway.conf:/etc/nginx/nginx.conf
     depends_on:
