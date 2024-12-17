@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.auth
     container_name: auth-service
     ports:
-      - "5001:80"
+      - "5001:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
@@ -17,7 +17,7 @@ services:
       dockerfile: Dockerfile.calc
     container_name: calc-service
     ports:
-      - "5002:80"
+      - "5002:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
@@ -27,7 +27,7 @@ services:
       dockerfile: Dockerfile.grade
     container_name: grade-service
     ports:
-      - "5003:80"
+      - "5003:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
@@ -35,7 +35,7 @@ services:
     image: nginx:latest
     container_name: nginx
     ports:
-      - "8080:80"
+      - "8080:8081"
     volumes:
       - ./ApiGateway/conf/apigateway.conf:/etc/nginx/nginx.conf
       - ./frontend:/usr/share/nginx/html
