@@ -18,7 +18,7 @@ jobs:
         uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.SERVER_HOST }}            # The IP address or hostname of your server
-          username: ${{ deployjgokb }}        # The username to log into the server
+          username: ${{ "deployjgokb" }}        # The username to log into the server
           password: ${{ secrets.SERVER_PASSWORD }}    # The password for the user
           script: |
             cd microservice-based-grade-management
