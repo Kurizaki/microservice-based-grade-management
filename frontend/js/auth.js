@@ -51,20 +51,26 @@ document.addEventListener("DOMContentLoaded", () => {
             const password = document.getElementById("password").value;
 
             try {
-                const response = await fetch(`${AUTH_API_BASE}login`, {
+                const response = await fetch(`${AUTH_API_BASE}/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({ username, password }),
                 });
+                
+                const responseData = await response.json();
+                
                 if (response.ok) {
-                    const responseData = await response.json();
                     localStorage.setItem("isAuthenticated", "true");
                     localStorage.setItem("username", username);
                     localStorage.setItem("token", responseData.token);
                     showToast("Login successful!", "success");
-                    window.location.href = "grade.html";
+                    
+                    // Use setTimeout to delay navigation
+                    setTimeout(() => {
+                        window.location.href = "grade.html";
+                    }, 100);
                 } else {
                     const responseData = await response.json();
                     showToast(responseData.message || "Login failed. Please try again.", "error");
