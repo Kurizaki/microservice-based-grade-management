@@ -10,11 +10,7 @@ builder.Services.AddDbContext<AUTHDB>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder => 
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader()
-               .WithExposedHeaders("*"));
+    options.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
 // Build the app
@@ -35,7 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("CorsPolicy");
+app.UseCors("AllowAnyOrigin");
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();

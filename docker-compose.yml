@@ -10,9 +10,6 @@ services:
       - "5001:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:8081
-    networks:
-      - app-network
 
   calc-service:
     build:
@@ -23,9 +20,6 @@ services:
       - "5002:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:8081
-    networks:
-      - app-network
 
   grade-service:
     build:
@@ -36,9 +30,6 @@ services:
       - "5003:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:8081
-    networks:
-      - app-network
 
   frontend:
     build:
@@ -60,9 +51,3 @@ services:
       - calc-service
       - grade-service
       - frontend
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge
