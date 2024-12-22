@@ -77,7 +77,7 @@ To ensure efficient development and deployment, the project employs **DevOps pra
 
 ## DevOps Integration
 
-- **CI/CD Pipeline**: Continuous integration and deployment pipeline using **Jenkins**.
+- **CI/CD Pipeline**: Continuous integration and deployment on own server.
 - **Containerization**: Services are containerized using **Docker** for consistent deployment.
 - **Orchestration**: Kubernetes orchestrates the containers to ensure scalability and resilience.
 - **Monitoring**: Microservices are monitored using **Prometheus** and logs are managed with the **ELK Stack** for better system reliability.
