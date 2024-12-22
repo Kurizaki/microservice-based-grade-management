@@ -77,5 +77,5 @@ function checkAuth() {
 function logout() {
     localStorage.removeItem("isAuthenticated");
     showToast("Logged out successfully", "success");
-    window.location.href = "/frontend/auth.html";
+    window.location.href = "/auth.html";
 }
