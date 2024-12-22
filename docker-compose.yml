@@ -46,10 +46,11 @@ services:
     - "8080:8080"
   volumes:
     - ./ApiGateway/conf/apigateway.conf:/etc/nginx/nginx.conf
-    - ./frontend:/usr/share/nginx/html
+    - ./frontend/build:/usr/share/nginx/html
   depends_on:
     - auth-service
     - calc-service
     - grade-service
     - frontend
+
 
