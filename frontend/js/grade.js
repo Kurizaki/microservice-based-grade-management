@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const fillRandomBtn = document.getElementById("fillRandom");
         if (fillRandomBtn) {
             fillRandomBtn.addEventListener("click", () => {
-                const subjects = ["Mathematics", "Physics", "Chemistry", "Biology", "History", "English"];
-                const categories = ["Homework", "Quiz", "Exam", "Project", "Presentation"];
+                const categories = ["Mathematics", "Physics", "Chemistry", "Biology", "History", "English", "French",];
+                const subjects = ["Homework", "Quiz", "Exam", "Project", "Presentation"];
 
                 document.getElementById("title").value = 
                     `${categories[Math.floor(Math.random() * categories.length)]} - ${subjects[Math.floor(Math.random() * subjects.length)]}`;
