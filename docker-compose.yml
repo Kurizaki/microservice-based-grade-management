@@ -10,8 +10,6 @@ services:
       - "5001:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-    volumes:
-      - auth_data:/app/AUTHDatabase.sqlite  # Persist AUTHDatabase.sqlite Data
 
   calc-service:
     build:
@@ -32,8 +30,6 @@ services:
       - "5003:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-    volumes:
-      - grade_data:/app/GradeDb.sqlite  # Persist GradeDb.sqlite Data
 
   frontend:
     build:
@@ -56,7 +52,3 @@ services:
       - calc-service
       - grade-service
       - frontend
-
-volumes:
-  auth_data:  # Volume for AUTHDatabase.sqlite
-  grade_data:  # Volume for GradeDb.sqlite
