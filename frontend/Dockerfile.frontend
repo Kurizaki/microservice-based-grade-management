@@ -1,12 +1,17 @@
 # Use nginx as the base image
 FROM nginx:alpine
 
+# Create nginx user and group with specific IDs
+RUN addgroup -g 101 -S nginx \
+    && adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx nginx
+
 # Copy the frontend files to nginx's serving directory
 COPY . /usr/share/nginx/html/
 
 # Set proper permissions
 RUN chown -R nginx:nginx /usr/share/nginx/html && \
-    chmod -R 755 /usr/share/nginx/html
+    chmod -R 755 /usr/share/nginx/html && \
+    chmod -R o+rx /usr/share/nginx/html
 
 # Expose port 8081
 EXPOSE 8081
