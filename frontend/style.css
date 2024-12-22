@@ -527,31 +527,32 @@ button:hover::after {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-.edit-popup h3 {
+.edit-toast h3 {
     color: var(--primary-color);
     margin-bottom: 1.5rem;
     text-align: center;
 }
 
-.edit-popup .input-group {
+.edit-toast .input-group {
     margin-bottom: 1rem;
 }
 
-.edit-popup .buttons {
+.edit-toast .buttons {
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
     margin-top: 1.5rem;
 }
 
-.edit-popup .buttons button {
+.edit-toast .buttons button {
     width: auto;
     min-width: 120px;
 }
 
-.edit-popup-overlay.active,
+.edit-toast-overlay.active,
 .delete-toast-overlay.active {
     display: flex;
+    text-align: center;
 }
 
 .delete-toast-overlay {
@@ -568,7 +569,7 @@ button:hover::after {
     z-index: 1100;
 }
 
-.delete-popup-overlay p {
+.delete-toast-overlay p {
     text-align: center;
     margin: 1rem 0 2rem 0;
     color: var(--text-muted);
