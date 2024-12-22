@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const subjects = ["Homework", "Quiz", "Exam", "Project", "Presentation"];
 
                 document.getElementById("title").value = 
-                    `${categories[Math.floor(Math.random() * categories.length)]} - ${subjects[Math.floor(Math.random() * subjects.length)]}`;
+                    `${subjects[Math.floor(Math.random() * subjects.length)]}`;
                 document.getElementById("category").value = categories[Math.floor(Math.random() * categories.length)];
                 document.getElementById("mark").value = Math.floor(Math.random() * 7) + 1;
                 document.getElementById("weight").value = (Math.floor(Math.random() * 20) + 1) / 10;
