@@ -1,46 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
     <nav class="nav-bar">
-        <div class="nav-content">
-            <a href="#" class="logo">Grade<span style="color: var(--text-color)">System</span></a>
-            <div class="nav-links">
-                <a href="grade.html" class="locked"><i class="fas fa-lock"></i> Grades</a>
-                <a href="calc.html" class="locked"><i class="fas fa-lock"></i> Calculator</a>
-                <a href="auth.html" class="auth-link"><i class="fas fa-sign-in-alt"></i> Login</a>
-            </div>
+      <div class="nav-content">
+        <a href="#" class="logo"
+          >Grade<span style="color: var(--text-color)">System</span></a
+        >
+        <div class="nav-links">
+          <a href="grade.html" class="locked"
+            ><i class="fas fa-lock"></i> Grades</a
+          >
+          <a href="calc.html" class="locked"
+            ><i class="fas fa-lock"></i> Calculator</a
+          >
+          <a href="auth.html" class="auth-link"
+            ><i class="fas fa-sign-in-alt"></i> Login</a
+          >
         </div>
+      </div>
     </nav>
     <div class="container">
-        <div class="signup-container">
-            <h2>Create Account</h2>
-            <form onsubmit="return false;">
-                <div class="input-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="Choose a username" required>
-                </div>
-                <div class="input-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Choose a password" required>
-                </div>
-                <div class="input-group">
-                    <label for="confirm-password">Confirm Password</label>
-                    <input type="password" id="confirm-password" placeholder="Confirm your password" required>
-                </div>
-                <button type="submit">Create Account</button>
-                <p class="form-footer">Already have an account? <a href="auth.html">Login here</a></p>
-            </form>
-        </div>
+      <div class="signup-container">
+        <h2>Create Account</h2>
+        <form onsubmit="return false;">
+          <div class="input-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              placeholder="Choose a username"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Choose a password"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input
+              type="password"
+              id="confirm-password"
+              placeholder="Confirm your password"
+              required
+            />
+          </div>
+          <button type="submit">Create Account</button>
+          <p class="form-footer">
+            Already have an account? <a href="auth.html">Login here</a>
+          </p>
+        </form>
+      </div>
     </div>
     <script src="js/common.js"></script>
     <script src="js/auth.js"></script>
-</body>
+  </body>
 </html>

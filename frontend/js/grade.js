@@ -4,19 +4,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const gradeForm = document.querySelector(".grade-container form");
     if (gradeForm) {
         // Demo data generator
-        const fillRandomBtn = document.getElementById("fillRandom");
-        if (fillRandomBtn) {
-            fillRandomBtn.addEventListener("click", () => {
-                const categories = ["Mathematics", "Physics", "Chemistry", "Biology", "History", "English", "French",];
-                const subjects = ["Homework", "Quiz", "Exam", "Project", "Presentation"];
+const fillRandomBtn = document.getElementById("fillRandom");
+if (fillRandomBtn) {
+    fillRandomBtn.addEventListener("click", () => {
+        const categories = ["Mathematics", "Physics", "Chemistry", "Biology", "History", "English", "French"];
+        const subjects = ["Homework", "Quiz", "Exam", "Project", "Presentation"];
 
-                document.getElementById("title").value = 
-                    `${subjects[Math.floor(Math.random() * subjects.length)]}`;
-                document.getElementById("category").value = categories[Math.floor(Math.random() * categories.length)];
-                document.getElementById("mark").value = Math.floor(Math.random() * 7) + 1;
-                document.getElementById("weight").value = (Math.floor(Math.random() * 20) + 1) / 10;
-            });
-        }
+        document.getElementById("title").value = subjects[Math.floor(Math.random() * subjects.length)];
+        document.getElementById("category").value = categories[Math.floor(Math.random() * categories.length)];
+        document.getElementById("mark").value = (Math.random() * 6 + 1).toFixed(2);
+        document.getElementById("weight").value = ((Math.random() * 2).toFixed(1));
+    });
+}
+
 
         gradeForm.addEventListener("submit", async (e) => {
             e.preventDefault();

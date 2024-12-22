@@ -151,7 +151,7 @@ window.confirmDelete = async () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   checkAuth();
-  
+
   const calcForm = document.querySelector(".calculation-container");
   if (calcForm) {
     (async () => {
