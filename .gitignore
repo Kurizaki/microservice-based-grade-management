@@ -753,4 +753,3 @@ grade-service/grade-service/obj/grade-service.csproj.nuget.dgspec.json
 grade-service/grade-service/obj/grade-service.csproj.nuget.g.props
 grade-service/grade-service/obj/project.assets.json
 grade-service/grade-service/obj/project.nuget.cache
-/k8s/hpa-authentification-service.yaml

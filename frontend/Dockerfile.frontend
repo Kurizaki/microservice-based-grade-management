@@ -2,8 +2,8 @@
 FROM nginx:alpine
 
 # Create nginx user and group with specific IDs
-RUN addgroup -g 101 -S nginx \
-    && adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx nginx
+RUN getent group nginx || addgroup -g 101 -S nginx \
+    && id -u nginx || adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx nginx
 
 # Copy the frontend files to nginx's serving directory
 COPY . /usr/share/nginx/html/

@@ -23,7 +23,7 @@ Here are the details for each service’s Deployment and Service:
 ### 2.1 Authentication Service
 
 - **Deployment Name**: `authentification-service`
-- **Image**: `authentification-service:latest`
+- **Image**: `auth-service:latest`
 - **Replicas**: 2
 - **Service Type**: ClusterIP (internal)
 - **Port**: 80
@@ -31,7 +31,7 @@ Here are the details for each service’s Deployment and Service:
 ### 2.2 Calculation Service
 
 - **Deployment Name**: `calculation-service`
-- **Image**: `calculation-service:latest`
+- **Image**: `calc-service:latest`
 - **Replicas**: 2
 - **Service Type**: ClusterIP (internal)
 - **Port**: 80
