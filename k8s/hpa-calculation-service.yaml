@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calculation-service
+  namespace: mynetwork  # Replace with your namespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: calculation-service
+  template:
+    metadata:
+      labels:
+        app: calculation-service
+    spec:
+      containers:
+        - name: calculation-service
+          image: calculation-service:latest
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          ports:
+            - containerPort: 80
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: calculation-service-hpa
+  namespace: mynetwork
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: calculation-service
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
