@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: authentification-service
-        image: authentification-service:latest
+        image: kurizakii/auth-service:latest
         ports:
         - containerPort: 80
 

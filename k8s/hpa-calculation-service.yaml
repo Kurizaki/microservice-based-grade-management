@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: calculation-service
-          image: calculation-service:latest
+          image: kurizakii/calc-service:latest
           resources:
             requests:
               cpu: 100m

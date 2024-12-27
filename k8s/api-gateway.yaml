@@ -4,7 +4,7 @@ metadata:
   name: api-gateway
   namespace: mynetwork
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: api-gateway
@@ -14,37 +14,14 @@ spec:
         app: api-gateway
     spec:
       containers:
-      - name: api-gateway
-        image: nginx:alpine
-        volumeMounts:
-        - name: frontend-html
-          mountPath: /usr/share/nginx/html
-          readOnly: true
-        - name: nginx-config
-          mountPath: /etc/nginx/conf.d/99-apigateway.conf
-          subPath: 99-apigateway.conf
-          readOnly: true
-        ports:
-        - containerPort: 80
-      volumes:
-      - name: frontend-html
-        hostPath:
-          path: /frontend
-      - name: nginx-config
-        hostPath:
-          path: /ApiGateway/conf/apigateway.conf
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: api-gateway
-  namespace: mynetwork
-spec:
-  selector:
-    app: api-gateway
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 80
-  type: LoadBalancer
+        - name: api-gateway
+          image: kurizakii/api-gateway:latest
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          ports:
+            - containerPort: 80

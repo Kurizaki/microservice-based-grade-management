@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: authentification-service
-          image: authentification-service:latest
+          image: kurizakii/auth-service:latest
           resources:
             requests:
               cpu: 100m

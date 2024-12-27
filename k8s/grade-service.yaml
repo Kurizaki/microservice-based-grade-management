@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: grade-service
-        image: grade-service:latest
+        image: kurizakii/grade-service:latest
         ports:
         - containerPort: 80
 
