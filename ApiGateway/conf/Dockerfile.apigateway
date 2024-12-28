@@ -1,14 +1,17 @@
-# Use the official NGINX image as the base image
+# Basisimage verwenden
 FROM nginx:alpine
 
-# Copy your custom NGINX configuration into the container
-COPY ApiGateway/conf/apigateway.conf /etc/nginx/conf.d/default.conf
+# Standard-nginx.conf entfernen
+RUN rm /etc/nginx/nginx.conf
 
-# Copy static frontend files to the default NGINX HTML directory
+# Eigene NGINX-Konfiguration kopieren
+COPY ApiGateway/conf/apigateway.conf /etc/nginx/nginx.conf
+
+# Statische Frontend-Dateien kopieren
 COPY ../../frontend /usr/share/nginx/html
 
-# Expose port 8080 for the gateway
+# Port 8080 freigeben
 EXPOSE 8080
 
-# Start NGINX when the container launches
+# NGINX starten
 CMD ["nginx", "-g", "daemon off;"]
