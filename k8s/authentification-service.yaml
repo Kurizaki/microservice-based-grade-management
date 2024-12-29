@@ -1,3 +1,10 @@
+############################################
+# DEPLOYMENT: auth-service
+# This Deployment runs the authentication service within the "mynetwork" namespace.
+# It starts with 2 replicas and labels them as "app: auth-service". 
+# Resource requests and limits define the minimum and maximum resources 
+# each Pod can use.
+############################################
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,11 +23,22 @@ spec:
       containers:
         - name: auth-service
           image: kurizakii/auth-service:latest
+          resources:
+            requests:
+              cpu: 100m         # Minimum CPU requested by the container
+              memory: 200Mi     # Minimum Memory requested by the container
+            limits:
+              cpu: 500m         # Maximum CPU allowed for the container
+              memory: 512Mi     # Maximum Memory allowed for the container
           ports:
-            - containerPort: 8080
+            - containerPort: 8080  # Container port to expose
 
 ---
-
+############################################
+# SERVICE: auth-service
+# Exposes the auth-service Deployment inside the "mynetwork" namespace.
+# Traffic on port 8080 is directed to the Pod's port 8080.
+############################################
 apiVersion: v1
 kind: Service
 metadata:
@@ -33,3 +51,31 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
+
+---
+############################################
+# HORIZONTAL POD AUTOSCALER: authentification-service-hpa
+# This HPA automatically scales the number of Pods for the specified Deployment 
+# based on CPU utilization metrics (50% in this example).
+# - minReplicas: 2 (won't go below 2 replicas)
+# - maxReplicas: 5 (won't exceed 5 replicas)
+############################################
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: authentification-service-hpa
+  namespace: mynetwork
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: auth-service
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50

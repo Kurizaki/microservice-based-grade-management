@@ -1,3 +1,10 @@
+############################################
+# SERVICE: metrics-server
+# Exposes the Metrics Server via service "metrics-server" in the "kube-system" namespace.
+# - port 443 -> routes to container port 10250
+# - protocol must be TCP
+# - The "https" name is essential to match the expected API service.
+############################################
 apiVersion: v1
 kind: Service
 metadata:
@@ -7,20 +14,30 @@ metadata:
     k8s-app: metrics-server
 spec:
   ports:
-    - port: 443
-      targetPort: 10250
+    - port: 443             # Service port
+      targetPort: 10250     # Container port
       protocol: TCP
-      name: https  # Important: name must be "https" to match API service expectations
+      name: https           # Must be "https" for compatibility
   selector:
     k8s-app: metrics-server
+
 ---
+############################################
+# DEPLOYMENT: metrics-server
+# Deploys a single replica of the Metrics Server. 
+# Key notes:
+# - "k8s-app: metrics-server" labels are used to match the Service.
+# - Uses the registry.k8s.io/metrics-server:v0.7.2 image.
+# - Probes are set to HTTP GET on port 10250 using HTTPS scheme.
+# - "kubelet-insecure-tls" is included for local setups.
+############################################
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    k8s-app: metrics-server
   name: metrics-server
   namespace: kube-system
+  labels:
+    k8s-app: metrics-server
 spec:
   replicas: 1
   selector:
@@ -29,8 +46,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 0
+      maxSurge: 25%          # Percentage of extra Pods allowed during update
+      maxUnavailable: 0      # No Pods should be down during update
   template:
     metadata:
       labels:
@@ -47,11 +64,11 @@ spec:
             - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
             - --kubelet-use-node-status-port
             - --metric-resolution=15s
-            - --kubelet-insecure-tls  # Disable TLS verification for local setups
+            - --kubelet-insecure-tls       # Disables TLS verification (useful for local setups)
           livenessProbe:
             httpGet:
               path: /livez
-              port: 10250  # Port number, not "https"
+              port: 10250
               scheme: HTTPS
             initialDelaySeconds: 10
             timeoutSeconds: 1
@@ -61,7 +78,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /readyz
-              port: 10250  # Port number, not "https"
+              port: 10250
               scheme: HTTPS
             initialDelaySeconds: 20
             timeoutSeconds: 1
@@ -70,8 +87,8 @@ spec:
             failureThreshold: 3
           resources:
             requests:
-              cpu: 100m
-              memory: 200Mi
+              cpu: 100m         # Minimum CPU requested
+              memory: 200Mi     # Minimum Memory requested
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true

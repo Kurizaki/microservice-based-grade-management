@@ -1,3 +1,9 @@
+############################################
+# NAMESPACE: mynetwork
+# This creates a logical grouping (namespace) within the cluster
+# called "mynetwork". All objects created in this namespace
+# will be isolated from other namespaces in terms of naming.
+############################################
 apiVersion: v1
 kind: Namespace
 metadata:

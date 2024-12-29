@@ -1,3 +1,9 @@
+############################################
+# DEPLOYMENT: calc-service
+# This Deployment runs the calculation service in the "mynetwork" namespace.
+# It starts with 2 replicas, each Pod labeled as "app: calc-service".
+# The container image, resource requests/limits, and exposed port are specified here.
+############################################
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,12 +20,24 @@ spec:
         app: calc-service
     spec:
       containers:
-      - name: calc-service
-        image: kurizakii/calc-service:latest
-        ports:
-        - containerPort: 8080
+        - name: calc-service
+          image: kurizakii/calc-service:latest
+          resources:
+            requests:
+              cpu: 100m         # Minimum CPU requested
+              memory: 200Mi     # Minimum Memory requested
+            limits:
+              cpu: 500m         # Maximum CPU allowed
+              memory: 512Mi     # Maximum Memory allowed
+          ports:
+            - containerPort: 8080  # Port exposed by the container
 
 ---
+############################################
+# SERVICE: calc-service
+# Exposes the calc-service Pods internally within the "mynetwork" namespace.
+# Traffic on port 8080 is routed to the containers on port 8080.
+############################################
 apiVersion: v1
 kind: Service
 metadata:
@@ -32,3 +50,29 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
+
+---
+############################################
+# HORIZONTAL POD AUTOSCALER: calculation-service-hpa
+# Automatically scales the number of Pods for a given Deployment
+# based on CPU utilization (50% in this example).
+############################################
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: calculation-service-hpa
+  namespace: mynetwork
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: calc-service
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50

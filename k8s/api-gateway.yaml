@@ -1,3 +1,9 @@
+############################################
+# DEPLOYMENT: api-gateway
+# This Deployment runs the API Gateway application within the "mynetwork" namespace.
+# It starts with 2 replicas (pods) and labels them as "app: api-gateway". The containers
+# request a certain amount of CPU and memory, and define upper limits for those resources.
+############################################
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,10 +24,39 @@ spec:
           image: kurizakii/api-gateway:latest
           resources:
             requests:
-              cpu: 100m
-              memory: 200Mi
+              cpu: 100m         # Minimum CPU requested by the container
+              memory: 200Mi     # Minimum Memory requested by the container
             limits:
-              cpu: 500m
-              memory: 512Mi
+              cpu: 500m         # Maximum CPU allowed for the container
+              memory: 512Mi     # Maximum Memory allowed for the container
           ports:
-            - containerPort: 8080
+            - containerPort: 8080  # Port on which the container listens
+
+---
+############################################
+# HORIZONTAL POD AUTOSCALER: api-gateway-hpa
+# This HPA resource automatically scales the number of pods for the
+# "api-gateway" Deployment based on CPU utilization metrics.
+# - minReplicas: 2 (won't go below 2 replicas)
+# - maxReplicas: 5 (won't exceed 5 replicas)
+# - averageUtilization: 50% CPU
+############################################
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-gateway-hpa
+  namespace: mynetwork
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-gateway
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
