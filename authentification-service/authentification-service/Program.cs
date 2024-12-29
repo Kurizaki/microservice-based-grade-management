@@ -3,27 +3,50 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+/////////////////////////////////////////////////////////////
+// 1. Add Services to the Container
+//    - Registers controllers
+//    - Configures the DbContext to use SQLite
+//    - Enables a CORS policy that allows any origin, method, and header
+/////////////////////////////////////////////////////////////
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AUTHDB>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    // "AllowAnyOrigin" CORS policy
+    options.AddPolicy("AllowAnyOrigin", builder =>
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+    );
 });
 
-// Build the app
+/////////////////////////////////////////////////////////////
+// 2. Build the application
+/////////////////////////////////////////////////////////////
 var app = builder.Build();
 
-// Apply migrations and create database if not exists
+/////////////////////////////////////////////////////////////
+// 3. Database Migrations
+//    - Creates a new scope to get the AUTHDB context
+//    - Automatically applies any pending migrations 
+//      and creates the database if it doesn't exist
+/////////////////////////////////////////////////////////////
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AUTHDB>();
     dbContext.Database.Migrate();
 }
 
-// Configure the HTTP request pipeline.
+/////////////////////////////////////////////////////////////
+// 4. Configure the HTTP Request Pipeline
+//    - Enables Developer Exception Page and Swagger in Development
+//    - Applies the CORS policy
+//    - Sets up Routing, Authorization, and Controller Endpoints
+/////////////////////////////////////////////////////////////
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -31,9 +54,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAnyOrigin");
-app.UseRouting();
-app.UseAuthorization();
-app.MapControllers();
+app.UseCors("AllowAnyOrigin");   // Apply CORS to requests
 
-app.Run();
+app.UseRouting();                // Enable endpoint routing
+app.UseAuthorization();          // Use authorization middleware
+
+app.MapControllers();            // Map controller routes
+
+app.Run();                       // Run the application

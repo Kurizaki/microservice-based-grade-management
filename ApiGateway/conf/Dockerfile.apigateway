@@ -1,17 +1,42 @@
-# Basisimage verwenden
+###################################################
+# BASE IMAGE: nginx:alpine
+# This lightweight Nginx image is used as the base
+# for hosting static content and acting as a reverse proxy.
+###################################################
 FROM nginx:alpine
 
-# Standard-nginx.conf entfernen
-RUN rm /etc/nginx/nginx.conf
+###################################################
+# REMOVE DEFAULT CONFIG
+# Removes the default nginx.conf to avoid conflicts
+# with the custom one you're providing.
+###################################################
+RUN rm -f /etc/nginx/nginx.conf
 
-# Eigene NGINX-Konfiguration kopieren
+###################################################
+# COPY CUSTOM NGINX CONFIG
+# Places your custom configuration into /etc/nginx/nginx.conf.
+# Ensure "ApiGateway/conf/apigateway.conf" is the correct relative path
+# within your build context.
+###################################################
 COPY ApiGateway/conf/apigateway.conf /etc/nginx/nginx.conf
 
-# Statische Frontend-Dateien kopieren
+###################################################
+# COPY STATIC FRONTEND FILES
+# Copies the static assets from "../../frontend" into
+# Nginx's default document root, making them publicly accessible.
+# Make sure your directory structure matches this COPY instruction.
+###################################################
 COPY ../../frontend /usr/share/nginx/html
 
-# Port 8080 freigeben
+###################################################
+# EXPOSE PORT
+# Opens port 8080 for external access to your Nginx server.
+# Matches the port specified in your custom config.
+###################################################
 EXPOSE 8080
 
-# NGINX starten
+###################################################
+# DEFAULT COMMAND
+# Runs Nginx in the foreground to keep the container alive.
+###################################################
 CMD ["nginx", "-g", "daemon off;"]

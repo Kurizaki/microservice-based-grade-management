@@ -1,30 +1,50 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+/////////////////////////////////////////////////////////////
+// 1. Register Services
+/////////////////////////////////////////////////////////////
+builder.Services.AddControllers();               // Adds controller support
+builder.Services.AddEndpointsApiExplorer();      // Enables minimal APIs explorer
+builder.Services.AddSwaggerGen();                // Adds Swagger/OpenAPI generation
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+// CORS: Allow any origin, method, and header
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy("AllowAnyOrigin", policyBuilder =>
+        policyBuilder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+    );
 });
 
+/////////////////////////////////////////////////////////////
+// 2. Build the Application
+/////////////////////////////////////////////////////////////
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+/////////////////////////////////////////////////////////////
+// 3. Configure Middleware (HTTP pipeline)
+/////////////////////////////////////////////////////////////
 if (app.Environment.IsDevelopment())
 {
+    // Provide detailed exception page and enable Swagger in development
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Apply the "AllowAnyOrigin" CORS policy to incoming requests
 app.UseCors("AllowAnyOrigin");
+
+// Use routing middleware to direct requests to the correct endpoints
 app.UseRouting();
+
+// Use authorization (if configured in the controllers)
 app.UseAuthorization();
+
+// Map incoming requests to controllers
 app.MapControllers();
 
+// Run the app
 app.Run();

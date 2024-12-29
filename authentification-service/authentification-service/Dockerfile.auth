@@ -1,27 +1,41 @@
-# Basis-Image für die Laufzeit
+###################################################
+# BASE IMAGE (RUNTIME)
+# Provides the .NET (ASP.NET) 8.0 runtime environment.
+# Sets the working directory to /app and exposes port 8081.
+###################################################
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8081
 
-
-# Build-Image für das SDK
+###################################################
+# BUILD IMAGE (SDK)
+# Contains the .NET 8.0 SDK to restore, build,
+# and publish the application.
+###################################################
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Kopiere die .csproj-Datei und führe dotnet restore aus
+# Copy the .csproj file and restore dependencies
 COPY ["authentification-service.csproj", "./"]
 RUN dotnet restore "authentification-service.csproj"
 
-# Kopiere den Rest des Codes und baue das Projekt
+# Copy the remaining source code and build the project
 COPY . .
 WORKDIR "/src"
 RUN dotnet build "authentification-service.csproj" -c Release -o /app/build
 
-# Veröffentliche das Projekt
+###################################################
+# PUBLISH STAGE
+# Publishes the application to a folder in Release mode.
+###################################################
 FROM build AS publish
 RUN dotnet publish "authentification-service.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# Finale Stufe für die Laufzeit
+###################################################
+# FINAL IMAGE (RUNTIME)
+# Copies the published output from the publish stage
+# into the final runtime image and sets the entry point.
+###################################################
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

@@ -1,26 +1,40 @@
-# Basis-Image für die Laufzeit
+###################################################
+# BASE IMAGE (RUNTIME)
+# This stage uses the .NET 8.0 ASP.NET runtime to run the application.
+# We set WORKDIR to /app and expose port 8081 for incoming traffic.
+###################################################
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8081
 
-# Build-Image für das SDK
+###################################################
+# BUILD IMAGE (SDK)
+# This stage includes the .NET SDK to build and publish the application.
+###################################################
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Kopiere die .csproj-Datei und führe dotnet restore aus
+# 1. Copy the project file and run "dotnet restore".
 COPY ["grade-service.csproj", "./"]
 RUN dotnet restore "grade-service.csproj"
 
-# Kopiere den Rest des Codes und baue das Projekt
+# 2. Copy all remaining source files and build the project.
 COPY . .
 WORKDIR "/src"
 RUN dotnet build "grade-service.csproj" -c Release -o /app/build
 
-# Veröffentliche das Projekt
+###################################################
+# PUBLISH STAGE
+# Publishes the application to a folder in Release mode.
+###################################################
 FROM build AS publish
 RUN dotnet publish "grade-service.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# Finale Stufe für die Laufzeit
+###################################################
+# FINAL IMAGE (RUNTIME)
+# Uses the base (ASP.NET runtime) image, copies the published output,
+# and sets the entrypoint to run the application.
+###################################################
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

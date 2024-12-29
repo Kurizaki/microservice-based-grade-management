@@ -1,16 +1,28 @@
 version: '3.9'
 
 services:
+  ##########################################################
+  # AUTH SERVICE
+  # A .NET service handling authentication.
+  # Publishes on port 5001 -> container port 8080.
+  # Uses Dockerfile.auth in the specified context folder.
+  ##########################################################
   auth-service:
     build:
       context: ./authentification-service/authentification-service
       dockerfile: Dockerfile.auth
     container_name: auth-service
     ports:
-      - "5001:8080"
+      - "5001:8080"  # Host port : Container port
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
+  ##########################################################
+  # CALC SERVICE
+  # A .NET service handling calculations.
+  # Publishes on port 5002 -> container port 8080.
+  # Uses Dockerfile.calc in the specified context folder.
+  ##########################################################
   calc-service:
     build:
       context: ./calculation-service/calculation-service
@@ -21,6 +33,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
+  ##########################################################
+  # GRADE SERVICE
+  # A .NET service managing grade records.
+  # Publishes on port 5003 -> container port 8080.
+  # Uses Dockerfile.grade in the specified context folder.
+  ##########################################################
   grade-service:
     build:
       context: ./grade-service/grade-service
@@ -31,6 +49,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
+  ##########################################################
+  # FRONTEND
+  # Builds the frontend from Dockerfile.frontend
+  # Publishes on port 5004 -> container port 8080.
+  ##########################################################
   frontend:
     build:
       context: ./frontend
@@ -39,6 +62,14 @@ services:
     ports:
       - "5004:8080"
 
+  ##########################################################
+  # NGINX (Reverse Proxy)
+  # Uses the latest Nginx image.
+  # Binds host port 8080 to container port 8080.
+  # Mounts the custom apigateway.conf file into /etc/nginx/nginx.conf.
+  # Also mounts the frontend files into /usr/share/nginx/html.
+  # Waits for auth-service, calc-service, grade-service, and frontend.
+  ##########################################################
   nginx:
     image: nginx:latest
     container_name: nginx

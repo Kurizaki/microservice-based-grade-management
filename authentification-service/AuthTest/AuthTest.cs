@@ -14,34 +14,42 @@ namespace AuthTest
         private readonly AuthController _controller;
         private readonly IConfiguration _configuration;
 
+        /// <summary>
+        /// Initializes the in-memory database, mock configuration, 
+        /// and AuthController for testing.
+        /// </summary>
         public AuthTest()
         {
-            // Set up in-memory database options
+            // 1. Set up in-memory database options
             var options = new DbContextOptionsBuilder<AUTHDB>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
 
-            // Create an instance of AUTHDB with in-memory database
+            // 2. Create an in-memory AUTHDB context
             var context = new AUTHDB(options);
 
-            // Set up configuration mock
+            // 3. Mock IConfiguration to provide a dummy JWT token
             var mockConfiguration = new Mock<IConfiguration>();
-            mockConfiguration.Setup(c => c.GetSection("AppSettings:Token").Value).Returns("sadfghjkhgfdsewrtasdfgdsafgdasdfgshddsafghjdsafghjfdsafghjkfdsafghjk");
+            mockConfiguration
+                .Setup(c => c.GetSection("AppSettings:Token").Value)
+                .Returns("sadfghjkhgfdsewrtasdfgdsafgdasdfgshddsafghjdsafghjfdsafghjkfdsafghjk");
             _configuration = mockConfiguration.Object;
 
-            // Initialize the controller with the in-memory context and configuration
+            // 4. Initialize the controller using the in-memory context and mock config
             _controller = new AuthController(context, _configuration);
         }
 
+        /// <summary>
+        /// Verifies that a valid login returns an OkObjectResult.
+        /// </summary>
         [TestMethod]
         public void Login_ReturnsOkResult_WhenCredentialsAreValid()
         {
             // Arrange
             var username = "testuser";
             var password = "testpassword";
-            var user = new User { Username = username, PasswordHash = BCrypt.Net.BCrypt.HashPassword(password) };
 
-            // Add user to the in-memory database
+            // Register a new user (which stores it in the in-memory database)
             _controller.Register(new UserDTO { Username = username, Password = password });
 
             // Act
@@ -51,10 +59,13 @@ namespace AuthTest
             Assert.IsInstanceOfType(result, typeof(OkObjectResult));
         }
 
+        /// <summary>
+        /// Verifies that an invalid login returns an UnauthorizedObjectResult.
+        /// </summary>
         [TestMethod]
         public void Login_ReturnsUnauthorizedResult_WhenCredentialsAreInvalid()
         {
-            // Act
+            // Act: Attempt login with non-existent user credentials
             var result = _controller.Login(new UserDTO { Username = "invaliduser", Password = "wrongpassword" });
 
             // Assert

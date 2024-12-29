@@ -1,6 +1,6 @@
+# Define the host address variable for the calculation service
 @calculation_service_HostAddress = http://localhost:5210
 
+# Send a GET request to the /weatherforecast/ endpoint
 GET {{calculation_service_HostAddress}}/weatherforecast/
 Accept: application/json
-
-###

@@ -1,13 +1,21 @@
 {
+  // Profiles define how your application is launched in various scenarios,
+  // such as running locally with HTTP or HTTPS, via IIS Express, or in a Docker container.
   "profiles": {
     "http": {
+      // "commandName": "Project" means we run the project using dotnet on your local machine.
       "commandName": "Project",
+      // Launches the default browser to the "launchUrl" when the application starts.
       "launchBrowser": true,
+      // When the application starts, it will open "http://localhost:5210/swagger"
       "launchUrl": "swagger",
+      // Sets the environment variable for the application.
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
+      // Displays the URL messages in the console when running `dotnet run`.
       "dotnetRunMessages": true,
+      // The actual URL(s) the application listens on.
       "applicationUrl": "http://localhost:5210"
     },
     "https": {
@@ -18,9 +26,11 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
+      // The application listens on both HTTP (5210) and HTTPS (7208) ports.
       "applicationUrl": "https://localhost:7208;http://localhost:5210"
     },
     "IIS Express": {
+      // "commandName": "IISExpress" launches your app in IIS Express (Windows-only).
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -29,22 +39,31 @@
       }
     },
     "Container (Dockerfile)": {
+      // "commandName": "Docker" uses your Dockerfile to build and run the container.
       "commandName": "Docker",
+      // Automatically opens a browser window to the "launchUrl".
       "launchBrowser": true,
+      // The URL template for opening Swagger in a browser.
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
+        // HTTPS and HTTP ports inside the Docker container.
         "ASPNETCORE_HTTPS_PORTS": "8081",
         "ASPNETCORE_HTTP_PORTS": "8080"
       },
+      // Publishes all exposed ports in the Docker container.
       "publishAllPorts": true,
+      // Indicates to use SSL (HTTPS).
       "useSSL": true
     }
   },
+  // Reference to the JSON schema for validation (not mandatory, but helpful).
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
+    // Disables Windows Authentication and enables Anonymous Authentication.
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
+      // Default HTTP and HTTPS bindings for IIS Express.
       "applicationUrl": "http://localhost:43924",
       "sslPort": 44311
     }
