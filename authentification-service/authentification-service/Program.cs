@@ -1,7 +1,34 @@
 using authentification_service.Models;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
+
+// Ensure log directories exist
+Directory.CreateDirectory("/var/log/gradesystem/backend");
+Directory.CreateDirectory("/var/log/gradesystem/frontend");
+Directory.CreateDirectory("/var/log/gradesystem/system");
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .WriteTo.File("/var/log/gradesystem/backend/errors.log", 
+        restrictedToMinimumLevel: LogEventLevel.Error,
+        rollingInterval: RollingInterval.Day,
+        shared: true)
+    .WriteTo.File("/var/log/gradesystem/backend/access.log", 
+        restrictedToMinimumLevel: LogEventLevel.Information,
+        rollingInterval: RollingInterval.Day,
+        shared: true)
+    .WriteTo.File("/var/log/gradesystem/backend/changes.log", 
+        restrictedToMinimumLevel: LogEventLevel.Information,
+        rollingInterval: RollingInterval.Day,
+        shared: true)
+    .Enrich.FromLogContext()
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog();
 
 // Add services to the container.
 builder.Services.AddControllers();
