@@ -15,21 +15,15 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("/var/log/gradesystem/backend/errors.log", 
         restrictedToMinimumLevel: LogEventLevel.Error,
         rollingInterval: RollingInterval.Day,
-        shared: true,
-        flushToDiskInterval: TimeSpan.FromSeconds(1),
-        buffered: false)
+        shared: true)
     .WriteTo.File("/var/log/gradesystem/backend/access.log", 
         restrictedToMinimumLevel: LogEventLevel.Information,
         rollingInterval: RollingInterval.Day,
-        shared: true,
-        flushToDiskInterval: TimeSpan.FromSeconds(1),
-        buffered: false)
+        shared: true)
     .WriteTo.File("/var/log/gradesystem/backend/changes.log", 
         restrictedToMinimumLevel: LogEventLevel.Information,
         rollingInterval: RollingInterval.Day,
-        shared: true,
-        flushToDiskInterval: TimeSpan.FromSeconds(1),
-        buffered: false)
+        shared: true)
     .Enrich.FromLogContext()
     .CreateLogger();
 
