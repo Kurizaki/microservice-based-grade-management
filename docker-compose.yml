@@ -1,14 +1,6 @@
 version: '3.9'
 
 services:
-  logging:
-    build:
-      context: ./logs
-      dockerfile: Dockerfile.logging
-    container_name: logging-service
-    volumes:
-      - gradesystem_logs:/var/log/gradesystem
-
   auth-service:
     build:
       context: ./authentification-service/authentification-service
@@ -25,9 +17,8 @@ services:
         max-file: "3"
         tag: "{{.Name}}"
     volumes:
-      - gradesystem_logs:/var/log/gradesystem
-    depends_on:
-      - logging
+      - /var/log/gradesystem:/var/log/gradesystem
+    user: "syslog:adm"
 
   calc-service:
     build:
@@ -79,6 +70,3 @@ services:
       - calc-service
       - grade-service
       - frontend
-
-volumes:
-  gradesystem_logs:
