@@ -32,8 +32,6 @@ spec:
               memory: 512Mi     # Maximum Memory allowed for the container
           ports:
             - containerPort: 8080  # Container port to expose
-
----
 ############################################
 # SERVICE: auth-service
 # Exposes the auth-service Deployment inside the "mynetwork" namespace.

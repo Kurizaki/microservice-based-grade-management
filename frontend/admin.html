@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4c39a50c7e.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <a href="#" class="logo">Grade<span style="color: var(--text-color)">System</span></a>
+            <div class="nav-links">
+                <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        
+        <div class="dashboard-grid">
+            <!-- Monitoring Section -->
+            <div class="dashboard-card">
+                <h2>System Monitoring</h2>
+                <iframe src="/monitoring" class="dashboard-iframe"></iframe>
+            </div>
+
+            <!-- Logging Section -->
+            <div class="dashboard-card">
+                <h2>System Logs</h2>
+                <iframe src="/logging" class="dashboard-iframe"></iframe>
+            </div>
+
+            <!-- User Management Section -->
+            <div class="dashboard-card">
+                <h2>User Management</h2>
+                <div class="user-list">
+                    <div class="user-list-header">
+                        <span>Username</span>
+                        <span>Role</span>
+                        <span>Actions</span>
+                    </div>
+                    <div id="user-list-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

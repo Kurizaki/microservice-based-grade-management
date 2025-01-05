@@ -22,6 +22,23 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AUTHDB>();
     dbContext.Database.Migrate();
+    
+    // Seed admin user if not exists
+    if (!dbContext.Users.Any(u => u.IsAdmin))
+    {
+        var adminUsername = "admin";
+        var adminPassword = BCrypt.Net.BCrypt.HashPassword("Admin@1234");
+        
+        var adminUser = new User
+        {
+            Username = adminUsername,
+            PasswordHash = adminPassword,
+            IsAdmin = true
+        };
+        
+        dbContext.Users.Add(adminUser);
+        dbContext.SaveChanges();
+    }
 }
 
 // Configure the HTTP request pipeline.
