@@ -8,6 +8,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AUTHDB>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Add CORS policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
