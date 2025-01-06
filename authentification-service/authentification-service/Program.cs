@@ -14,51 +14,38 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
+// Build the app
 var app = builder.Build();
 
-// Apply migrations and seed the admin user
+// Apply migrations and seed admin user if not exists
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AUTHDB>();
     dbContext.Database.Migrate();
 
-    // Call the seeding method
-    await SeedAdminUserAsync(dbContext);
+    // Seed the admin user
+    SeedAdminUser(dbContext);
 }
 
-async Task SeedAdminUserAsync(AUTHDB dbContext)
+void SeedAdminUser(AUTHDB dbContext)
 {
-    Console.WriteLine("Checking for admin user...");
-
     if (!dbContext.Users.Any(u => u.Username == "admin"))
     {
-        var adminUsername = "admin";
-        var adminPassword = BCrypt.Net.BCrypt.HashPassword("admin");
-
         var adminUser = new User
         {
-            Username = adminUsername,
-            PasswordHash = adminPassword,
+            Username = "admin",
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin"),
             IsAdmin = true
         };
 
-        try
-        {
-            dbContext.Users.Add(adminUser);
-            await dbContext.SaveChangesAsync();
+        dbContext.Users.Add(adminUser);
+        dbContext.SaveChanges();
 
-            Console.WriteLine("Admin user created successfully");
-            Console.WriteLine($"Username: {adminUsername}");
-            Console.WriteLine($"Password: admin");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error creating admin user: {ex.Message}");
-        }
+        Console.WriteLine("Admin user created successfully: Username=admin, Password=admin");
     }
     else
     {
-        Console.WriteLine("Admin user already exists");
+        Console.WriteLine("Admin user already exists.");
     }
 }
 
