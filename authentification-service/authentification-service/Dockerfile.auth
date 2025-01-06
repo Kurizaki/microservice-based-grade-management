@@ -21,8 +21,8 @@ RUN adduser --disabled-password --gecos '' appuser && \
     chown -R appuser:appuser /app
 USER appuser
 
-# Run the app and execute the SQL script to seed the admin user
-ENTRYPOINT ["sh", "-c", "dotnet authentification-service.dll && sqlite3 AUTHDB.sqlite < /app/seed_admin.sql"]
+# Run the seed script before starting the app
+ENTRYPOINT ["sh", "-c", "sqlite3 /app/AUTHDatabase.sqlite < /app/seed_admin.sql && dotnet authentification-service.dll"]
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s \
