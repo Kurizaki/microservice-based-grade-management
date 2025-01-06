@@ -37,5 +37,5 @@ jobs:
           script: |
             echo "${{ secrets.KUBECONFIG }}" > kubeconfig
             export KUBECONFIG=kubeconfig
-            cd microservice-based-grade-management/k8s
+            cd microservice-based-grade-management
             kubectl apply -f ./k8s/
