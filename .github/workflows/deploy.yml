@@ -50,6 +50,6 @@ jobs:
           command_timeout: 600s
           script: |
               cd microservice-based-grade-management &&
-              export KUBECONFIG=kubeconfig &&
+              export KUBECONFIG=/etc/rancher/k3s/k3s.yaml &&
               kubectl apply -f ./k8s/namespace.yml --validate=false &&
               kubectl apply -f ./k8s/ --validate=false
