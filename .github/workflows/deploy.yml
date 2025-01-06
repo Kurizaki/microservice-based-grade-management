@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            echo "${{ secrets.KUBECONFIG }}" > ~/kubeconfig
+            echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/kubeconfig
             export KUBECONFIG=~/kubeconfig
             cd microservice-based-grade-management
             kubectl apply -f ./k8s/ --validate=false
