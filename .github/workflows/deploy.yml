@@ -45,5 +45,5 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             export KUBECONFIG=kubeconfig
-            kubectl apply -f namespace.yml
+            kubectl apply -f ./namespace.yml
             kubectl apply -f ./k8s/ --validate=false
