@@ -69,11 +69,52 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Apply migrations on startup
+// Apply migrations on startup with retry logic
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-    dbContext.Database.Migrate();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    
+    int retryCount = 0;
+    const int maxRetries = 5;
+    const int retryDelay = 5000; // 5 seconds
+    
+    while (retryCount < maxRetries)
+    {
+        try
+        {
+            logger.LogInformation("Attempting to apply database migrations (Attempt {RetryCount})", retryCount + 1);
+            
+            // Verify database file exists
+            var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "GradeDb.sqlite");
+            if (!File.Exists(dbPath))
+            {
+                logger.LogInformation("Database file not found, creating new database at {DbPath}", dbPath);
+            }
+            
+            dbContext.Database.Migrate();
+            logger.LogInformation("Database migrations applied successfully");
+            break;
+        }
+        catch (Microsoft.Data.Sqlite.SqliteException ex) when (ex.SqliteErrorCode == 10) // SQLITE_IOERR
+        {
+            retryCount++;
+            logger.LogError(ex, "Database I/O error occurred. Retrying in {RetryDelay}ms...", retryDelay);
+            
+            if (retryCount >= maxRetries)
+            {
+                logger.LogCritical("Failed to apply database migrations after {MaxRetries} attempts", maxRetries);
+                throw;
+            }
+            
+            Thread.Sleep(retryDelay);
+        }
+        catch (Exception ex)
+        {
+            logger.LogCritical(ex, "Critical error applying database migrations");
+            throw;
+        }
+    }
 }
 
 // Configure the rest of the pipeline
