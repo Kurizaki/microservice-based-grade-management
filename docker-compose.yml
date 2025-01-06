@@ -66,6 +66,7 @@ services:
       - calc-service
       - grade-service
 
+
   kibana:
     image: docker.elastic.co/kibana/kibana:8.17.0
     container_name: kibana
