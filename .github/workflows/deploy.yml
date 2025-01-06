@@ -38,4 +38,5 @@ jobs:
             echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/kubeconfig
             export KUBECONFIG=~/kubeconfig
             cd microservice-based-grade-management
+            kubectl apply -f namespace.yml
             kubectl apply -f ./k8s/ --validate=false
