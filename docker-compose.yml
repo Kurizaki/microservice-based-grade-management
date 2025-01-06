@@ -11,7 +11,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     volumes:
-      - ./authentification-service/authentification-service/AUTHDatabase.sqlite:/app/AUTHDatabase.sqlite
+      - auth-db-data:/app/AUTHDatabase.sqlite
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 30s
@@ -45,6 +45,8 @@ services:
       - "5003:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+    volumes:
+      - grade-db-data:/app/GradeDb.sqlite
 
   frontend:
     build:
@@ -68,26 +70,6 @@ services:
       - calc-service
       - grade-service
 
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:8.17.0
-    container_name: kibana
-    ports:
-      - "5601:5601"
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-    depends_on:
-      - elasticsearch
-
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
-    container_name: elasticsearch
-    ports:
-      - "9200:9200"
-    environment:
-      - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-
   nginx:
     image: nginx:latest
     container_name: nginx
@@ -102,4 +84,9 @@ services:
       - grade-service
       - frontend
       - prometheus
-      - kibana
+
+volumes:
+  auth-db-data:
+    driver: local
+  grade-db-data:
+    driver: local
