@@ -62,7 +62,7 @@ services:
     ports:
       - "9900:9900"
     volumes:
-      - ./k8s/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./k8s/prometheus-deployment.yml:/etc/prometheus/prometheus.yml
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     depends_on:
