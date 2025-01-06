@@ -28,6 +28,7 @@ jobs:
 
   k3s-deploy:
     name: k3s Deployment
+    needs: docker-deploy
     runs-on: ubuntu-latest
 
     steps:
