@@ -36,8 +36,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd microservice-based-grade-management/k8s
-            kubectl apply -f deployment.yml
-            kubectl apply -f service.yml
+            kubectl apply -f k8s/
 
       # Step 4: Deploy Prometheus to Kubernetes
       - name: Deploy Prometheus to Kubernetes
