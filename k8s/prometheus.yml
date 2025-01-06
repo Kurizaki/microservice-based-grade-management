@@ -1,169 +1,54 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: monitoring
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
 
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: prometheus
-  namespace: monitoring
+scrape_configs:
+- job_name: 'grade-system'
+  kubernetes_sd_configs:
+  - role: endpoints
+    namespaces:
+      names: [mynetwork, logging, monitoring]
+  relabel_configs:
+  - source_labels: [__meta_kubernetes_service_label_app]
+    action: keep
+    regex: (auth-service|calc-service|grade-service|api-gateway|elasticsearch|kibana|prometheus)
+  metrics_path: /metrics
+  scheme: http
+  scrape_interval: 15s
+  scrape_timeout: 10s
 
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: prometheus
-rules:
-- apiGroups: [""]
-  resources:
-  - nodes
-  - nodes/metrics
-  - services
-  - endpoints
-  - pods
-  verbs: ["get", "list", "watch"]
-- apiGroups: [""]
-  resources:
-  - configmaps
-  verbs: ["get"]
-- apiGroups:
-  - networking.k8s.io
-  resources:
-  - ingresses
-  verbs: ["get", "list", "watch"]
-- nonResourceURLs: ["/metrics"]
-  verbs: ["get"]
+- job_name: 'elasticsearch'
+  kubernetes_sd_configs:
+  - role: endpoints
+    namespaces:
+      names: [logging]
+  relabel_configs:
+  - source_labels: [__meta_kubernetes_service_label_app]
+    action: keep
+    regex: elasticsearch
+  metrics_path: /_prometheus/metrics
+  scheme: http
 
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: prometheus
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: prometheus
-subjects:
-- kind: ServiceAccount
-  name: prometheus
-  namespace: monitoring
+- job_name: 'kibana'
+  kubernetes_sd_configs:
+  - role: endpoints
+    namespaces:
+      names: [logging]
+  relabel_configs:
+  - source_labels: [__meta_kubernetes_service_label_app]
+    action: keep
+    regex: kibana
+  metrics_path: /api/status
+  scheme: http
 
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: prometheus-config
-  namespace: monitoring
-data:
-  prometheus.yml: |
-    global:
-      scrape_interval: 15s
-      evaluation_interval: 15s
-
-    scrape_configs:
-    - job_name: 'grade-system'
-      kubernetes_sd_configs:
-      - role: endpoints
-        namespaces:
-          names: [mynetwork, logging, monitoring]
-      relabel_configs:
-      - source_labels: [__meta_kubernetes_service_label_app]
-        action: keep
-        regex: (auth-service|calc-service|grade-service|api-gateway|elasticsearch|kibana|prometheus)
-      metrics_path: /metrics
-      scheme: http
-      scrape_interval: 15s
-      scrape_timeout: 10s
-
-    - job_name: 'elasticsearch'
-      kubernetes_sd_configs:
-      - role: endpoints
-        namespaces:
-          names: [logging]
-      relabel_configs:
-      - source_labels: [__meta_kubernetes_service_label_app]
-        action: keep
-        regex: elasticsearch
-      metrics_path: /_prometheus/metrics
-      scheme: http
-
-    - job_name: 'kibana'
-      kubernetes_sd_configs:
-      - role: endpoints
-        namespaces:
-          names: [logging]
-      relabel_configs:
-      - source_labels: [__meta_kubernetes_service_label_app]
-        action: keep
-        regex: kibana
-      metrics_path: /api/status
-      scheme: http
-
-    - job_name: 'kubernetes-apiservers'
-      kubernetes_sd_configs:
-      - role: endpoints
-      scheme: https
-      tls_config:
-        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-      relabel_configs:
-      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
-        action: keep
-        regex: default;kubernetes;https
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: prometheus
-  namespace: monitoring
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: prometheus
-  template:
-    metadata:
-      labels:
-        app: prometheus
-    spec:
-      serviceAccountName: prometheus
-      containers:
-      - name: prometheus
-        image: prom/prometheus:latest
-        args:
-        - "--config.file=/etc/prometheus/prometheus.yml"
-        - "--storage.tsdb.path=/prometheus"
-        - "--web.console.templates=/etc/prometheus/consoles"
-        - "--web.console.libraries=/etc/prometheus/console_libraries"
-        ports:
-        - containerPort: 9090
-        volumeMounts:
-        - name: config-volume
-          mountPath: /etc/prometheus
-        - name: prometheus-storage
-          mountPath: /prometheus
-      volumes:
-      - name: config-volume
-        configMap:
-          name: prometheus-config
-      - name: prometheus-storage
-        emptyDir: {}
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: prometheus
-  namespace: monitoring
-spec:
-  selector:
-    app: prometheus
-  ports:
-  - name: web
-    protocol: TCP
-    port: 9090
-    targetPort: 9090
-  type: ClusterIP
+- job_name: 'kubernetes-apiservers'
+  kubernetes_sd_configs:
+  - role: endpoints
+  scheme: https
+  tls_config:
+    ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+  bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+  relabel_configs:
+  - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+    action: keep
+    regex: default;kubernetes;https
