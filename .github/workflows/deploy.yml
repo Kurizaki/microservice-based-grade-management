@@ -54,5 +54,5 @@ jobs:
             export KUBECONFIG=/etc/rancher/k3s/k3s.yaml &&
             kubectl apply -f ./k8s/namespace.yml --validate=false &&
             kubectl apply -f ./k8s/prometheus-configmap.yml --validate=false &&
-            kubectl apply -f ./k8s/prometheus-deploy.yml --validate=false &&
+            kubectl apply -f ./k8s/prometheus-deployment.yml --validate=false &&
             kubectl apply -f ./k8s/ --validate=false
