@@ -10,6 +10,8 @@ services:
       - "5001:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+    volumes:
+      - ./authentification-service/authentification-service/AUTHDatabase.sqlite:/app/AUTHDatabase.sqlite
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 30s
