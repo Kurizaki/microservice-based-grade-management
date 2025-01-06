@@ -36,12 +36,19 @@ using (var scope = app.Services.CreateScope())
             IsAdmin = true
         };
         
-        dbContext.Users.Add(adminUser);
-        dbContext.SaveChanges();
-        
-        Console.WriteLine("Admin user created successfully");
-        Console.WriteLine($"Username: {adminUsername}");
-        Console.WriteLine($"Password: admin");
+        try 
+        {
+            dbContext.Users.Add(adminUser);
+            await dbContext.SaveChangesAsync();
+            
+            Console.WriteLine("Admin user created successfully");
+            Console.WriteLine($"Username: {adminUsername}");
+            Console.WriteLine($"Password: admin");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creating admin user: {ex.Message}");
+        }
     }
     else
     {
