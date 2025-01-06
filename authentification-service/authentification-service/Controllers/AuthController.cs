@@ -20,6 +20,19 @@ namespace authentification_service.Controllers
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            
+            // Create initial admin user if none exists
+            if (!_context.Users.Any(u => u.IsAdmin))
+            {
+                var adminUser = new User
+                {
+                    Username = "admin",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin"),
+                    IsAdmin = true
+                };
+                _context.Users.Add(adminUser);
+                _context.SaveChanges();
+            }
         }
 
         [HttpPost("register/")]
@@ -83,7 +96,8 @@ namespace authentification_service.Controllers
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Username)
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AppSettings:Token"]));

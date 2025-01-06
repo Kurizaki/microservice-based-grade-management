@@ -25,11 +25,28 @@ spec:
           image: kurizakii/auth-service:latest
           resources:
             requests:
-              cpu: 100m         # Minimum CPU requested by the container
-              memory: 200Mi     # Minimum Memory requested by the container
+              cpu: "100m"
+              memory: "200Mi"
             limits:
-              cpu: 500m         # Maximum CPU allowed for the container
-              memory: 512Mi     # Maximum Memory allowed for the container
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
           ports:
             - containerPort: 8080  # Container port to expose
 ############################################

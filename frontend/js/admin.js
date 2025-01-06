@@ -1,7 +1,28 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     checkAdminAuth();
     loadUsers();
+    await loadDashboards();
 });
+
+async function loadDashboards() {
+    try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${AUTH_API_BASE}/dashboards`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            const dashboards = await response.json();
+            document.querySelector('.dashboard-iframe[data-dashboard="prometheus"]').src = dashboards.Prometheus;
+            document.querySelector('.dashboard-iframe[data-dashboard="kibana"]').src = dashboards.Kibana;
+        }
+    } catch (error) {
+        console.error("Error loading dashboards:", error);
+    }
+}
 
 function checkAdminAuth() {
     const username = localStorage.getItem("username");
