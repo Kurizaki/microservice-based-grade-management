@@ -1,17 +1,21 @@
-# Basisimage verwenden
+# Use the NGINX base image
 FROM nginx:alpine
 
-# Standard-nginx.conf entfernen
+# Remove default nginx.conf
 RUN rm /etc/nginx/nginx.conf
 
-# Eigene NGINX-Konfiguration kopieren
+# Copy your custom NGINX configuration
 COPY ApiGateway/conf/apigateway.conf /etc/nginx/nginx.conf
 
-# Statische Frontend-Dateien kopieren
+# Copy static frontend files
 COPY ../../frontend /usr/share/nginx/html
 
-# Port 8080 freigeben
+# Download wait-for-it script
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
+
+# Expose port 8080
 EXPOSE 8080
 
-# NGINX starten
-CMD ["nginx", "-g", "daemon off;"]
+# Command to wait for all services before starting NGINX
+CMD ["/wait-for-it.sh", "auth-service:8080", "--", "/wait-for-it.sh", "grade-service:8080", "--", "/wait-for-it.sh", "calc-service:8080", "--", "/wait-for-it.sh", "frontend:8080", "--", "/wait-for-it.sh", "prometheus:9900", "--", "nginx", "-g", "daemon off;"]
