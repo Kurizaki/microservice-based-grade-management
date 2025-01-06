@@ -120,6 +120,6 @@ To ensure efficient development and deployment, the project employs **DevOps pra
 - **Team Members**: Pascal Oestrich, Timo Goedertier, Stefan Jesenko, Julius Burlet
 
 - **Project Start Date**: September 10, 2024  
-- **Project End Date**: January 7, 2025  
+- **Project End Date**: January 13, 2025  
 
 
