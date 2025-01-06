@@ -26,7 +26,7 @@ jobs:
               git pull origin main &&
               docker-compose pull &&
               docker-compose down &&
-              docker-compose up -d &&
+              docker-compose up -d
 
   k3s-deploy:
     name: k3s Deployment
@@ -52,4 +52,4 @@ jobs:
               cd microservice-based-grade-management &&
               export KUBECONFIG=kubeconfig &&
               kubectl apply -f ./k8s/namespace.yml --validate=false &&
-              kubectl apply -f ./k8s/ --validate=false &&
+              kubectl apply -f ./k8s/ --validate=false
