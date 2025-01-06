@@ -24,10 +24,10 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
     
     // Seed admin user if not exists
-    if (!dbContext.Users.Any(u => u.IsAdmin))
+    if (!dbContext.Users.Any(u => u.Username == "admin"))
     {
         var adminUsername = "admin";
-        var adminPassword = BCrypt.Net.BCrypt.HashPassword("Admin@1234");
+        var adminPassword = BCrypt.Net.BCrypt.HashPassword("admin");
         
         var adminUser = new User
         {
@@ -38,6 +38,14 @@ using (var scope = app.Services.CreateScope())
         
         dbContext.Users.Add(adminUser);
         dbContext.SaveChanges();
+        
+        Console.WriteLine("Admin user created successfully");
+        Console.WriteLine($"Username: {adminUsername}");
+        Console.WriteLine($"Password: admin");
+    }
+    else
+    {
+        Console.WriteLine("Admin user already exists");
     }
 }
 
