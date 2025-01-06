@@ -47,6 +47,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     volumes:
       - grade-db-data:/app/data/GradeDb.sqlite
+    restart: always
 
   frontend:
     build:
