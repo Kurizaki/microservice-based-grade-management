@@ -1,36 +1,29 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: prometheus-config
-  namespace: mynetwork
-data:
-  prometheus.yml: |
-    global:
-      scrape_interval: 15s
-      evaluation_interval: 15s
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
 
-    scrape_configs:
-      - job_name: 'auth-service'
-        static_configs:
-          - targets: ['auth-service:8080']
-        metrics_path: /metrics
+scrape_configs:
+  - job_name: 'auth-service'
+    static_configs:
+      - targets: ['auth-service:8080']
+    metrics_path: /metrics
 
-      - job_name: 'calc-service'
-        static_configs:
-          - targets: ['calc-service:8080']
-        metrics_path: /metrics
+  - job_name: 'calc-service'
+    static_configs:
+      - targets: ['calc-service:8080']
+    metrics_path: /metrics
 
-      - job_name: 'grade-service'
-        static_configs:
-          - targets: ['grade-service:8080']
-        metrics_path: /metrics
+  - job_name: 'grade-service'
+    static_configs:
+      - targets: ['grade-service:8080']
+    metrics_path: /metrics
 
-      - job_name: 'api-gateway'
-        static_configs:
-          - targets: ['nginx:8080']
-        metrics_path: /metrics
+  - job_name: 'api-gateway'
+    static_configs:
+      - targets: ['nginx:8080']
+    metrics_path: /metrics
 
-      - job_name: 'prometheus'
-        static_configs:
-          - targets: ['195.202.218.245:9900']
-        metrics_path: /metrics
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['195.202.218.245:9900']
+    metrics_path: /metrics
