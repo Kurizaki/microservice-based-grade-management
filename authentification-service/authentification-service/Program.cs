@@ -14,33 +14,39 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-// Build the app
 var app = builder.Build();
 
-// Apply migrations and create database if not exists
+// Apply migrations and seed the admin user
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AUTHDB>();
     dbContext.Database.Migrate();
-    
-    // Seed admin user if not exists
+
+    // Call the seeding method
+    await SeedAdminUserAsync(dbContext);
+}
+
+async Task SeedAdminUserAsync(AUTHDB dbContext)
+{
+    Console.WriteLine("Checking for admin user...");
+
     if (!dbContext.Users.Any(u => u.Username == "admin"))
     {
         var adminUsername = "admin";
         var adminPassword = BCrypt.Net.BCrypt.HashPassword("admin");
-        
+
         var adminUser = new User
         {
             Username = adminUsername,
             PasswordHash = adminPassword,
             IsAdmin = true
         };
-        
-        try 
+
+        try
         {
             dbContext.Users.Add(adminUser);
             await dbContext.SaveChangesAsync();
-            
+
             Console.WriteLine("Admin user created successfully");
             Console.WriteLine($"Username: {adminUsername}");
             Console.WriteLine($"Password: admin");
