@@ -54,7 +54,16 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd microservice-based-grade-management
-            export KUBECONFIG=kubeconfig
-            kubectl apply -f ./k8s/namespace.yml --validate=false
-            kubectl apply -f ./k8s/ --validate=false
+            retries=0
+            max_retries=3
+            until [ $retries -ge $max_retries ]
+            do
+              cd microservice-based-grade-management &&
+              export KUBECONFIG=kubeconfig &&
+              kubectl apply -f ./k8s/namespace.yml --validate=false &&
+              kubectl apply -f ./k8s/ --validate=false &&
+              break
+              retries=$((retries+1))
+              echo "Retry #$retries"
+              sleep 5
+            done
