@@ -20,7 +20,7 @@ spec:
         - "--config.file=/etc/prometheus/prometheus.yml"
         - "--storage.tsdb.path=/prometheus"
         ports:
-        - containerPort: 9090
+        - containerPort: 9900
         volumeMounts:
         - name: config-volume
           mountPath: /etc/prometheus
@@ -45,6 +45,6 @@ spec:
   ports:
   - name: web
     protocol: TCP
-    port: 9090
-    targetPort: 9090
+    port: 9900
+    targetPort: 9900
   type: ClusterIP
