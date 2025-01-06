@@ -1,50 +1,29 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: prometheus
-  namespace: mynetwork
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: prometheus
-  template:
-    metadata:
-      labels:
-        app: prometheus
-    spec:
-      containers:
-      - name: prometheus
-        image: prom/prometheus:latest
-        args:
-        - "--config.file=/etc/prometheus/prometheus.yml"
-        - "--storage.tsdb.path=/prometheus"
-        ports:
-        - containerPort: 9900
-        volumeMounts:
-        - name: config-volume
-          mountPath: /etc/prometheus
-        - name: prometheus-storage
-          mountPath: /prometheus
-      volumes:
-      - name: config-volume
-        configMap:
-          name: prometheus-config
-      - name: prometheus-storage
-        emptyDir: {}
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: prometheus
-  namespace: mynetwork
-spec:
-  selector:
-    app: prometheus
-  ports:
-  - name: web
-    protocol: TCP
-    port: 9900
-    targetPort: 9900
-  type: ClusterIP
+scrape_configs:
+  - job_name: 'auth-service'
+    static_configs:
+      - targets: ['auth-service:8080']
+    metrics_path: /metrics
+
+  - job_name: 'calc-service'
+    static_configs:
+      - targets: ['calc-service:8080']
+    metrics_path: /metrics
+
+  - job_name: 'grade-service'
+    static_configs:
+      - targets: ['grade-service:8080']
+    metrics_path: /metrics
+
+  - job_name: 'api-gateway'
+    static_configs:
+      - targets: ['nginx:8080']
+    metrics_path: /metrics
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['195.202.218.245:9900']
+    metrics_path: /metrics
