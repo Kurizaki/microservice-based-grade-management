@@ -11,7 +11,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     volumes:
-      - auth-db-data:/app/AUTHDatabase.sqlite
+      - auth-db-data:/app/data/AUTHDatabase.sqlite
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 30s
@@ -46,7 +46,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     volumes:
-      - grade-db-data:/app/data
+      - grade-db-data:/app/data/GradeDb.sqlite
 
   frontend:
     build:
