@@ -19,6 +19,8 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
+          timeout: 60s  
+          command_timeout: 600s
           script: |
               cd microservice-based-grade-management &&
               git pull origin main &&
@@ -44,6 +46,8 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
+          timeout: 60s  
+          command_timeout: 600s
           script: |
               cd microservice-based-grade-management &&
               export KUBECONFIG=kubeconfig &&
