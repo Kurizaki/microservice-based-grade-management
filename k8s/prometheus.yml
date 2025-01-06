@@ -19,6 +19,7 @@ spec:
       labels:
         app: prometheus
     spec:
+      serviceAccountName: default
       containers:
       - name: prometheus
         image: prom/prometheus:latest
@@ -48,6 +49,46 @@ spec:
   type: ClusterIP
 
 ---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: prometheus
+rules:
+- apiGroups: [""]
+  resources:
+  - nodes
+  - nodes/metrics
+  - services
+  - endpoints
+  - pods
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources:
+  - configmaps
+  verbs: ["get"]
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses
+  verbs: ["get", "list", "watch"]
+- nonResourceURLs: ["/metrics"]
+  verbs: ["get"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: monitoring
+
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -61,10 +102,12 @@ data:
     - job_name: 'grade-system'
       kubernetes_sd_configs:
       - role: endpoints
+        namespaces:
+          names: [mynetwork, logging, monitoring]
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_label_app]
         action: keep
-        regex: (auth-service|calc-service|grade-service|api-gateway)
+        regex: (auth-service|calc-service|grade-service|api-gateway|elasticsearch|kibana|prometheus)
       metrics_path: /metrics
       scheme: http
       scrape_interval: 15s
