@@ -23,7 +23,7 @@ spec:
       - name: prometheus
         image: prom/prometheus:latest
         ports:
-        - containerPort: 9900
+        - containerPort: 9090  # Prometheus default port
         volumeMounts:
         - name: config-volume
           mountPath: /etc/prometheus
@@ -43,8 +43,8 @@ spec:
     app: prometheus
   ports:
   - protocol: TCP
-    port: 9900
-    targetPort: 9900
+    port: 9090  # Prometheus default port
+    targetPort: 9090
   type: ClusterIP
 
 ---
