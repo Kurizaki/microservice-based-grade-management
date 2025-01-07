@@ -6,7 +6,7 @@ let testMode = localStorage.getItem("testMode") === "true";
 const AUTH_API_BASE = "/auth-api";
 const GRADE_API_BASE = "/grade-api";
 const CALC_API_BASE = "/calc-api";
-const ADMIN_API_BASE = "/admin-api/";
+const ADMIN_API_BASE = "/admin-api";
 function showToast(message, type) {
   // Cleanup old toast
   document.querySelectorAll(".toast").forEach((toast) => toast.remove());
