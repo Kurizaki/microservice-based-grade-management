@@ -51,7 +51,7 @@ namespace authentification_service.Controllers
             return Ok(new { isAdmin = user.IsAdmin });
         }
 
-        [HttpGet("/dashboards")]
+        [HttpGet("dashboards")]
         public IActionResult GetDashboardUrls()
         {
             if (!User.IsInRole("Admin"))
@@ -68,7 +68,7 @@ namespace authentification_service.Controllers
             return Ok(dashboards);
         }
 
-        [HttpGet("/users")]
+        [HttpGet("users")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _context.Users
@@ -82,7 +82,7 @@ namespace authentification_service.Controllers
             return Ok(users);
         }
 
-        [HttpPut("/users/{username}/admin")]
+        [HttpPut("users/{username}/admin")]
         public async Task<IActionResult> ToggleAdminRole(string username, [FromBody] bool isAdmin)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
@@ -98,7 +98,7 @@ namespace authentification_service.Controllers
             return Ok(new { message = $"User {username} admin status updated to {isAdmin}" });
         }
 
-        [HttpDelete("/users/{username}")]
+        [HttpDelete("users/{username}")]
         public async Task<IActionResult> DeleteUser(string username)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
