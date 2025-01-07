@@ -18,7 +18,7 @@ namespace authentification_service.Controllers
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        [HttpGet("/verify-admin")]
+        [HttpGet("verify-admin")]
         public async Task<IActionResult> VerifyAdmin()
         {
             var authHeader = Request.Headers["Authorization"].FirstOrDefault();
