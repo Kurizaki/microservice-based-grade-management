@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        const response = await fetch(`${AUTH_API_BASE}/verify-admin`, {
+        const response = await fetch(`${ADMIN_API_BASE}/verify-admin`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function loadDashboards() {
     try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`${AUTH_API_BASE}/dashboards`, {
+        const response = await fetch(`${ADMIN_API_BASE}/dashboards`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -58,7 +58,7 @@ async function loadDashboards() {
 async function loadUsers() {
     try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`${AUTH_API_BASE}/users`, {
+        const response = await fetch(`${ADMIN_API_BASE}/users`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -107,7 +107,7 @@ function renderUsers(users) {
 async function toggleAdmin(username, makeAdmin) {
     try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`${AUTH_API_BASE}/users/${username}/admin`, {
+        const response = await fetch(`${ADMIN_API_BASE}/users/${username}/admin`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -132,7 +132,7 @@ async function deleteUser(username) {
     if (confirm(`Are you sure you want to delete user ${username}?`)) {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`${AUTH_API_BASE}/users/${username}`, {
+            const response = await fetch(`${ADMIN_API_BASE}/users/${username}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`
