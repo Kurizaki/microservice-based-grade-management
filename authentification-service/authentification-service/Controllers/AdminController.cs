@@ -23,9 +23,13 @@ namespace authentification_service.Controllers
         {
             try 
             {
+                _context.Logger.LogInformation("VerifyAdmin endpoint called");
                 var authHeader = Request.Headers["Authorization"].FirstOrDefault();
+                _context.Logger.LogInformation($"Authorization header: {authHeader}");
+                
                 if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
                 {
+                    _context.Logger.LogWarning("No token provided or invalid token format");
                     return Unauthorized(new { message = "No token provided" });
                 }
 

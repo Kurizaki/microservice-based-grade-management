@@ -8,12 +8,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
+        console.log('Sending verify-admin request to:', `${ADMIN_API_BASE}/verify-admin`);
+        console.log('With token:', token);
+        
         const response = await fetch(`${ADMIN_API_BASE}/verify-admin`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
+        
+        console.log('Verify-admin response status:', response.status);
+        console.log('Verify-admin response headers:', Object.fromEntries(response.headers.entries()));
         
         if (!response.ok) {
             window.location.href = "auth.html";

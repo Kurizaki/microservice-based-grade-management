@@ -102,6 +102,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Add request logging middleware
+app.Use(async (context, next) =>
+{
+    var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+    logger.LogInformation($"Incoming {context.Request.Method} request to {context.Request.Path}");
+    logger.LogInformation($"Request headers: {string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}: {h.Value}"))}");
+    
+    await next();
+    
+    logger.LogInformation($"Response status code: {context.Response.StatusCode}");
+});
+
 app.UseCors("AllowAnyOrigin");
 app.UseRouting();
 app.UseAuthorization();
