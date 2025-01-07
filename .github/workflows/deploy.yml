@@ -54,5 +54,7 @@ jobs:
             export KUBECONFIG=/etc/rancher/k3s/k3s.yaml &&
             kubectl apply -f ./k8s/namespace.yml --validate=false &&
             kubectl apply -f ./k8s/prometheus-configmap.yml --validate=false &&
+            sleep 5 &&  # Give configmap time to be ready
             kubectl apply -f ./k8s/prometheus-deployment.yml --validate=false &&
+            sleep 10 &&  # Give Prometheus time to start
             kubectl apply -f ./k8s/ --validate=false
