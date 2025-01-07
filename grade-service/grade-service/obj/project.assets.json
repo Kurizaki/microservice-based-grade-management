@@ -5337,11 +5337,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\timog\\OneDrive\\Desktop\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
+      "projectUniqueName": "C:\\Users\\timog\\Documents\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
       "projectName": "grade-service",
-      "projectPath": "C:\\Users\\timog\\OneDrive\\Desktop\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
+      "projectPath": "C:\\Users\\timog\\Documents\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
       "packagesPath": "C:\\Users\\timog\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\timog\\OneDrive\\Desktop\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\obj\\",
+      "outputPath": "C:\\Users\\timog\\Documents\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\timog\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5431,7 +5431,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

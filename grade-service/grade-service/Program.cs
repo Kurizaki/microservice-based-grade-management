@@ -59,8 +59,12 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Configure SQLite as the database
+var connectionString = builder.Environment.IsDevelopment() 
+    ? builder.Configuration.GetConnectionString("DefaultConnection")
+    : builder.Configuration.GetSection("DockerConnectionStrings")["DefaultConnection"];
+
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(connectionString));
 
 builder.Services.AddCors(options =>
 {
@@ -86,7 +90,7 @@ using (var scope = app.Services.CreateScope())
             logger.LogInformation("Attempting to apply database migrations (Attempt {RetryCount})", retryCount + 1);
             
             // Verify database file exists
-            var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "GradeDb.sqlite");
+            var dbPath = "/app/data/GradeDb.sqlite";
             if (!File.Exists(dbPath))
             {
                 logger.LogInformation("Database file not found, creating new database at {DbPath}", dbPath);

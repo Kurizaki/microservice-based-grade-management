@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Vv4pIEB1FLJl0R3pLcXx+0tmZ7/QEbVEzGah+8cmzNv2z4kcculpoYtpe5eWopeluaLr5dUjCJutvg2+EaLWAw==",
+  "dgSpecHash": "U4/vkx6BMtTG0lJgS35IM3efaBIjKs6tcn0zJ2AR/26h38tJiKnZtUNzuZgdfVfqhq89mSqzQIhYjuPDKNeZDw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\timog\\OneDrive\\Desktop\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
+  "projectFilePath": "C:\\Users\\timog\\Documents\\GitHub\\microservice-based-grade-management\\grade-service\\grade-service\\grade-service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\timog\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\timog\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

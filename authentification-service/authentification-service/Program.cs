@@ -5,8 +5,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+var connectionString = builder.Environment.IsDevelopment() 
+    ? builder.Configuration.GetConnectionString("DefaultConnection")
+    : builder.Configuration.GetSection("DockerConnectionStrings")["DefaultConnection"];
+
 builder.Services.AddDbContext<AUTHDB>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(connectionString));
 
 // Add CORS policy
 builder.Services.AddCors(options =>
@@ -17,14 +21,55 @@ builder.Services.AddCors(options =>
 // Build the app
 var app = builder.Build();
 
-// Apply migrations and seed admin user if not exists
+// Apply migrations with retry logic
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AUTHDB>();
-    dbContext.Database.Migrate();
-
-    // Seed the admin user
-    SeedAdminUser(dbContext);
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    
+    int retryCount = 0;
+    const int maxRetries = 5;
+    const int retryDelay = 5000; // 5 seconds
+    
+    while (retryCount < maxRetries)
+    {
+        try
+        {
+            logger.LogInformation("Attempting to apply database migrations (Attempt {RetryCount})", retryCount + 1);
+            
+            // Verify database file exists
+            var dbPath = "/app/data/AUTHDatabase.sqlite";
+            if (!File.Exists(dbPath))
+            {
+                logger.LogInformation("Database file not found, creating new database at {DbPath}", dbPath);
+            }
+            
+            dbContext.Database.Migrate();
+            logger.LogInformation("Database migrations applied successfully");
+            
+            // Seed the admin user
+            SeedAdminUser(dbContext);
+            break;
+        }
+        catch (Microsoft.Data.Sqlite.SqliteException ex) when (ex.SqliteErrorCode == 14) // SQLITE_CANTOPEN
+        {
+            retryCount++;
+            logger.LogError(ex, "Database I/O error occurred. Retrying in {RetryDelay}ms...", retryDelay);
+            
+            if (retryCount >= maxRetries)
+            {
+                logger.LogCritical("Failed to apply database migrations after {MaxRetries} attempts", maxRetries);
+                throw;
+            }
+            
+            Thread.Sleep(retryDelay);
+        }
+        catch (Exception ex)
+        {
+            logger.LogCritical(ex, "Critical error applying database migrations");
+            throw;
+        }
+    }
 }
 
 void SeedAdminUser(AUTHDB dbContext)
