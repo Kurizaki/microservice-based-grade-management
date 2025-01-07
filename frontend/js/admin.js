@@ -1,7 +1,37 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    checkAdminAuth();
-    loadUsers();
-    await loadDashboards();
+    const token = localStorage.getItem("token");
+    const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+    
+    if (!isAuthenticated || !token) {
+        window.location.href = "auth.html";
+        return;
+    }
+
+    try {
+        const response = await fetch(`${AUTH_API_BASE}/verify-admin`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (!response.ok) {
+            window.location.href = "auth.html";
+            return;
+        }
+        
+        const data = await response.json();
+        if (!data.isAdmin) {
+            window.location.href = "auth.html";
+            return;
+        }
+
+        loadUsers();
+        await loadDashboards();
+    } catch (error) {
+        console.error('Error verifying admin status:', error);
+        window.location.href = "auth.html";
+    }
 });
 
 async function loadDashboards() {
@@ -24,14 +54,6 @@ async function loadDashboards() {
     }
 }
 
-function checkAdminAuth() {
-    const username = localStorage.getItem("username");
-    const isAdmin = localStorage.getItem("isAdmin") === "true";
-    
-    if (!username || !isAdmin) {
-        window.location.href = "/auth.html";
-    }
-}
 
 async function loadUsers() {
     try {

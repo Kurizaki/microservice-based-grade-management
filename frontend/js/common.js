@@ -44,11 +44,30 @@ function hideSpinner() {
 }
 
 // Auth check
-function checkAuth() {
+async function checkAuth() {
   if (testMode) return;
 
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  const token = localStorage.getItem("token");
   const navLinks = document.querySelector(".nav-links");
+
+  let isAdmin = false;
+  if (isAuthenticated && token) {
+    try {
+      const response = await fetch(`${AUTH_API_BASE}/verify-admin`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        isAdmin = data.isAdmin;
+      }
+    } catch (error) {
+      console.error('Error checking admin status:', error);
+    }
+  }
 
   if (isAuthenticated) {
     const gradeLink = navLinks.querySelector('a[href="grade.html"]');
@@ -59,6 +78,15 @@ function checkAuth() {
     calcLink.classList.remove("locked");
     gradeLink.innerHTML = '<i class="fas fa-book"></i> Grades';
     calcLink.innerHTML = '<i class="fas fa-calculator"></i> Calculator';
+    
+    // Add admin link if user is admin
+    if (isAdmin) {
+      const adminLink = document.createElement('a');
+      adminLink.href = 'admin.html';
+      adminLink.innerHTML = '<i class="fas fa-cog"></i> Admin';
+      navLinks.insertBefore(adminLink, authLink);
+    }
+    
     authLink.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
 
     authLink.href = "#";
