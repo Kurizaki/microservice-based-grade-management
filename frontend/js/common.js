@@ -6,7 +6,7 @@ let testMode = localStorage.getItem("testMode") === "true";
 const AUTH_API_BASE = "/auth-api";
 const GRADE_API_BASE = "/grade-api";
 const CALC_API_BASE = "/calc-api";
-const ADMIN_API_BASE = "/admin-api";
+const ADMIN_API_BASE = "/admin-api/Admin";
 function showToast(message, type) {
   // Cleanup old toast
   document.querySelectorAll(".toast").forEach((toast) => toast.remove());
@@ -63,15 +63,20 @@ async function checkAuth() {
         try {
             console.log('Starting admin verification check...');
             console.log('Token:', token ? 'Present' : 'Missing');
+            console.log('Request URL:', `${ADMIN_API_BASE}/verify-admin`);
                 
             const response = await fetch(`${ADMIN_API_BASE}/verify-admin`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
+            }).catch(error => {
+                console.error('Network error during fetch:', error);
+                throw error;
             });
                 
             console.log('Admin verification response status:', response.status);
+            console.log('Response headers:', [...response.headers.entries()]);
                 
             if (!response.ok) {
                 console.warn('Admin verification failed - response not OK');
