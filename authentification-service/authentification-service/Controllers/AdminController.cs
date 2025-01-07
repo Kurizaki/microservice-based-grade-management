@@ -18,7 +18,7 @@ namespace authentification_service.Controllers
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        [HttpGet("verify-admin")]
+        [HttpGet("verify-admin/")]
         public async Task<IActionResult> VerifyAdmin()
         {
             var authHeader = Request.Headers["Authorization"].FirstOrDefault();
@@ -51,7 +51,7 @@ namespace authentification_service.Controllers
             return Ok(new { isAdmin = user.IsAdmin });
         }
 
-        [HttpGet("dashboards")]
+        [HttpGet("dashboards/")]
         public IActionResult GetDashboardUrls()
         {
             if (!User.IsInRole("Admin"))
@@ -68,7 +68,7 @@ namespace authentification_service.Controllers
             return Ok(dashboards);
         }
 
-        [HttpGet("users")]
+        [HttpGet("users/")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _context.Users
