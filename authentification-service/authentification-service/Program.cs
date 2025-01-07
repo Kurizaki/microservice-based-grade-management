@@ -15,7 +15,12 @@ builder.Services.AddDbContext<AUTHDB>(options =>
 // Add CORS policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
 });
 
 // Build the app
@@ -114,7 +119,7 @@ app.Use(async (context, next) =>
     logger.LogInformation($"Response status code: {context.Response.StatusCode}");
 });
 
-app.UseCors("AllowAnyOrigin");
+app.UseCors();
 app.UseRouting();
 
 app.UseEndpoints(endpoints =>
