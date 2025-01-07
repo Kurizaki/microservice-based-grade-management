@@ -120,7 +120,7 @@ async function checkAuth() {
   if (isAuthenticated && token) {
       try {
           console.log('Checking admin status...');
-          const response = await fetch(`${ADMIN_API_BASE}/verify-admin`, {
+          const response = await fetch(`http://auth-service:8080/api/Admin/Admin/verify-admin`, {
               method: 'GET',
               headers: {
                   'Authorization': `Bearer ${token}`

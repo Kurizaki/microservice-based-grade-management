@@ -116,6 +116,17 @@ app.Use(async (context, next) =>
 
 app.UseCors("AllowAnyOrigin");
 app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    foreach (var endpoint in endpoints.DataSources.SelectMany(ds => ds.Endpoints))
+    {
+        Console.WriteLine($"Registered endpoint: {endpoint.DisplayName}");
+    }
+});
+
+app.Run();
+
 app.UseAuthorization();
 app.MapControllers();
 
