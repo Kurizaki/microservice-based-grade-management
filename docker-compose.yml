@@ -105,9 +105,9 @@ services:
     deploy:
       resources:
         limits:
-          memory: 2Gi
+          memory: 2048m
         reservations:
-          memory: 1Gi
+          memory: 1024m
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.0
@@ -126,9 +126,9 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1Gi
+          memory: 1024m
         reservations:
-          memory: 512Mi
+          memory: 512m
 
 volumes:
   auth-db-data:
