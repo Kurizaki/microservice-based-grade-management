@@ -5,7 +5,7 @@
 namespace authentification_service.Migrations
 {
     /// <inheritdoc />
-    public partial class AdminFix : Migration
+    public partial class AdminFix2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
