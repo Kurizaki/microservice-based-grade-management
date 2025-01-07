@@ -37,7 +37,7 @@ To ensure efficient development and deployment, the project employs **DevOps pra
 
 ## Technical Details
 
-### 1. Login Service
+### 1. Authentification Service
 - **Purpose**: Handles user authentication and stores user information.
 - **Database**: Stores user data including encrypted passwords and roles.
 - **Key API Endpoints**:
