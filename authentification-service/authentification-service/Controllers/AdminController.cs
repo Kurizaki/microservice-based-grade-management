@@ -21,15 +21,15 @@ namespace authentification_service.Controllers
         [HttpGet("verify-admin/")]
         public async Task<IActionResult> VerifyAdmin()
         {
-            try 
+            try
             {
-                _context.Logger.LogInformation("VerifyAdmin endpoint called");
+                Console.WriteLine("VerifyAdmin endpoint called");
                 var authHeader = Request.Headers["Authorization"].FirstOrDefault();
-                _context.Logger.LogInformation($"Authorization header: {authHeader}");
-                
+                Console.WriteLine($"Authorization header: {authHeader}");
+
                 if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
                 {
-                    _context.Logger.LogWarning("No token provided or invalid token format");
+                    Console.WriteLine("No token provided or invalid token format");
                     return Unauthorized(new { message = "No token provided" });
                 }
 
@@ -52,7 +52,7 @@ namespace authentification_service.Controllers
                 var user = await _context.Users
                     .AsNoTracking()
                     .FirstOrDefaultAsync(u => u.Username == username && u.IsAdmin);
-                
+
                 if (user == null)
                 {
                     return Unauthorized(new { message = "User not found or not authorized", isAdmin = false });
@@ -62,9 +62,11 @@ namespace authentification_service.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error: {ex.Message}");
                 return StatusCode(500, new { message = "Error verifying admin status", error = ex.Message });
             }
         }
+
 
         [HttpGet("dashboards/")]
         public IActionResult GetDashboardUrls()
