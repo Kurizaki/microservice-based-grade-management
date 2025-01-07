@@ -1,43 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = localStorage.getItem("token");
-    const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
-    
-    if (!isAuthenticated || !token) {
-        window.location.href = "auth.html";
-        return;
-    }
-
-    try {
-        console.log('Sending verify-admin request to:', `${ADMIN_API_BASE}/verify-admin`);
-        console.log('With token:', token);
-        
-        const response = await fetch(`${ADMIN_API_BASE}/verify-admin`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        
-        console.log('Verify-admin response status:', response.status);
-        console.log('Verify-admin response headers:', Object.fromEntries(response.headers.entries()));
-        
-        if (!response.ok) {
-            window.location.href = "auth.html";
-            return;
-        }
-        
-        const data = await response.json();
-        if (!data.isAdmin) {
-            window.location.href = "auth.html";
-            return;
-        }
-
-        loadUsers();
-        await loadDashboards();
-    } catch (error) {
-        console.error('Error verifying admin status:', error);
-        window.location.href = "auth.html";
-    }
+    loadUsers();
+    await loadDashboards();
 });
 
 async function loadDashboards() {
