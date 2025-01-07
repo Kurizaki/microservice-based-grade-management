@@ -15,12 +15,7 @@ builder.Services.AddDbContext<AUTHDB>(options =>
 // Add CORS policy
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
+    options.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
 // Build the app
@@ -107,31 +102,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Add request logging middleware
-app.Use(async (context, next) =>
-{
-    var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
-    logger.LogInformation($"Incoming {context.Request.Method} request to {context.Request.Path}");
-    logger.LogInformation($"Request headers: {string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}: {h.Value}"))}");
-    
-    await next();
-    
-    logger.LogInformation($"Response status code: {context.Response.StatusCode}");
-});
-
-app.UseCors();
+app.UseCors("AllowAnyOrigin");
 app.UseRouting();
-
-app.UseEndpoints(endpoints =>
-{
-    foreach (var endpoint in endpoints.DataSources.SelectMany(ds => ds.Endpoints))
-    {
-        Console.WriteLine($"Registered endpoint: {endpoint.DisplayName}");
-    }
-});
-
-app.Run();
-
 app.UseAuthorization();
 app.MapControllers();
 

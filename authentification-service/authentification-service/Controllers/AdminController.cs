@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace authentification_service.Controllers
 {
-    [Route("api/Admin")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
     {
