@@ -5,7 +5,7 @@
 namespace authentification_service.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedAdmin : Migration
+    public partial class AdminFix4 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
