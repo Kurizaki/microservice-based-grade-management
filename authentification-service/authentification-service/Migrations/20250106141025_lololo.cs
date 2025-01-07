@@ -12,7 +12,7 @@ namespace authentification_service.Migrations
         {
             migrationBuilder.Sql(@"
                 INSERT INTO Users (Username, PasswordHash, IsAdmin)
-                SELECT 'admin', '$2a$12$abcdefghijklmnopqrstuv', 1
+                SELECT 'admin', '$2a$12$EkvUZbfke.K2o2NgCsJAquUk1Ci2Fa/YW0YmScpfQLX62xWnWIbiu', 1
                 WHERE NOT EXISTS (
                 SELECT 1 FROM Users WHERE Username = 'admin'
                 );");
