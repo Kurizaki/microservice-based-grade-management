@@ -53,7 +53,7 @@ async function checkAuth() {
   const currentPage = window.location.pathname.toLowerCase();
 
   // Check if we're on admin page
-  if (currentPage.includes("admin.html")) {
+  if (currentPage.includes("grade.html")) {
       if (!isAuthenticated || !token) {
           console.warn('User not authenticated or token missing. Redirecting to auth page.');
           window.location.replace("auth.html");
@@ -68,7 +68,7 @@ async function checkAuth() {
           console.log('Current page path:', window.location.pathname);
 
           // Perform the fetch request
-          const response = await fetch(`http://auth-service:8080/api/auth/verify-admin`, {
+          const response = await fetch(`${AUTH_API_BASE}/verify-admin`, {
               method: 'GET',
               headers: {
                   'Authorization': `Bearer ${token}`
@@ -81,16 +81,6 @@ async function checkAuth() {
           console.log('Admin verification response status:', response.status);
           console.log('Response headers:', [...response.headers.entries()]);
           console.log('Response URL:', response.url);
-
-          // Check if response is not OK
-          if (!response.ok) {
-              console.warn('Admin verification failed - response not OK');
-              if (response.status === 404) {
-                  console.error('404 error - Endpoint not found. Check your API routing or Docker setup.');
-              }
-              window.location.replace("auth.html");
-              return;
-          }
 
           const data = await response.json();
           console.log('Admin verification response data:', data);
