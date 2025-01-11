@@ -6,7 +6,6 @@ let testMode = localStorage.getItem("testMode") === "true";
 const AUTH_API_BASE = "/auth-api";
 const GRADE_API_BASE = "/grade-api";
 const CALC_API_BASE = "/calc-api";
-const ADMIN_API_BASE = "/admin-api";
 function showToast(message, type) {
   // Cleanup old toast
   document.querySelectorAll(".toast").forEach((toast) => toast.remove());
@@ -64,12 +63,12 @@ async function checkAuth() {
       try {
           console.log('Starting admin verification check...');
           console.log('Token:', token ? 'Present' : 'Missing');
-          console.log('ADMIN_API_BASE:', ADMIN_API_BASE);
-          console.log('Request URL:', `${ADMIN_API_BASE}/verify-admin`);
+          console.log('AUTH_API_BASE:', AUTH_API_BASE);
+          console.log('Request URL:', `${AUTH_API_BASE}/verify-admin`);
           console.log('Current page path:', window.location.pathname);
 
           // Perform the fetch request
-          const response = await fetch(`${ADMIN_API_BASE}/verify-admin`, {
+          const response = await fetch(`${AUTH_API_BASE}/verify-admin`, {
               method: 'GET',
               headers: {
                   'Authorization': `Bearer ${token}`
@@ -120,7 +119,7 @@ async function checkAuth() {
   if (isAuthenticated && token) {
       try {
           console.log('Checking admin status...');
-          const response = await fetch(`${ADMIN_API_BASE}/verify-admin`, {
+          const response = await fetch(`${AUTH_API_BASE}/verify-admin`, {
               method: 'GET',
               headers: {
                   'Authorization': `Bearer ${token}`
