@@ -64,11 +64,11 @@ async function checkAuth() {
           console.log('Starting admin verification check...');
           console.log('Token:', token ? 'Present' : 'Missing');
           console.log('AUTH_API_BASE:', AUTH_API_BASE);
-          console.log('Request URL:', `${AUTH_API_BASE}/verify-admin`);
+          console.log('Request URL:', `${AUTH_API_BASE}/verify-admin/`);
           console.log('Current page path:', window.location.pathname);
 
           // Perform the fetch request
-          const response = await fetch(`${AUTH_API_BASE}/verify-admin`, {
+          const response = await fetch(`${AUTH_API_BASE}/verify-admin/`, {
               method: 'GET',
               headers: {
                   'Authorization': `Bearer ${token}`
