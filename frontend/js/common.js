@@ -68,7 +68,7 @@ async function checkAuth() {
           console.log('Current page path:', window.location.pathname);
 
           // Perform the fetch request
-          const response = await fetch(`${AUTH_API_BASE}/verify-admin`, {
+          const response = await fetch(`http://auth-service:8080/api/auth/verify-admin`, {
               method: 'GET',
               headers: {
                   'Authorization': `Bearer ${token}`
