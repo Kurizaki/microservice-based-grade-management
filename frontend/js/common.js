@@ -47,12 +47,12 @@ function hideSpinner() {
 async function checkAuth() {
   if (testMode) return;
 
-  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  const isAuthenticated = localStorage.getItem("isAuthenticated");
   const token = localStorage.getItem("token");
   const navLinks = document.querySelector(".nav-links");
   const currentPage = window.location.pathname.toLowerCase();
 
-  const isAdmin = localStorage.getItem("isAdmin") === "true";
+  const isAdmin = localStorage.getItem("isAdmin");
   console.log(isAdmin);
   
   // Update navigation based on authentication status
@@ -83,12 +83,6 @@ async function checkAuth() {
       logout();
     });
 
-    // Check if we're on admin page
-    if (currentPage.includes("admin.html") && !isAdmin) {
-      console.warn('User is not an admin. Redirecting to grade page.');
-      window.location.replace("grade.html");
-      return;
-    }
   } else {
     // User is not logged in
     gradeLink.classList.add("locked");
