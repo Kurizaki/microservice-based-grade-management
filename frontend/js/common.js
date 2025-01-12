@@ -75,7 +75,7 @@ async function checkAuth() {
           console.log('Starting admin verification check...');
           console.log('Token:', token ? 'Present' : 'Missing');
           console.log('AUTH_API_BASE:', AUTH_API_BASE);
-          console.log('Request URL:', `${AUTH_API_BASE}/verify-admin/`);
+          console.log('Request URL:', `${AUTH_API_BASE}/verify-admin`);
           console.log('Current page path:', window.location.pathname);
 
           console.log('Admin verification response status:', response.status);
