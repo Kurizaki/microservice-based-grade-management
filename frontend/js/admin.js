@@ -23,6 +23,7 @@ async function loadDashboards() {
 
         if (response.ok) {
             const dashboards = await response.json();
+            console.log(dashboards)
             document.querySelector('.dashboard-iframe[data-dashboard="prometheus"]').src = dashboards.Prometheus;
             document.querySelector('.dashboard-iframe[data-dashboard="kibana"]').src = dashboards.Kibana;
         }
