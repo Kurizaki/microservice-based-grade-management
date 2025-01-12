@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
     // Check if user is admin, redirect if not
     const isAdmin = localStorage.getItem("isAdmin");
-    if (!isAdmin) {
+    if (!isAdmin || isAdmin === "false") {
         console.warn('User is not an admin. Redirecting to grade page.');
         window.location.replace("grade.html");
         return;
