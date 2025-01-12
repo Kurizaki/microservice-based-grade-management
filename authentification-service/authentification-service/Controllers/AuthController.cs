@@ -100,7 +100,7 @@ namespace authentification_service.Controllers
         // ===== ADMIN ENDPOINTS =====
 
         [HttpGet("verifyAdmin/")]
-        public async Task<IActionResult> VerifyAdmin()
+        public IActionResult VerifyAdmin()
         {
             /*
             var authHeader = Request.Headers["Authorization"].FirstOrDefault();
