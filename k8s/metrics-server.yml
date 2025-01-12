@@ -1,6 +1,6 @@
 ############################################
 # SERVICE: metrics-server
-# Exposes the Metrics Server via service "metrics-server" in the "kube-system" namespace.
+# Exposes the Metrics Server via service "metrics-server" in the "mynetwork" namespace.
 # - port 4443 -> routes to container port 10250
 # - protocol must be TCP
 # - The "https" name is essential to match the expected API service.
