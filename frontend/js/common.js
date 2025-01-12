@@ -72,18 +72,7 @@ async function checkAuth() {
               throw error;
           });
 
-          console.log('Starting admin verification check...');
-          console.log('Token:', token ? 'Present' : 'Missing');
-          console.log('AUTH_API_BASE:', AUTH_API_BASE);
-          console.log('Request URL:', `${AUTH_API_BASE}/verify-admin`);
-          console.log('Current page path:', window.location.pathname);
-
-          console.log('Admin verification response status:', response.status);
-          console.log('Response headers:', [...response.headers.entries()]);
-          console.log('Response URL:', response.url);
-
           const data = await response.json();
-          console.log('Admin verification response data:', data);
 
           if (!data.isAdmin) {
               console.warn('User is not an admin. Redirecting to auth page.');
@@ -91,7 +80,8 @@ async function checkAuth() {
               return;
           }
 
-          console.log('Admin verification successful');
+          // Store admin status in localStorage
+          localStorage.setItem("isAdmin", "true");
       } catch (error) {
           console.error('Admin verification error:', error);
           console.error('Error details:', {
@@ -101,30 +91,6 @@ async function checkAuth() {
           });
           window.location.replace("auth.html");
           return;
-      }
-  }
-
-  // Regular auth check for other pages
-  let isAdmin = false;
-  if (isAuthenticated && token) {
-      try {
-          console.log('Checking admin status...');
-          const response = await fetch(`${AUTH_API_BASE}/verify-admin`, {
-              method: 'GET',
-              headers: {
-                  'Authorization': `Bearer ${token}`
-              }
-          });
-
-          console.log('Admin status check response status:', response.status);
-
-          if (response.ok) {
-              const data = await response.json();
-              console.log('Admin status check response data:', data);
-              isAdmin = data.isAdmin;
-          }
-      } catch (error) {
-          console.error('Error checking admin status:', error);
       }
   }
 
@@ -165,6 +131,7 @@ async function checkAuth() {
 
 function logout() {
   localStorage.removeItem("isAuthenticated");
+  localStorage.removeItem("isAdmin");
   showToast("Logged out successfully", "success");
   window.location.href = "/auth.html";
 }

@@ -69,11 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("username", username);
           localStorage.setItem("token", responseData.token);
 
-          console.log(`${AUTH_API_BASE}/login`)
-          console.log("isAuthenticated", "true");
-          console.log("username", username);
-          console.log("token", responseData.token);
-
           showToast("Login successful!", "success");
 
           // Use setTimeout to delay navigation
