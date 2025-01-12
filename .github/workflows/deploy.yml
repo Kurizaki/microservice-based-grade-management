@@ -31,32 +31,33 @@ jobs:
               docker system prune -a
 
   k3s-deploy:
-    name: k3s Deployment
-    needs: docker-deploy
-    runs-on: ubuntu-latest
+  name: k3s Deployment
+  needs: docker-deploy
+  runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set KUBECONFIG
-        run: echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig
+    - name: Set KUBECONFIG
+      run: echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig
 
-      - name: Deploy to k3s
-        uses: appleboy/ssh-action@v0.1.8
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          timeout: 60s  
-          command_timeout: 600s
-          script: |
-            cd microservice-based-grade-management &&
-            echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > kubeconfig &&
-            export KUBECONFIG=/etc/rancher/k3s/k3s.yaml &&
-            kubectl apply -f ./k8s/namespace.yml --validate=false &&
-            kubectl apply -f ./k8s/prometheus-configmap.yml --validate=false &&
-            sleep 5 &&  # Give configmap time to be ready
-            kubectl apply -f ./k8s/prometheus-deployment.yml --validate=false &&
-            sleep 10 &&  # Give Prometheus time to start
-            kubectl apply -f ./k8s/ --validate=false
+    - name: Deploy to k3s
+      uses: appleboy/ssh-action@v0.1.8
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        timeout: 60s  
+        command_timeout: 600s
+        script: |
+          cd microservice-based-grade-management &&
+          echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > kubeconfig &&
+          export KUBECONFIG=/etc/rancher/k3s/k3s.yaml &&
+          kubectl apply -f ./k8s/namespace.yml --validate=false &&
+          kubectl apply -f ./k8s/prometheus-configmap.yml --validate=false &&
+          sleep 5 &&
+          kubectl apply -f ./k8s/prometheus-deployment.yml --validate=false &&
+          sleep 10 &&
+          kubectl apply -f ./k8s/prometheus-service.yml --validate=false &&
+          kubectl apply -f ./k8s/ --validate=false
