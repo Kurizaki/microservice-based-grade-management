@@ -52,16 +52,8 @@ async function checkAuth() {
   const navLinks = document.querySelector(".nav-links");
   const currentPage = window.location.pathname.toLowerCase();
 
-  // Check if we're on admin page
-  if (currentPage.includes("admin.html")) {
-    const isAdmin = localStorage.getItem("isAdmin") === "true";
-    if (!isAdmin) {
-      console.warn('User is not an admin. Redirecting to auth page.');
-      window.location.replace("auth.html");
-      return;
-    }
-  }
-
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
+  
   if (isAuthenticated) {
       const gradeLink = navLinks.querySelector('a[href="grade.html"]');
       const calcLink = navLinks.querySelector('a[href="calc.html"]');
