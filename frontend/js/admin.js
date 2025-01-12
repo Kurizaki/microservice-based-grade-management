@@ -89,7 +89,12 @@ async function toggleAdmin(username, makeAdmin) {
             showToast(`User ${username} ${makeAdmin ? "promoted to" : "demoted from"} admin`, "success");
             loadUsers();
         } else {
-            showToast("Failed to update user role", "error");
+            const errorData = await response.json();
+            if (errorData.code === "LAST_ADMIN") {
+                showToast(errorData.message, "error");
+            } else {
+                showToast("Failed to update user role", "error");
+            }
         }
     } catch (error) {
         console.error("Error updating user role:", error);

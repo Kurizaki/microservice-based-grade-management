@@ -202,6 +202,20 @@ namespace authentification_service.Controllers
                 return NotFound(new { message = "User not found" });
             }
 
+            // If trying to remove admin status
+            if (!isAdmin)
+            {
+                // Count total admins
+                var adminCount = await _context.Users.CountAsync(u => u.IsAdmin);
+                if (adminCount <= 1)
+                {
+                    return BadRequest(new { 
+                        message = "Cannot remove admin status. System requires at least one admin user.",
+                        code = "LAST_ADMIN"
+                    });
+                }
+            }
+
             user.IsAdmin = isAdmin;
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
