@@ -138,16 +138,41 @@ namespace authentification_service.Controllers
         }
 
         [HttpGet("dashboards/")]
-        public IActionResult GetDashboardUrls()
+        public async Task<IActionResult> GetDashboardUrls()
         {
-            if (!User.IsInRole("Admin"))
+            var authHeader = Request.Headers["Authorization"].FirstOrDefault();
+            if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
             {
-                return Forbid();
+                return Unauthorized(new { message = "No token provided" });
+            }
+
+            var token = authHeader.Substring("Bearer ".Length);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+
+            if (jsonToken == null)
+            {
+                return Unauthorized(new { message = "Invalid token" });
+            }
+
+            var username = jsonToken.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
+            if (string.IsNullOrEmpty(username))
+            {
+                return Unauthorized(new { message = "Invalid token claims" });
+            }
+
+            var user = await _context.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Username == username && u.IsAdmin);
+
+            if (user == null)
+            {
+                return Unauthorized(new { message = "User not found or not authorized" });
             }
 
             var dashboards = new
             {
-                Prometheus = "http://prometheus:9090",
+                Prometheus = "http://prometheus:9900",
                 Kibana = "http://kibana:5601"
             };
 
