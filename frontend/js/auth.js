@@ -71,10 +71,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
           showToast("Login successful!", "success");
 
-          // Use setTimeout to delay navigation
-          setTimeout(() => {
-            window.location.href = "grade.html";
-          }, 10000);
+          // Check if user is admin and redirect accordingly
+          const isAdmin = data.isAdmin || false;
+          if (isAdmin) {
+            localStorage.setItem("isAdmin", "true");
+            setTimeout(() => {
+              window.location.href = "admin.html";
+            }, 300);
+          } else {
+            setTimeout(() => {
+              window.location.href = "grade.html";
+            }, 300);
+          }
         } else {
           const responseData = await response.json();
           showToast(
