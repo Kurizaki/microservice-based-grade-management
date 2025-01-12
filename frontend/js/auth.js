@@ -69,16 +69,33 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("username", username);
           localStorage.setItem("token", responseData.token);
 
-          showToast("Login successful!", "success");
+          // Verify admin status
+          try {
+            const adminResponse = await fetch(`${AUTH_API_BASE}/verifyAdmin`, {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${responseData.token}`
+              }
+            });
 
-          // Check if user is admin and redirect accordingly
-          const isAdmin = data.isAdmin || false;
-          if (isAdmin) {
-            localStorage.setItem("isAdmin", "true");
-            setTimeout(() => {
-              window.location.href = "admin.html";
-            }, 300);
-          } else {
+            const adminData = await adminResponse.json();
+            const isAdmin = adminData.isAdmin || false;
+
+            showToast("Login successful!", "success");
+
+            if (isAdmin) {
+              localStorage.setItem("isAdmin", "true");
+              setTimeout(() => {
+                window.location.href = "admin.html";
+              }, 300);
+            } else {
+              setTimeout(() => {
+                window.location.href = "grade.html";
+              }, 300);
+            }
+          } catch (error) {
+            console.error('Admin verification error:', error);
+            showToast("Login successful! Admin verification failed", "warning");
             setTimeout(() => {
               window.location.href = "grade.html";
             }, 300);

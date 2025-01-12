@@ -53,45 +53,13 @@ async function checkAuth() {
   const currentPage = window.location.pathname.toLowerCase();
 
   // Check if we're on admin page
-  if (currentPage.includes("grade.html")) {
-      if (!isAuthenticated || !token) {
-          console.warn('User not authenticated or token missing. Redirecting to auth page.');
-          window.location.replace("auth.html");
-          return;
-      }
-
-      try {
-          // Perform the fetch request
-          const response = await fetch(`${AUTH_API_BASE}/verifyAdmin`, {
-              method: 'GET',
-              headers: {
-                  'Authorization': `Bearer ${token}`
-              }
-          }).catch(error => {
-              console.error('Network error during fetch:', error);
-              throw error;
-          });
-
-          const data = await response.json();
-
-          if (!data.isAdmin) {
-              console.warn('User is not an admin. Redirecting to auth page.');
-              window.location.replace("auth.html");
-              return;
-          }
-
-          // Store admin status in localStorage
-          localStorage.setItem("isAdmin", "true");
-      } catch (error) {
-          console.error('Admin verification error:', error);
-          console.error('Error details:', {
-              name: error.name,
-              message: error.message,
-              stack: error.stack
-          });
-          window.location.replace("auth.html");
-          return;
-      }
+  if (currentPage.includes("admin.html")) {
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
+    if (!isAdmin) {
+      console.warn('User is not an admin. Redirecting to auth page.');
+      window.location.replace("auth.html");
+      return;
+    }
   }
 
   if (isAuthenticated) {
