@@ -82,7 +82,7 @@ async function toggleAdmin(username, makeAdmin) {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             },
-            body: makeAdmin
+            body: JSON.stringify({ isAdmin: makeAdmin })
         });
 
         if (response.ok) {
