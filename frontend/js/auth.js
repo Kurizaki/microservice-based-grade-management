@@ -68,12 +68,18 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("isAuthenticated", "true");
           localStorage.setItem("username", username);
           localStorage.setItem("token", responseData.token);
+
+          console.log(`${AUTH_API_BASE}/login`)
+          console.log("isAuthenticated", "true");
+          console.log("username", username);
+          console.log("token", responseData.token);
+
           showToast("Login successful!", "success");
 
           // Use setTimeout to delay navigation
           setTimeout(() => {
             window.location.href = "grade.html";
-          }, 100);
+          }, 10000);
         } else {
           const responseData = await response.json();
           showToast(
