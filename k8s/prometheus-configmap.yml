@@ -5,3 +5,15 @@ metadata:
   namespace: mynetwork
   labels:
     app: prometheus
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+
+    scrape_configs:
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9900']
+
+  prometheus-flags: |
+    --web.listen-address=:9900
