@@ -54,37 +54,67 @@ async function checkAuth() {
 
   const isAdmin = localStorage.getItem("isAdmin") === "true";
   
+  // Update navigation based on authentication status
+  const gradeLink = navLinks.querySelector('a[href="grade.html"]');
+  const calcLink = navLinks.querySelector('a[href="calc.html"]');
+  const authLink = navLinks.querySelector('a[href="auth.html"]');
+
   if (isAuthenticated) {
-      const gradeLink = navLinks.querySelector('a[href="grade.html"]');
-      const calcLink = navLinks.querySelector('a[href="calc.html"]');
-      const authLink = navLinks.querySelector('a[href="auth.html"]');
+    // User is logged in
+    gradeLink.classList.remove("locked");
+    calcLink.classList.remove("locked");
+    gradeLink.innerHTML = '<i class="fas fa-book"></i> Grades';
+    calcLink.innerHTML = '<i class="fas fa-calculator"></i> Calculator';
 
-      gradeLink.classList.remove("locked");
-      calcLink.classList.remove("locked");
-      gradeLink.innerHTML = '<i class="fas fa-book"></i> Grades';
-      calcLink.innerHTML = '<i class="fas fa-calculator"></i> Calculator';
+    // Add admin link if user is admin
+    if (isAdmin && !navLinks.querySelector('a[href="admin.html"]')) {
+      const adminLink = document.createElement('a');
+      adminLink.href = 'admin.html';
+      adminLink.innerHTML = '<i class="fas fa-cog"></i> Admin';
+      navLinks.insertBefore(adminLink, authLink);
+    }
 
-      // Add admin link if user is admin
-      if (isAdmin) {
-          const adminLink = document.createElement('a');
-          adminLink.href = 'admin.html';
-          adminLink.innerHTML = '<i class="fas fa-cog"></i> Admin';
-          navLinks.insertBefore(adminLink, authLink);
-      }
+    // Change login to logout
+    authLink.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+    authLink.href = "#";
+    authLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      logout();
+    });
 
-      authLink.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
-      authLink.href = "#";
-      authLink.addEventListener("click", (e) => {
-          e.preventDefault();
-          logout();
-      });
+    // Check if we're on admin page
+    if (currentPage.includes("admin.html") && !isAdmin) {
+      console.warn('User is not an admin. Redirecting to grade page.');
+      window.location.replace("grade.html");
+      return;
+    }
   } else {
-      if (currentPage.includes("grade.html") || 
-          currentPage.includes("calc.html") ||
-          currentPage.includes("admin.html")) {
-          console.warn('User not authenticated. Redirecting to auth page.');
-          window.location.replace("auth.html");
-      }
+    // User is not logged in
+    gradeLink.classList.add("locked");
+    calcLink.classList.add("locked");
+    gradeLink.innerHTML = '<i class="fas fa-lock"></i> Grades';
+    calcLink.innerHTML = '<i class="fas fa-lock"></i> Calculator';
+
+    // Remove admin link if it exists
+    const adminLink = navLinks.querySelector('a[href="admin.html"]');
+    if (adminLink) {
+      navLinks.removeChild(adminLink);
+    }
+
+    // Show login link
+    authLink.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+    authLink.href = "auth.html";
+    // Remove any existing click handlers
+    authLink.replaceWith(authLink.cloneNode(true));
+
+    // Redirect if trying to access protected pages
+    if (currentPage.includes("admin.html") || 
+        currentPage.includes("grade.html") || 
+        currentPage.includes("calc.html")) {
+      console.warn('User not authenticated. Redirecting to auth page.');
+      window.location.replace("auth.html");
+      return;
+    }
   }
 }
 
