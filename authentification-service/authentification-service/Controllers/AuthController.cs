@@ -99,7 +99,7 @@ namespace authentification_service.Controllers
 
         // ===== ADMIN ENDPOINTS =====
 
-        [HttpGet("verify-admin/")]
+        [HttpGet("verifyAdmin/")]
         public async Task<IActionResult> VerifyAdmin()
         {
             /*

@@ -62,7 +62,7 @@ async function checkAuth() {
 
       try {
           // Perform the fetch request
-          const response = await fetch(`/auth-api/verify-admin`, {
+          const response = await fetch(`${AUTH_API_BASE}/verifyAdmin`, {
               method: 'GET',
               headers: {
                   'Authorization': `Bearer ${token}`
