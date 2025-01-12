@@ -62,7 +62,7 @@ async function checkAuth() {
 
       try {
           // Perform the fetch request
-          const response = await fetch(`${AUTH_API_BASE}/verify-admin/`, {
+          const response = await fetch(`${AUTH_API_BASE}/verify-admin`, {
               method: 'GET',
               headers: {
                   'Authorization': `Bearer ${token}`
@@ -71,7 +71,7 @@ async function checkAuth() {
               console.error('Network error during fetch:', error);
               throw error;
           });
-          
+
           console.log('Starting admin verification check...');
           console.log('Token:', token ? 'Present' : 'Missing');
           console.log('AUTH_API_BASE:', AUTH_API_BASE);
