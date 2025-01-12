@@ -172,8 +172,8 @@ namespace authentification_service.Controllers
 
             var dashboards = new
             {
-                Prometheus = "http://prometheus:9900",
-                Kibana = "http://kibana:5601"
+                Prometheus = "http://10.43.186.106:9900",
+                Kibana = "http://10.43.59.253:5601"
             };
 
             return Ok(dashboards);
