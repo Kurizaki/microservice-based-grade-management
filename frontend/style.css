@@ -587,10 +587,14 @@ button:hover::after {
 
 /* Admin Dashboard Styles */
 .dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
   margin-top: 2rem;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
 }
 
 .dashboard-card {
@@ -602,7 +606,7 @@ button:hover::after {
 
 .dashboard-iframe {
   width: 100%;
-  height: 400px;
+  height: 500px;
   border: none;
   border-radius: var(--border-radius);
   background: var(--background-dark);
