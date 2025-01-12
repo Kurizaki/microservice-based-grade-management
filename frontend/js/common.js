@@ -100,17 +100,14 @@ async function checkAuth() {
     if (adminLink) {
       navLinks.removeChild(adminLink);
     }
-
-    // Show login link
-    authLink.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-    authLink.href = "auth.html";
+    
     // Remove any existing click handlers
     authLink.replaceWith(authLink.cloneNode(true));
 
     // Redirect if trying to access protected pages
-    if (currentPage.includes("admin.html") || 
-        currentPage.includes("grade.html") || 
-        currentPage.includes("calc.html")) {
+    if (currentPage.includes("grade.html") || 
+        currentPage.includes("calc.html") ||
+        currentPage.includes("admin.html")) {
       console.warn('User not authenticated. Redirecting to auth page.');
       window.location.replace("auth.html");
       return;
