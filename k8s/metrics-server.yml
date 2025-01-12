@@ -6,6 +6,12 @@
 # - The "https" name is essential to match the expected API service.
 ############################################
 apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: metrics-server
+  namespace: mynetwork
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: metrics-server
