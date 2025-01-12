@@ -77,12 +77,12 @@ async function toggleAdmin(username, makeAdmin) {
     try {
         const token = localStorage.getItem("token");
         const response = await fetch(`${AUTH_API_BASE}/users/${username}/admin`, {
-            method: "POST",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             },
-            body: JSON.stringify(makeAdmin)
+            body: makeAdmin
         });
 
         if (response.ok) {
