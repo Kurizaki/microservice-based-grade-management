@@ -24,8 +24,15 @@ async function loadDashboards() {
         if (response.ok) {
             const dashboards = await response.json();
             console.log(dashboards)
-            document.querySelector('.dashboard-iframe[data-dashboard="prometheus"]').src = dashboards.Prometheus;
-            document.querySelector('.dashboard-iframe[data-dashboard="kibana"]').src = dashboards.Kibana;
+            const prometheusIframe = document.querySelector('.dashboard-iframe[data-dashboard="prometheus"]');
+            const kibanaIframe = document.querySelector('.dashboard-iframe[data-dashboard="kibana"]');
+            
+            if (prometheusIframe) {
+                prometheusIframe.src = dashboards.Prometheus;
+            }
+            if (kibanaIframe) {
+                kibanaIframe.src = dashboards.Kibana;
+            }
         }
     } catch (error) {
         console.error("Error loading dashboards:", error);
