@@ -28,7 +28,8 @@ jobs:
               docker-compose down &&
               docker-compose build &&
               docker-compose up -d &&
-              docker system prune -a
+              docker system prune -a &&
+              y
 
   k3s-deploy:
     name: k3s Deployment
