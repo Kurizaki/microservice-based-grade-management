@@ -61,12 +61,6 @@ async function checkAuth() {
       }
 
       try {
-          console.log('Starting admin verification check...');
-          console.log('Token:', token ? 'Present' : 'Missing');
-          console.log('AUTH_API_BASE:', AUTH_API_BASE);
-          console.log('Request URL:', `${AUTH_API_BASE}/verify-admin/`);
-          console.log('Current page path:', window.location.pathname);
-
           // Perform the fetch request
           const response = await fetch(`${AUTH_API_BASE}/verify-admin/`, {
               method: 'GET',
@@ -77,6 +71,12 @@ async function checkAuth() {
               console.error('Network error during fetch:', error);
               throw error;
           });
+          
+          console.log('Starting admin verification check...');
+          console.log('Token:', token ? 'Present' : 'Missing');
+          console.log('AUTH_API_BASE:', AUTH_API_BASE);
+          console.log('Request URL:', `${AUTH_API_BASE}/verify-admin/`);
+          console.log('Current page path:', window.location.pathname);
 
           console.log('Admin verification response status:', response.status);
           console.log('Response headers:', [...response.headers.entries()]);
