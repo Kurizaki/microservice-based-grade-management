@@ -53,6 +53,7 @@ async function checkAuth() {
   const currentPage = window.location.pathname.toLowerCase();
 
   const isAdmin = localStorage.getItem("isAdmin") === "true";
+  console.log(isAdmin);
   
   // Update navigation based on authentication status
   const gradeLink = navLinks.querySelector('a[href="grade.html"]');
@@ -119,6 +120,8 @@ async function checkAuth() {
 function logout() {
   localStorage.removeItem("isAuthenticated");
   localStorage.removeItem("isAdmin");
+  localStorage.removeItem("token");
+  localStorage.removeItem("username")
   showToast("Logged out successfully", "success");
   window.location.href = "/auth.html";
 }
