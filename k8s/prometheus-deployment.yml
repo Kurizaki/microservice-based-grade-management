@@ -19,6 +19,7 @@ spec:
         args:
         - "--config.file=/etc/prometheus/prometheus.yml"
         - "--storage.tsdb.path=/prometheus"
+        - "--web.listen-address=:9900"
         ports:
         - containerPort: 9900
         volumeMounts:
