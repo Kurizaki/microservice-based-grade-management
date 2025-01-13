@@ -28,7 +28,7 @@ async function loadDashboards() {
             const kibanaIframe = document.querySelector('.dashboard-iframe[data-dashboard="kibana"]');
             
             if (dashboardIframe) {
-                dashboardIframe.src = "http://192.168.1.167:19999";
+                dashboardIframe.src = "http://sprudello.ch:19999";
             }
             if (kibanaIframe) {
                 kibanaIframe.src = dashboards.kibana;
