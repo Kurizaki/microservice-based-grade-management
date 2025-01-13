@@ -28,10 +28,10 @@ async function loadDashboards() {
             const kibanaIframe = document.querySelector('.dashboard-iframe[data-dashboard="kibana"]');
             
             if (prometheusIframe) {
-                prometheusIframe.src = dashboards.Prometheus;
+                prometheusIframe.src = dashboards.prometheus;
             }
             if (kibanaIframe) {
-                kibanaIframe.src = dashboards.Kibana;
+                kibanaIframe.src = dashboards.kibana;
             }
         }
     } catch (error) {
