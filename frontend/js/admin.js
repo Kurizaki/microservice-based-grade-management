@@ -24,11 +24,11 @@ async function loadDashboards() {
         if (response.ok) {
             const dashboards = await response.json();
             console.log(dashboards)
-            const prometheusIframe = document.querySelector('.dashboard-iframe[data-dashboard="prometheus"]');
+            const dashboardIframe = document.querySelector('.dashboard-iframe[data-dashboard="prometheus"]');
             const kibanaIframe = document.querySelector('.dashboard-iframe[data-dashboard="kibana"]');
             
-            if (prometheusIframe) {
-                prometheusIframe.src = dashboards.prometheus;
+            if (dashboardIframe) {
+                dashboardIframe.src = "192.168.1.167:19999";
             }
             if (kibanaIframe) {
                 kibanaIframe.src = dashboards.kibana;
