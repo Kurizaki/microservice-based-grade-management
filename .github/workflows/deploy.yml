@@ -37,13 +37,6 @@ jobs:
         run: |
           echo "Docker Compose Deployment has failed."
     
-      
-      - name: Upload Docker Deploy Logs
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: docker-deploy-logs
-          path: /pfad/zu/deinen/logs  # Passe den Pfad zu den tatsächlichen Logs an
 
   k3s-deploy:
     name: k3s Deployment
